@@ -738,8 +738,7 @@
                 "<pre><code>&lt;section class=\"sample-app-content\"&gt;<br/>  &lt;h1&gt;Model-driven Form Example:&lt;/h1&gt;<br/>  &lt;form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\"&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Username:&lt;/label&gt;<br/>        &lt;input type=\"text\" formControlName=\"username\"&gt;<br/><br/>    &lt;/p&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Password:&lt;/label&gt;<br/>        &lt;input type=\"password\" [(ngModel)]=\"user.password\" required&gt;<br/>    &lt;/p&gt;<br/>    &lt;p&gt;<br/>      &lt;button type=\"submit\" [disabled]=\"!form.valid\"&gt;Submit&lt;/button&gt;<br/>    &lt;/p&gt;<br/>  &lt;/form&gt;<br/>&lt;/section&gt;</code></pre>",
                 "<p>There is a <code>formGroup</code> directive applied to the whole form, binding it to a controller variable named <code>form</code>. The <code>required</code> validator is removed and the logic is moved to the controller. Now the controller:</p>",             
                 "<pre><code>import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';<br/><br/>@Component({<br/>  selector: \"model-driven-form\",<br/>  templateUrl: 'model-driven-form.html'<br/>})<br/>export class ModelDrivenForm {<br/>  form: FormGroup;<br/><br/>  firstName = new FormControl(\"Test User\", Validators.required);<br/><br/>  constructor(fb: FormBuilder) {<br/>    this.form = fb.group({<br/>      \"firstName\": this.firstName,<br/>      \"password\": [\"\", Validators.required]<br/>    });<br/>  }<br/>  onSubmitModelBased() {<br/>    console.log(\"model-based form submitted\");<br/>    console.log(this.form);<br/>  }<br/>}</code></pre>",
-                "<p>We can see that the form is really just a FormControl, which keeps track of the global validity state. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder. In the array notation, the first element of the array is the initial value of the control, and the remaining elements are the control's validators. In this case both controls are made mandatory via the Validators.required built-in validator.</p>",                
-                "<pre><code></code></pre>"
+                "<p>We can see that the form is really just a <code>FormControl</code>, which keeps track of the global validity state. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder. In the array notation, the first element of the array is the initial value of the control, and the remaining elements are the control's validators. In this case both controls are made mandatory via the Validators.required built-in validator.</p>"
             ],
             "additional": "",
             "footer": "",
@@ -750,7 +749,129 @@
             "answer": [
                 "<p>The <code>ngForm</code> is used in Template-driven form where Angular activat for all the forms by default when we use <code>FormsModule</code>. This type of form is very well-suited to be used with ng-model, and ideal for migrating Angular 1 forms to Angular 2.</p>",
                 "<p>The Reactive forms or Model-driven forms uses <code>formGroup</code> directive applied to the whole form.</p>",
-                "<p>In Reactive forms or Model-driven forms, each form elements are controlled by a <code>FormControl</code>, which keep the elements states. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder.</p>"
+                "<p>In Reactive forms or Model-driven forms, each form elements are controlled by a <code>FormControl</code>, which keep the elements states. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder. A <code>FormControl</code> requires two properties: an initial value and a list of validators.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you add form validation to a form built with <code>FormBuilder</code>?",
+            "answer": [
+                "<p>The <code>FormControl</code> requires two properties: an initial value and a list of validators. Angular provides many validators out of the box. They can be imported along with the rest of dependencies for procedural forms.</p>",
+                "<p>From the previous login form, we can quickly and easily add validation.</p>",
+                "<pre><code>import { Component } from '@angular/core';<br/>import { Validators, FormBuilder, FormControl } from '@angular/forms';<br/><br/>@Component({<br/>  // ...<br/>})<br/>export class AppComponent {<br/>  username = new FormControl('', [<br/>    Validators.required,<br/>    Validators.minLength(5)<br/>  ]);<br/><br/>  password = new FormControl('', [ <br/>    Validators.required<br/>  ]);<br/><br/>  loginForm: FormGroup = this.builder.group({<br/>    username: this.username,<br/>    password: this.password<br/>  });<br/><br/>  constructor(private builder: FormBuilder) { }<br/><br/>}</code></pre>",
+                "First, we need to import <code>Validators</code> along with the other form modules. In this example we have used Angular built in validators.",
+                "<pre><code>&lt;form [formGroup]=\"loginForm\" (ngSubmit)=\"login()\"&gt;<br/><br/>  &lt;div&gt;<br/>    &lt;label for=\"username\"&gt;username&lt;/label&gt;<br/><br/>    &lt;input type=\"text\" name=\"username\" id=\"username\" [formControl]=\"username\"&gt;<br/><br/>    &lt;div [hidden]=\"username.valid || username.untouched\"&gt;<br/>      &lt;div&gt;<br/>        The following problems have been found with the username:<br/>      &lt;/div&gt;<br/><br/>      &lt;div [hidden]=\"!username.hasError('minlength')\"&gt;<br/>        Username can not be shorter than 5 characters.<br/>      &lt;/div&gt;<br/>      &lt;div [hidden]=\"!username.hasError('required')\"&gt;<br/>        Username is required.<br/>      &lt;/div&gt;<br/>    &lt;/div&gt;<br/>  &lt;/div&gt;<br/><br/>  &lt;div&gt;<br/>    &lt;label for=\"password\"&gt;password&lt;/label&gt;<br/>    &lt;input type=\"password\" name=\"password\" id=\"password\" [formControl]=\"password\"&gt;<br/><br/>    &lt;div [hidden]=\"password.valid || password.untouched\"&gt;<br/>      &lt;div&gt;<br/>        The following problems have been found with the password:<br/>      &lt;/div&gt;<br/><br/>      &lt;div [hidden]=\"!password.hasError('required')\"&gt;<br/>        The password is required.<br/>      &lt;/div&gt;<br/>    &lt;/div&gt;<br/>  &lt;/div&gt;<br/><br/>  &lt;button type=\"submit\" [disabled]=\"!loginForm.valid\"&gt;Log In&lt;/button&gt;<br/>&lt;/form&gt;</code></pre>",
+                "<p>We are using <code>.valid</code> and <code>.untouched</code> to determine if we need to show errors - while the field is required, there is no reason to tell the user that the value is wrong if the field hasn't been visited yet.</p>",
+                "<p>For built-in validation, we are calling <code>.hasError()</code> on the form element, and we are passing a string which represents the validator function we included. The error message only displays if this test returns true.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you add custom validators in Angular?",
+            "answer": [
+                "<p>Angular allows us to add our own custom validators with the built-in validators easily. All we need to do is write our validator function that takes the <code>FormControl</code> instance. Let us consider, we need to verify the password from the above form should contains a exclamation mark. Here is how we can do it.</p>",
+                "<pre><code>function hasExclamationMark(input: FormControl) {<br/>  const hasExclamation = input.value.indexOf('!') >= 0;<br/>  return hasExclamation ? null : { needsExclamation: true };<br/>}<br/><br/>password = new FormControl('', [<br/>  Validators.required,<br/>  hasExclamationMark<br/>]);</code></pre>",
+                "<p>A simple function takes the <code>FormControl</code> instance and returns <code>null</code> if everything is fine. If the test fails, it returns an object with an arbitrarily named property. The property name is what will be used for the <code>.hasError()</code> test. The HTML would be:</p>",
+                "<pre><code>&lt;!-- ---&gt;<br/>&lt;div [hidden]=\"!password.hasError('needsExclamation')\"&gt;<br/>  Your password must have an exclamation mark!<br/>&lt;/div&gt;<br/>&lt;!-- ---&gt;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is async validation and how is it done?",
+            "answer": [
+                "<p>Async Validators are used propably when we want to done our validators asynchronously. For example, checking the back end server. In our form example, if we want to check the username that entered is available, we can do that using async validators.</p>",
+                "<pre><code>import { AbstractControl } from '@angular/forms';<br/>import { UsernameService } from '../username.service';<br/><br/>export class ValidateUsernameNotTaken {<br/>  static createValidator(usernameService: UsernameService) {<br/>    return (control: AbstractControl) => {<br/>      return usernameService.checkUsernameTaken(control.value).map(res => {<br/>        return res ? null : { usernameTaken: true };<br/>      });<br/>    };<br/>  }<br/>}</code></pre>",
+                "<p>We can then add our custom validators in the validators array.</p>",
+                "<pre><code>username = new FormControl('', [<br/>    Validators.required,<br/>    Validators.minLength(5)<br/>,  ValidateUsernameNotTaken.createValidator(this.UsernameService)<br/>]);</code></pre>",
+                "<p>In HTML, we could check the errors as follows:</p>",
+                "<pre><code>&lt;div *ngIf=\"myForm.get('email').errors && myForm.get('email').errors.emailTaken\"&gt;<br/>  Oh noes, this email is already taken!<br/>&lt;/div&gt;</code></pre>",
+                "<p>We could also display an error message if the async validation errors-out with our <code>usernameTaken</code> error.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How would you select all the child components' elements?",
+            "answer": [
+                "<p>We can use <code>ElementRef</code> with <code>querySelector</code> (<code>elRef.nativeElement.querySelector(selector);</code>). But a declarative way can be used instead to access elements in the view directly:</p>",                
+                "<pre><code>&lt;input #myElm&gt;<br/><br/>@ViewChild('myElm') input;<br/><br/>ngAfterViewInit() {<br/>  console.log(this.input.nativeElement.value);<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Observables in Angular?",
+            "answer": [
+                "<p><code>Observable</code> is one of the exciting features of Angular. This isn't an Angular specific feature, but rather a proposed standard for managing async data that will be included in the release of ES7. Observables open up a continuous channel of communication in which multiple values of data can be emitted over time. From this we get a pattern of dealing with data by using array-like operations to parse, modify and maintain data. Angular uses observables extensively - we'll see them in the HTTP service and the event system.</p>",
+                "<p>To use observables, Angular uses a third-party library called Reactive Extensions (RxJS).</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between an observable and a promise?",
+            "answer": [
+                "<p><b>Promise</b> - A <code>Promise</code> handles a single event when an async operation completes or fails. Promise helps us run our functions asynchronously, and use their return values (or exceptions) but only once when executed.</p>",
+                "<p><b>Observable</b> - An <code>Observable</code> is like a Stream (in many languages) and allows us to pass zero or more events where the callback is called for each event.</p>",                
+                "<p><code>Observable</code> also has the advantage over <code>Promise</code> to be cancelable. If the result of an HTTP request to a server or some other expensive async operation isn't needed anymore, the <code>Subscription</code> of an <code>Observable</code> allows to cancel the subscription, while a <code>Promise</code> will eventually call the success or failed callback even when you don't need the notification or the result it provides anymore. (Note: Some <code>Promise</code> libraries support cancellation.)</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between an observable and a subject?",
+            "answer": [
+                "<p>An observable, by definition is a data producer. It can produce data over time.</p>",
+                "<p>On the other hand, a subject can act as both: a data producer and a data consumer. Thus, a subject can be subscribed to, like an observable and a subject can subscribe to other observables.</p>",
+                "<p>So we can conclude that the critical difference between a subject and an observable is: when a subject produces data, all of its subscribers will receive the same data. This behavior is different from observables, where each subscription causes an independent execution of the observable.</p>",
+                "<p>Probably a more important distinction between Subject and Observable is that a Subject has state, it keeps a list of observers. On the other hand, an Observable is really just a function that sets up observation. A subject can be used as an observer to subscribe to any observable.</p>"
+            ],
+            "additional": "",
+            "footer": "https://medium.com/@benlesh/on-the-subject-of-subjects-in-rxjs-2b08b7198b93,http://javascript.tutorialhorizon.com/2017/03/23/rxjs-subject-vs-observable/",
+            "bookmark": false
+        },
+        {
+            "question": "How to implement multiple API calls using RxJS?",
+            "answer": [
+                "<p>We can use one of the RxJS operators <code>MergeMap</code> also known as <code>flatMap</code> to combine more than one observables. This creates a nested <code>Observable</code> in a <code>Observable</code>. The <code>mergeMap</code> operator helps us by subscribing and pulling the value out of the inner Observable and passing it back to the parent stream. This condenses our code quite a bit and removes the need of a nested subscription.</p>",
+                "<pre><code>import { Component } from '@angular/core';<br/>import { Http } from '@angular/http';<br/>import { Observable } from 'rxjs/Observable';<br/>import { mergeMap } from 'rxjs/operators';<br/><br/>@Component({<br/>  selector: 'app-root',<br/>  templateUrl: 'app/app.component.html'<br/>})<br/>export class AppComponent {<br/>  homeworld: Observable<{}>;<br/>  constructor(private http: HttpClient) { }<br/>  <br/>  ngOnInit() {<br/>    this.homeworld = this.http.get('/api/product/1').pipe(<br/>      mergeMap(product => this.http.get(product.description))<br/>    );<br/>  }<br/>}</code></pre>",
+                "<p>An another operator called <code>forkJoin</code> allows us take a list of Observables and execute them in parallel. This is same like <code>Promise.all()</code>. Once every <code>Observable</code> in the list emits a value the <code>forkJoin</code> will emit a single Observable value containing a list of all the resolved values from the <code>Observables</code> in the list.</p>",
+                "<pre><code>import { Component } from '@angular/core';<br/>import { HttpClient } from '@angular/common/http';<br/>import { Observable } from 'rxjs/Observable';<br/>import { forkJoin } from 'rxjs/observable/forkJoin';<br/><br/>@Component({<br/>  selector: 'app-root',<br/>  templateUrl: 'app/app.component.html'<br/>})<br/>export class AppComponent {<br/>  loadedCharacter: {};<br/>  constructor(private http: HttpClient) { }<br/>  <br/>  ngOnInit() {<br/>    let api1 = this.http.get('API1_ENDPOINT');<br/>    let api2 = this.http.get('API2_ENDPOINT');<br/><br/>    forkJoin([api1, api2]).subscribe(results => {<br/>      // results[0] is our api1<br/>      // results[1] is our api2<br/>    });<br/>  }<br/>}<br/></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How would you cache an observable data?",
+            "answer": [
+                "<p>Caching is important for performance, especially on bandwidth restricted devices and slow networks. We can easily add caching to the observable by adding <code>publishReplay(1)</code> and <code>refCount</code>.</p>",
+                "<pre><code>getData(){<br/>  if(!this._cachedDate){<br/>    this._cachedDate = this._http.get('API_ENDPOINT')<br/>      .map((res:Response) => res.json())<br/>      .publishReplay(1)<br/>      .refCount();<br/>    }<br/>  return this._cachedDate;<br/>}</code></pre>"
+                "<p><code>publishReplay(1)</code> tells RxJS to cache the most recent value which is perfect for single value http calls. <code>refCount()</code> is used to keep the observable alive for as long as there are subscribers.</p>",
+                "<p>Cacheing HTTP results will be useful when we need to get some data in multiple routes but, once we get it, we can reuse it in the routes that needs it, therefor no need to make another call to backend.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you improve performance of an Angular 2 application?",
+            "answer": [
+                "<ul class=\"none\"><li><b>Using <code>OnPush</code></b> - By default, Angular runs change detection on all components every time something changes in your app. We can set the <code>ChangeDetectionStrategy</code> of our component to <code>ChangeDetectionStrategy.OnPush</code>. This tells Angular that the component only depends on his <code>Inputs</code> and needs to be checked in only the following cases: The <code>Input</code> reference changes, An event occurred from the component or one of his children and You run change detection explicitly.</li>",
+                "<li><b>Using <code>TrackBy</code></b> - If we have a collection of data, Angular can’t keep track of items in the collection and has no knowledge of which items have been removed or added. As a result, Angular needs to remove all the DOM elements associated with the data and create them again. This can mean a lot of DOM manipulations. If we provide a trackBy function, Angular can track which items have been added or removed according to the unique identifier and only create or destroy the things that have changed.</li>",
+                "<li><b>Avoid computing values in templates</b> -  If we bind a function in our template, Angular needs to re-run your function in every change detection cycle. And if the function performs expensive tasks, it can be costly.</li>",
+                "<li><b>Disable Change Detection</b> - Updating the user interface whenever new data arrives can be expensive. A more efficient way would be to check and update the user interface every X seconds. We can do that by detaching the component’s change detector and conducting a local check every x seconds.</li>",
+                "<li><b>Using Lazy Loading</b> - By default, Webpack will output all your app’s code into one large bundle. Lazy loading gives you the ability to optimize your application load time by splitting the application to feature modules and loading them on-demand.</li></ul>"
             ],
             "additional": "",
             "footer": "",
@@ -791,6 +912,9 @@
             "bookmark": false
         }
 */
+
+
+//https://github.com/Yonet/Angular-Interview-Questions
 
 //https://angular-2-training-book.rangle.io/handout/state-management/ngrx/modifying_your_application_state_by_dispatching_actions.html
 //https://malcoded.com/posts/angular-ngrx-guide
