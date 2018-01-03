@@ -1,0 +1,805 @@
+{
+    "questions": [    
+        {
+            "question": "What is Angular 2 and how it differs from Angular 1.x?",
+            "answer": [
+                "<p>Angular 2 is a Javascript framework built around the concept of components, and more precisely, with the Web Components standard in mind. It was rewritten from scratch by the Angular team using Typescript (although we can use it with <i>ES5</i>, <i>ES6</i>, or <i>Dart</i> as well).</p>",
+                "<p>Angular 2 is a big change for us compared to 1.x. Because it is a completely different framework than 1.x, and is not backward-compatible. Angular 2 is written entirely in Typescript and meets the ECMAScript 6 specification. The main differences are:</p>",
+                "<ul class=\"none\"><li>Angular 2 is entirely component based. <code>Controllers</code> and <code>$scope</code> are no longer used. They have been replaced by components and directives.</li>",
+                "<li>Angular 2 uses TypeScript. TypeScript will not be used in the browser directly. So the program code is compiled to JavaScript. This can be achieved with “Traceur”.</li>",
+                "<li>The digest cycle from Angular 1.x has been replaced by another internal mechanism known as “<b>Change Detection</b>”. This feature, along with other improvements and tweaks, yields a considerable increase in performance.</li>",
+                "<li>Unlike Angular 1.x where we can get most of the functionalities in angular.js file, Angular 2 follows module pattern. We need to import the functions ourself and export them when we need anywhere else.</li>"
+                "<li>There are no more <code>factory</code>, <code>service</code>, <code>provider</code> in Angular 2. We need to use <code>class</code> for declaring a service.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Component in Angular 2? How do you declare them?",
+            "answer": [
+                "<p>In Angular 2, everything is a component. A component controls a patch of screen called a <i>view</i>. Components are the most basic building block of an UI in an Angular application. An Angular application is a tree of Angular components. Unlike directives, components always have a template and only one component can be instantiated per an element in a template.</p>",
+                "<p>To declare a component we must first import Component from angular/core library. And then, define a metadata for the component, where we can configure our component. A simple component would look like below:</p>",                
+                "<pre><code>import { Component } from '@angular/core';<br/><br/>@Component({<br/>  selector: 'simple-component',<br/>  template: `<br/>    &lt;div&gt;<br/>      &lt;p&gt;This is a simple component in Angular 2 with a message {{message}}.&lt;/p&gt;<br/>    &lt;/div&gt;<br/>  `<br/>})<br/><br/>export class SimpleComponent {<br/>  message: string;<br/>  constructor() {<br/>    this.message = 'Welcome'<br/>  }<br/>}</code></pre>",
+                "<p>To include the component in the view, we use <code>&lt;simple-component&gt;&lt;/simple-component&gt;</code>.",
+                "<p>Angular 2 components make some decisions for you that directives didn’t. For example, Angular 2 components:</p>",
+                "<ul class=\"none\"><li>Always isolate scope (instead of sharing a parent scope)</li>",
+                "<li>Always restrict <code>‘E’</code> (load into custom elements in the DOM)</li>",
+                "<li>Always bind to a controller (as opposed to <code>$scope</code>)</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is component decorators in Angular 2?",
+            "answer": [
+                "<p>The main objectives of decorators is to add some meta-data to the class that will tell Angular 2 how to process a class. Or in another words, Decorators are functions that modify JavaScript classes. Angular has many decorators that attach metadata to classes so that it knows what those classes mean and how they should work.</p>",
+                "<p>If we consider Component in Angular 2, we will have following options to configure.</p>",
+                "<ul class=\"none\"><li><b>selector:</b> - define the name of the HTML element in which our component will live.</li>",
+                "<li><b>template</b> or <b>templateUrl:</b> - It can be inline string or link an external html file. It allows us to tie logic from our component directly to a view.</li>",
+                "<li><b>styles:</b> - the styles array for our specific component. We can also link external CSS by <b>styleUrls</b>.</li>",
+                "<li><b>directives:</b> - another component directives we want to use inside our components.</li>",
+                "<li><b>providers:</b> - This is the place we are passing the services that we need insider our components.</li></ul>",
+                "<p>Immediately after this decorator or right to it, we need to export a class where our variables and functions reside that our component uses.</p>",
+                "<pre><code>export class SampleComponent {<br/>  name: 'Angular 2';<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is compilation in Angular 2? And what are the types of compilation in Angular 2?",
+            "answer": [
+                "<p>An Angular application consists largely of components and their HTML templates. Before the browser can render the application, the components and templates must be converted to executable JavaScript by the <i>Angular compiler</i>.</p>",
+                "<p>There is actually only one Angular compiler. The difference between AOT and JIT is a matter of timing and tooling. There are two types of compilation Angular 2 provides.</p>",
+                "<ul class=\"none\"><li><b>Just-in-time (JIT) compilation:</b> This is a standard development approach which compiles our Typescript and html files in the browser at runtime, as the application loads. It is great but has disadvantages. Views take longer to render because of the in-browser compilation step. App size increases as it contains angular compiler and other library code that won't actually need.</li>",
+                "<li><b>Ahead-of-time (AOT) compilation:</b> With AOT, the compiler runs at the build time and the browser downloads only the pre compiled version of the application.  The browser loads executable code so it can render the application immediately, without waiting to compile the app first. This compilation is better than JIT because of Fast rendering, smaller application size, security and detect template errors earlier.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>@NgModule</code>?",
+            "answer": [
+                "<p>An <code>NgModule</code> class describes how the application parts fit together. Every application has at least one <code>NgModule</code>, the root module that we bootstrap to launch the application.</p>",
+                "<pre><code>import { NgModule }      from '@angular/core';<br/>import { BrowserModule } from '@angular/platform-browser';<br/>import { AppComponent }  from './app.component';<br/><br/>@NgModule({<br/>  imports:      [ BrowserModule ],<br/>  declarations: [ AppComponent ],<br/>  bootstrap:    [ AppComponent ]<br/>})<br/><br/>export class AppModule { }</code></pre>",
+                "<p>Here the <code>AppComponent</code> is the root module of our application that Angular creates and inserts it into the <code>index.html</code> page.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the <i>metadata</i> properties of <code>NgModule</code>? And what are they used for?",
+            "answer": [
+                "<p><code>@NgModule</code> accepts a metadata object that tells Angular how to compile and launch the application. The properties are:</p>",
+                "<ul class=\"none\"><li><code>imports</code> — Modules that the application needs or depends on to run like, the BrowserModule that every application needs to run in a browser.</li>",
+                "<li><code>declarations</code> — the application's components, which belongs to the <code>NgModule</code> class. We must declare every component in an <code>NgModule</code> class. If we use a component without declaring it, we'll see a clear error message in the browser console.</li>",
+                "<li><code>bootstrap</code> — the root component that Angular creates and inserts into the <code>index.html</code> host web page. The application will be launched by created the components listed in this array.</li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you bootstrap the Angular 2 application?",
+            "answer": [
+                "<p>There are many ways to bootstrap an application. The recommended place to bootstrap a JIT-compiled browser application is in a separate file in the <code>src</code> folder named <code>src/main.ts</code></p>",
+                "<pre><code>import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';<br/>import { AppModule }              from './app/app.module';<br/><br/>platformBrowserDynamic().bootstrapModule(AppModule);</code></pre>",
+                "<p>This code creates a browser platform for dynamic (JIT) compilation and bootstraps the <code>AppModule</code> described above.</p>",
+                "<p>In the AOT compilation, the Angular compiler runs ahead of time as part of the build process, producing a collection of class factories in their own files. Among them is the <code>AppModuleNgFactory</code>. The syntax for bootstrapping the pre-compiled <code>AppModuleNgFactory</code> is as follow.</p>",
+                "<pre><code>import { platformBrowser } from '@angular/platform-browser';<br/><br/>// The app module factory produced by the static offline compiler<br/>import { AppModuleNgFactory } from './app/app.module.ngfactory';<br/><br/>// Launch with the app module factory.<br/>platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Template reference variables?",
+            "answer": [
+                "<p>A template reference variable (<code>#var</code>) is a reference to a DOM element within a template. We use hash symbol (#) to declare a reference variable in a template.</p>",
+                "<pre><code>&lt;input #name placeholder=\"Your name\"&gt;<br/>{{ name.value }}</code></pre>",
+                "<p>In the above code the <code>#name</code> declares a variable on the <code>input</code> element. Here the <code>name</code> refers to the <i>name <code>input</code></i> element. Now we can access any property of the <code>input</code> DOM, using this reference variable. For example, we can get the value of the <code>input</code> element as <code>name.value</code> and the value of the placeholder property by <code>name.placeholder</code> anywhere in the template.</p>",
+                "<p>Finally, a Template reference variable refers to its attached element, component or directive. It can be accessed anywhere in the entire template. We can also use <code>ref-</code> instead of #. Thus we can also write the above code as <code>ref-name</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Template input variables?",
+            "answer": [
+                "<p>Sometimes we will create a local variable in a template, and those variables are called Template input variables. For example,</p>",
+                "<pre><code>&lt;div *ngFor=\"let item of items\"&gt;{{item.name}}&lt;/div&gt;</code></pre>",
+                "<p>Here the <code>let</code> keyword before <code>item</code> creates a template <i>input variable</i> called <code>item<code>. The <code>ngFor</code> directive iterates over the <code>items</code> array and sets <code>item</code> to the current item from the array during each iteration. It is equivalent to <code>ng-repeat</code> in Angular 1.x.</p>",
+                "<p>A template input variable is not the same as a template reference variable. A template input variable is a variable whose value you can reference within a <i>single</i> instance of the template. But a tempalte reference variable can be accessed <i>anywhere</i> in the entire template.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are structural directives?",
+            "answer": [
+                "<p>Structural directives are responsible for HTML layout. They shape or reshape the DOM's structure, typically by adding, removing, or manipulating elements. Structural directives are easy to recognize. An asterisk (*) precedes the directive attribute name as in this example.</p>",
+                "<pre><code>&lt;ul&gt;<br/>  &lt;li *ngFor=\"let name of names\"&gt;{{name}}&lt;/li&gt;<br/>&lt;/ul&gt;</code></pre>",
+                "<p>The <code>ngFor</code> directive iterates over the component's <code>names</code> array and renders an instance of this template for each <code>name</code> in that array.</p>",
+                "<p>Some of the other structural directives in Angular are <code>ngIf</code> and <code>ngSwitch</code></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What does asterisk (*) syntax means in the structural directives?",
+            "answer": [
+                "<p>The asterisk is \"syntactic sugar\" for something a bit more complicated. Internally, Angular desugars it in two stages. Consider the below code:</p>",
+                "<pre><code>&lt;div *ngIf=\"user\"&gt;{{user.name}}&lt;/div&gt;</code></pre>",
+                "<p>First, Angular translates the <code>*ngIf=\"...\"</code> into a template attribute, <code>template=\"ngIf ...\"</code>,  like this.</p>",
+                "<pre><code>&lt;div template=\"ngIf user\"&gt;{{user.name}}&lt;/div&gt;</code></pre>",
+                "<p>Then it translates the template attribute into a <code>&lt;ng-template&gt;</code> element, wrapped around the host element, like this.</p>",
+                "<pre><code>&lt;ng-template [ngIf]=\"user\"&gt;<br/>  &lt;div&gt;{{user.name}}&lt;/div&gt;<br/>&lt;ng-template&gt;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>&lt;ng-template&gt;</code>?",
+            "answer": [
+                "<p>The <code>&lt;ng-template&gt;</code> is an Angular element for rendering HTML. It is never displayed directly. In fact, before rendering the view, Angular replaces the <code>&lt;ng-template&gt;</code> and its contents with a comment.</p>",
+                "<pre><code>&lt;div *ngIf=\"user\"&gt;{{user.name}}&lt;/div&gt;</code></pre>",
+                "<p>In the above code, the directive will compiled as mentioned in the previous answer and then finally append to DOM as follow:</p>"
+                "<pre><code>&lt;!--template bindings={<br/>  \"ng-reflect-ng-if=\": \"[object object]\"<br/>}--&gt;<br/>&lt;div ng-content-exn-0&gt;Angular 2 User&lt;/div&gt;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Component lifecycle?",
+            "answer": [
+                "<p>A Component/Directive in Angular has lifecycle as Angular creates, updates and destroy them. We can tap into the key moments in that lifecycle and implement lifecycle hook interfaces in the Angular library.</p>",
+                "<p>Angular creates a component/directive by calling its constructor. After that Angular calls the lifecycle hook in the below order:</p>",
+                "<ul class=\"none\"><li><code>ngOnChanges()</code> - calls when Angular sets or re-sets the data-bound properties. Called before <code>ngOnInit()</code> and whenever one or more data-bound input properties change.</li>",
+                "<li><code>ngOnInit()</code> - called when Angular initializes the Component. It is called only once.</li>",
+                "<li><code>ngDoCheck()</code> - Detect and act upon changes that Angular can't or won't detect on its own. It is called immediately after <code>ngOnChanges()</code> and <code>ngOnInit()</code>.</li>",
+                "<li><code>ngAfterContentInit()</code> - Respond after Angular projects external content into the component's view. It is a Component only hook and can not be called for a directive.</li>",
+                "<li><code>ngAfterContentChecked()</code> - Respond after Angular checks the content projected into the component. Called after the <code>ngAfterContentInit()</code>. It will also be called every subsequent <code>ngDoCheck()</code>. This is a Component-only hook.</li>",
+                "<li><code>ngAfterViewInit()</code> - Respond after Angular initializes the component's views and child views. This is a Component-only hook.</li>",
+                "<li><code>ngAfterViewChecked()</code> - Respond after Angular checks the component's views and child views. A component-only hook.</li>",
+                "<li><code>ngOnDestroy()</code> - Called just before Angular destroys the directive/component. This is the place we can unsubscribe observables and detach event handlers to avoid memory leaks.</li></ul>",
+                "<pre><code>export class AppComponent implements OnInit {<br/>  constructor() { }<br/><br/>  // implement OnInit's `ngOnInit` method<br/>  ngOnInit() { console.log(`OnInit`); }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the <i>expression context</i> in Angular 2?",
+            "answer": [
+                "<p>The <i>expression context</i> is typically the component instance. When we bind any value within double curly braces or in quotes, then it refers to the properties of the Class instance of that Component.</p>",
+                "<pre><code>{{ name }}<br/>&lt;span [hidden]=\"isValid\"&gt;Valid&lt;/span&gt;</code></pre>",
+                "<p>An expression may also refer to properties of the <i>template's</i> context such as a template input variable or a template reference variable. For example, in the below snippet, the <code>let name</code> refers to the <i>template input variable</i> and <code>#name</code> refers to the <i>template reference variable</i>.</p>",
+                "<pre><code>&lt;li *ngFor=\"let name of names\"&gt;{{name}}&lt;/li&gt;<br/><br/>&lt;input #name placeholder=\"Your name\"&gt;<br/>{{ name.value }}</code></pre>",
+                "<p>The context for terms in an expression is a combination of the template variables, the directive's context object, and the component's members. If we reference a name that belongs to more than one of these namespaces, the template variable name takes precedence, followed by a name in the directive's context, and, lastly, the component's member names.</p>",
+                "<p>In the previous example, the <code>{{name}}</code> refers to the template input variable <code>names</code> not the component's property <code>name</code> even it has one declared.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the <i>binding categories</i> in Angular?",
+            "answer": [
+                "<p>Binding types in Angular 2 are grouped into three categories distinguished by the direction of data flow: in one-way data binding: from the source-to-view, from view-to-source, and in two-way: view-to-source-to-view.</p>",
+                "<p>To bind a data from source to view, we can use interpolation <code>{{ }}</code> and attribute binding.",
+                "<pre><code>{{expression}}<br/>[target]=\"expression\"<br/>bind-target=\"expression\"</code></pre>",
+                "<p>For data flow from view to source, we can use event binding.",
+                "<pre><code>(target)=\"statement\"<br/>on-target=\"statement\"</code></pre>",
+                "<p>For two-way data flow, we can use <code>[( )]</code> syntax, which is also called <i>banana-in-the-box</i></p>",
+                "<pre><code>[(target)]=\"statement\"<br/>bindon-target=\"statement\"</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain the different types of bindings available in Angular?",
+            "answer": [
+                "<ul class=\"none\"><li><b>Property binding</b> - This most common binding is used to set property of an DOM element through expression. This is a one-way data binding which means you can not read the value from this property. We can <i>only</i> set it.<br/><pre><code>&lt;img [src]=\"imageUrl\"&gt;</code></pre></li>",
+                "<li><b>Event binding</b> - This is also one-way data binding but the data flows from view to source. It binds an expression to the given element on DOM element and Components.<br/><pre><code>&lt;button (click)=\"onSubmit()\"&gt;Submit&lt;/button&gt;</code></pre></li>",
+                "<li><b>Two-way binding</b> - Binds both event and property.<br/><pre><code>&lt;input [(ngModel)]=\"name\"&lt;</code></pre></li>",
+                "<li><b>Attribute binding</b> - Set the value of an attribute on a DOM directly. We must use this attribute binding when there is no element property to bind. For example, consider the ARIA, SVG and table span attributes. They are not property targets. If we use property bindings on them, we will get error.<br/><pre><code>&lt;tr&gt;&lt;td [attr.colspan]=\"1 + 1\"&gt;One-Two&lt;/td&gt;&lt;/tr&gt;</code></pre></li>",
+                "<li><b>Class binding</b> - Class binding syntax resembles property binding. Instead of an element property between brackets, they start with the prefix class, optionally followed by a dot (<code>.</code>) and the name of a CSS class: <code>[class.class-name]</code>. If the class is already present in the class list then Angular removes it.<br/><pre><code>&lt;div class=\"header\" [class.special]=\"isSpecial\"&gt;This is a class binding.&lt;/div&gt;</code></pre></li>",
+                "<li><b>Style binding</b> - We can set inline styles with a style binding. The syntax is same as <code>class binding</code> except the prefix which <code>style</code> instead of <code>class</code>. We can also use unit extension at the end.<br/><pre><code>&lt;h1 [style.background-color]=\"isRed ? 'red': 'black'\"&gt;Heading 1&lt;/h1&gt;<br/>&lt;h1 [style.font-size.em]=\"isRed ? 2: 1\"&gt;Heading 1&lt;/h1&gt;</code></pre></li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Directive in Angular 2? How it differs from Components?",
+            "answer": [
+                "<p>Directives allow us to attach behavior to elements in the DOM, for example, doing something on mouse over or click. In Angular, a Directive decoraor (<code>@Directive</code>) is used to mark a class as an Angular directive and provides additional metadata that determines how the directive should be processed. Below are the metadata properties of a directive.</p>",
+                "<ul class=\"none\"><li>selector - css selector that identifies this component in a template</li>",
+                "<li>host - map of class property to host element bindings for events, properties and attributes</li>",
+                "<li>inputs - list of class property names to data-bind as component inputs</li>",
+                "<li>outputs - list of class property names that expose output events that others can subscribe to</li>",
+                "<li>providers - list of providers available to this component and its children</li>",
+                "<li>queries - configure queries that can be injected into the component</li>",
+                "<li>exportAs - name under which the component instance is exported in a template</li></ul>",
+                "<p>A Component is a directive with a template. So we should use a Component whenever we want reusable set of DOM elements with behaviors of UI. And we should use a Directive whenever we want reusable behavior to supplement the DOM.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the types of Directives?",
+            "answer": [
+                "<p>There are three types of directives in Angular. They are <b>attribute directives</b>, <b>structural directives</b>, and <b>components</b>.</p>",
+                "<ul class=\"none\"><li><b>Structural directives</b> change the DOM layout by adding and removing DOM elements. For example, <code>*ngIf</code> and <code>*ngFor</code></li>",
+                "<li><b>Attribute directives</b> change the appearance or behavior of an element. . For example, <code>*ngStyle</code> and <code>*ngClass</code></li>",
+                "<li><b>Components</b> are basically directives with a template.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+        {
+            "question": "How do components communicate with each other?",
+            "answer": [
+                "<p>There are no <code>$rootScope</code>, <code>$broadCast</code> or <code>$emit</code> in Angular 2. But Angular follows new style of communication via <code>EventEmitters</code>.</p>",
+                "<ul class=\"none\"><li><b>Inputs</b> allow us to pass data <i>down</i> to a child Component.</li>",
+                "<li><b>Outputs</b> allows to pass data <i>up</i> to a parent Component.</li></ul>",
+                "<pre><code>import { Component, EventEmitter, Input, Output } from '@angular/core';<br/><br/>@Component({<br/>  selector: 'sample-component',<br/>  templateUrl: 'sample.component.html'<br/>})<br/>export class SampleComponent {<br/>  constructor() {}<br/>  @Input() title: string;<br/>  @Output() onTitleChanged = new EventEmitter<string>();<br/><br/>  changeName(newName: string) {<br/>    this.onNameChanged.emit(newName);<br/>  }<br/>}</code></pre>",
+                "<p>We pass the values down to a Child Component via property and set the value in Child Component using <code>@Input</code> aliases",
+                "<p>To communicate the Parent Component, the child exposes an <code>EventEmitter</code> property with which it calls <code>emit</code> events. The parent binds to that event property and reacts to those events.",
+                "<p>When we need the Parent Component to read or write the Child component's values or call methods, we should <i>inject</i> the Child component into the parent as a <i>ViewChild</i>.",
+                "<pre><code>import { Component }                from '@angular/core';<br/>import { CountdownTimerComponent }  from './a-child.component';<br/><br/>@Component({<br/>  selector: 'parent-component',<br/>  template: `&lt;h3&gt;Parent Component&lt;/h3&gt;&lt;a-child&gt;&lt;/a-child&gt;`<br/>})<br/>export class ParentComponent{<br/>  @ViewChild(AChildComponent)<br/>  private aChildComponent: AChildComponent;<br/><br/>Now we can read or write child component property or call a method using this.aChildComponent.</code></pre>",
+                "<p>Also, a parent and child component can share a service to enables bi-directional communication."
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the difference between <code>Renderer</code> and <code>ElementRef</code> in Angular 2?",
+            "answer": [
+                "<p>The <code>Renderer</code> in Angular is a class that is an abstraction over the DOM. Using the <code>Renderer</code> for manipulating the DOM doesn't break server-side rendering or Web Workers (where direct access to the DOM would break).</p>",
+                "<p>For example, if we want to focus an input element, we could use template reference variable and with the help of <code>@ViewChild</code> decorator we can access the native DOM. But we are actually depending the native DOM and lose the opportunity to be able to run our script also in no-DOM environments like native mobile or Web workers. Remember that Angular is a platform, and the browser is just one option for where we can render our app.</p>",
+                "<pre><code>import { Directive, Renderer, ElementRef } from '@angular/core';<br/>@Directive({<br/>  selector: '[exploreRenderer]'<br/>})<br/>export class ExploreRendererDirective {<br/>  private nativeElement : Node;<br/>  constructor( private renderer : Renderer, private element : ElementRef ) {<br/>    this.nativeElement = element.nativeElement;<br/>  }<br/>}<br/><br/>//Whereever we want to use the native DOM, we could use this directive on the element like &lt;div exploreRenderer&gt;&lt;/div&gt;</code></pre>",
+                "<p><code>ElementRef</code> is a class that can hold a reference to a DOM element. This is again an abstraction to not break the environments where the browsers DOM isn't actually available. If <code>ElementRef</code> is injected to a component, the injected instance is a reference to the host element of the current component.</p>",
+                "<p>There are other ways to acquire an <code>ElementRef</code> instance like <code>@ViewChild()</code>, <code>@ViewChildren()</code>, <code>@ContentChild()</code>, <code>@ContentChildren()</code>. In this case <code>ElementRef</code> is a reference to the matching element(s) in the template or children."
+                "<p><code>Renderer</code> and <code>ElementRef</code> are not \"either this or that\", but instead they have to be used together to get full platform abstraction.</p>",
+                "<p><code>Renderer</code> acts on the DOM and <code>ElementRef</code> is a reference to an element in the DOM the Renderer acts on.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is an Angular 2 Services?",
+            "answer": [
+                "<p>Just like Angular 1.x, Services in Angular 2 are Javascript functions along with its associated properties and methods. A service can be injected into components via Dependency Injection.</p>",
+                "<p>A Service class should be decorated with <code>@Injectable()</code> decorator and should be included in the <code>providers</code> array in <code>NgModule</code>.</p>",
+                "<pre><code>import { Injectable } from '@angular/core';<br/><br/>@Injectable()<br/>export class MyService {<br/>}</code></pre>",
+                "<p>To use the service in one of the Component, we muse include it in the <code>constructor</code> functions parameters.</p>"
+                "<pre><code>constructor(private _myService: MyService) {<br/>}</code></pre>",
+                "<p>Services can be included the Components level <code>Providers</code>. But by doing so, the service will be available only to its child components. In order to avail the service in other components, we need to inject them again in the another component. As services are singleton, injecting them in two places creates two instances of the service. So it is best to inject the service in <code>NgModule</code> and use it application level if the service is needed in different places.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the uses of a service?",
+            "answer": [
+                "<p>Services encapsulates business logic and separates them from UI concerns or the controller concerns, which governs them both.</p>",
+                "<p>Services focus on functionality thus benefits in maintainability. The separation of UI logic from business logic is intended to reduce the coupling between the UI layer and the Model layer, leading to a cleaner design that is easier to develop, test, and maintain.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between <code>@Inject</code> and <code>@Injectable</code>?",
+            "answer": [
+                "<p><code>@Inject()</code> is a manual mechanism for letting Angular know that a parameter must be injected. It can be used like so:</p>",
+                "<pre><code>constructor(@Inject(MyService) private _myService) {<br/>}</code></pre>",
+                "<p>The <code>MyService</code> will be instantiated behind the scenes and is injected in the constructor by Angular. </p>",
+                "<p>But when using TypeScript, <code>@Inject</code> is only needed for injecting primitives. TypeScript's types let Angular know what to do in most cases. The above example would be simplified in TypeScript to:</p>",
+                "<pre><code>constructor(private _myService: MyService) {<br/>}</code></pre>",
+                "<p>On the other hand, <code>@Injectable()</code> lets Angular know that a class can be used with the dependency injector. <code>@Injectable()</code> is not strictly required if the class has other Angular decorators on it or does not have any dependencies. What is important is that any class that is going to be injected with Angular is decorated. However, best practice is to decorate injectables with <code>@Injectable()</code>, as it makes more sense to the reader.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <i>Pipe</i> in Angular?",
+            "answer": [
+                "<p>Pipes are equivalent of filters in Angular 1.x. Pipes are functions that returns a value and are used to modify or format a value in the template.</p>",
+                "<p>Same as Angular 1.x, a pipe start with the pipe (<code>|</code>) symbol after the value and any paramter should be seprated with the colon (<code>:</code>) symbol. We can also chain multiple pipes.</p>",                
+                "<pre><code>myValue | myPipe:param1:param2 | mySecondPipe:param1</code></pre>",
+                "To create a custom pipe, we should decorate a class with <code>@Pipe</code> decorator.",
+                "<pre><code>import { Pipe, PipeTransform } from 'angular2/core';<br/><br/>@Pipe({  name : 'removeSpaces'<br/>})<br/>export class RemoveSpaces implements PipeTransform {  transform(value){<br/>  return value.replace(/ /g, '');<br/>  }<br/>}</code></pre>",
+                "<p>The above Pipe class implements the <code>PipeTransform</code> interface's transform method. This method takes the value being piped and a variable number of arguments of any type and return a transformed (\"piped\") value.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Pure and Impure Pipes?",
+            "answer": [
+                "<p><code>Pure pipes</code> are stateless that flow input date without remembering anything or causing detectable side-effects. Pipes are pure by default, hence most pipes are pure. We can make a pipe impure by setting its pure flag to <code>false</code>. Angular executes a pure pipe only when it detects a <i>pure</i> change to the input value. A pure change is either a change to a primitive input value or a changed object reference.</p>",
+                "<p><code>Impure pipes</code> are those which can manage the state of the data they transform. A pipe that creates an HTTP request, stores the response and displays the output, is a impure or stateful pipe. Stateful Pipes should be used cautiously. Angular provides <code>AsyncPipe</code>, which is stateful. In the following code, the pipe only calls the server when the request URL changes and it caches the server response. The code uses the Angular http client to retrieve data:</p>",
+                "<pre><code>@Pipe({<br/>  name: 'fetch',<br/>  pure: false<br/>})<br/>export class FetchJsonPipe  implements PipeTransform {<br/>  private cachedData: any = null;<br/>  private cachedUrl = '';<br/><br/>  constructor(private http: Http) { }<br/><br/>  transform(url: string): any {<br/>    if (url !== this.cachedUrl) {<br/>      this.cachedData = null;<br/>      this.cachedUrl = url;<br/>      this.http.get(url)<br/>        .map( result => result.json() )<br/>       .subscribe( result => this.cachedData = result );<br/>     }<br/><br/>    return this.cachedData;<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Lazy loading?",
+            "answer": [
+                "<p>Lazy loading is the act of only loading parts of our app when they are needed. Lazy loading is one of the features we can add to our app to improve performance.</p>",
+                "<p>In the following code, we have two routes: <code>home</code> and <code>lazy</code>. By the default, the application is redirected to <code>home</code> and <code>HomeComponent</code> is called. But when we go to <code>lazy</code> path, we are trying to load a Module (<code>LazyModule</code>) dynamically</p>",
+                "<pre><code>const routes: Routes = [<br/>  { path: '', redirectTo: 'home', pathMatch: 'full' },<br/>  { path: 'home', component: HomeComponent },<br/>  { path: 'lazy', loadChildren: 'lazy/lazy.module#LazyModule' }<br/>];</code></pre>",
+                "<p>Instead of <code>Component</code>, we have used <code>loadChildren</code> property to load the specified module. The lazy module file will contain a Angular module and exports the <code>LazyModule</code> class as shown below:</p>",
+                "<pre><code>import { NgModule } from '@angular/core';<br/><br/>import { LazyComponent }   from './lazy.component';<br/>import { routing } from './lazy.routing';<br/><br/>@NgModule({<br/>  imports: [routing],<br/>  declarations: [LazyComponent]<br/>})<br/>export class LazyModule {}</code></pre>",
+                "<p>If we define the class <code>LazyModule</code> as the default export of the file, we don't need to define the class name in the <code>loadChildren</code> property as shown above.</p>",
+                "<p>Until the app navigated to <code>lazy</code>, the <code>LazyModule</code> has not being downloaded.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is View Encapsulation?",
+            "answer": [
+                "<p>View encapsulation defines whether the template and styles defined within the component can affect the whole application or vice versa. Angular provides three encapsulation strategies:</p>",
+                "<ul class=\"none\"><li><b>ViewEncapsulation.Emulated</b> - This is default. The styles from the main HTML propagate to this component and styles defined in this components decorator are scoped to this component only. It is not using Native Shadow DOM. But to encapsulate the styles within the components, Angular adds some attributes like <code>_ngcontent-1</code>, <code>_ngcontent-2</code> or <code>_nghost-1</code> with the css rules like <code>.header[_ngcontent-1] {}</code> to make sure the styles scoped and applied to the particular component only.</li>",
+                "<li><b>ViewEncapsulation.Native</b> - The styles from the main HTML do not propagate to this component and styles defined in this components decorator are scoped to this component only. This one uses native Shadow DOM encapsulation.</li>",
+                "<li><b>ViewEncapsulation.None</b> -  The styles from the component propagate back to the main HTML and therefore are visible to all components on the page. All components with <code>None</code> encapsulation will have their styles duplicated in all components with <code>Native</code> encapsulation. This also means that all the styles apply to the entire document. Or in other words, a component could overwrite styles from another component because its styles are applied to the document head later. That’s why this is the <i>unscoped</i> strategy.</li></ul>",
+                "<pre><code>@Component({<br/>// ...<br/>  encapsulation: ViewEncapsulation.None,<br/>  styles: [// ...]<br/>})<br/>export class SampleComponent {<br/>// ...<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Shadow DOM in Angular 2? Does Angular uses Virtual DOM?",
+            "answer": [
+                "<p>Shadow DOM provides encapsulation for DOM and CSS in a Component. When we create a component in Angular, Angular puts its template into a <code>shadowRoot</code> (not by default, but by using <code>ViewEncapsulation.Native</code>), which is the Shadow DOM of the particular component. Below is the example DOM structure of a Shadow DOM.</p>",
+                "<pre><code>&lt;my-component title=\"Header\"&gt;<br/>  #shadow-root<br/>  | &lt;style&gt;<br/>  |   .head {<br/>  |     background: blue;<br/>  |   }<br/>  | &lt;/style&gt;<br/>  | &lt;div class=\"head\"&gt;<br/>  |   &lt;div (click)=\"toggle()\" class=\"header__title\"&gt;<br/>  |     ▾ Details<br/>  |   &lt;/div&gt;<br/>  |   &lt;div class=\"header__content\"&gt;<br/>  |     &lt;content&gt;&lt;/content&gt;<br/>  |   &lt;/div&gt;<br/>  | &lt;/div&gt;<br/>  \"This is a Head\"<br/>&lt;/my-component&gt;</code></pre>",
+                "<p>Doing so we can get the encapsulation of DOM and styles. But if we want to use our component in No-DOM environment or Not-supported browsers, we can use <code>ViewEncapsulation.Emulated</code> for emulation.</p>",
+                "<p>Shadow DOM and Virtual DOM are two different things. And Shadow DOM is not targeting performance as virtual DOM is, but style encapsulation. And Angular2 doesn't use <code>virtual DOM</code> at all. Angular2 has change detection that detects changes to the model and only updates the parts of the DOM that need to be changed according to the model changes.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Angular Routing.",
+            "answer": [
+                "<p>We can configure our application routes as array of objects and pass it to the Angular's <code>RouterModule.forRoot</code>.</p>",
+                "<pre><code>//app/app.routes.ts<br/><br/>import { RouterModule, Routes } from '@angular/router';<br/><br/>const routes: Routes = [<br/>  { path: 'component-one', component: ComponentOne },  { path: 'component-two', component: ComponentTwo }<br/>];<br/>export const routing = RouterModule.forRoot(routes);</code></pre>",
+                "<p>We then import our routing configuration in the root of our application.</p>",
+                "<pre><code>//app/app.module.ts<br/><br/>import { routing } from './app.routes';<br/>@NgModule({<br/>  imports: [    BrowserModule,<br/>    routing<br/>  ],<br/>  declarations: [<br/>    AppComponent,<br/>    ComponentOne,<br/>    ComponentTwo<br/>  ],<br/>  bootstrap: [ AppComponent ]<br/>})<br/>export class AppModule {}</code></pre>",
+                "<p>By default, the application navigates to the empty route. We can redirect it to one of the named route. </p>",
+                "<pre><code>{ path: '', redirectTo: 'component-one', pathMatch: 'full' },</code></pre>",
+                "<p>The <code>pathMatch</code> property, which is required for redirects, tells the router how it should match the URL provided in order to redirect to the specified route. Since <code>pathMatch: full</code> is provided, the router will redirect to <code>component-one</code> if the entire URL matches the empty path (<code>''</code>).</p>"                
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to link routes in HTML?",
+            "answer": [
+                "<p>To add link to one of the routes, we should use <code>RouterLink</code> directive in HTML. This directive accepts an array. The first param is the name of the route and the second param is the parameters that we want to pass with the route.</p>",
+                "<pre><code>&lt;a [routerLink]=\"['component-one', routeParams]\"&gt;&lt;/a&gt;</code></pre>",
+                "<p>If we use the <code>routerLink</code> directive without the brackets, we need to the pass the route as a string.</p>",
+                "<pre><code>&lt;a routerLink=\"/component-one\"&gt;&lt;/a&gt;</code></pre>",
+                "<p>We can also change the route programmatically in Angular.</p>",
+                "<pre><code>this.router.navigate(['/component-one']);</code></pre>",
+                "<p>The <code>&lt;router-outlet&gt;&lt;/router-outlet&gt; acts as a placeholder for component. Angular dynamically adds the component for the route being activated into this.</code>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do we access the Route parameters in Angular?",
+            "answer": [
+                "<p>The router provides two different ways to grab the route parameters. They are:</p>",                
+                "<p><b>The Snapshot Way:</b> The <code>ActivatedRoute</code> service provides us with a snapshot of the current route.</p>",
+                "<pre><code>import { Component, OnInit } from '@angular/core';<br/>import { ActivatedRoute } from '@angular/router';<br/><br/>@Component({<br/>  ..<br/>})<br/>export class SampleComponent implements OnInit {<br/><br/>  constructor(private route: ActivatedRoute) {}<br/><br/>ngOnInit() {<br/>  this.myParam = this.route.snapshot.params.myParam;<br/>}</code></pre>",
+                "<p>This is simple and enough. But since Angular reuse the components for performance, this method won't work for some cases. For example, if we navigate from <code>/products/1</code> to <code>/products/2</code>. In that cases we need to use another way which is <code>The Observable/Stream Way</code>.</p>",
+                "<p><b>The Observable/Stream Way:</b> This uses observables and when we navigate from one route other route, the Observable will pass along the new data. Angular v4+ router provides us with ParamMap which is an Observable we can use.</p>"
+                "<pre><code>ngOnInit() {<br/>  // subscribe to the parameters observable<br/>  this.route.paramMap.subscribe(params => {<br/>    console.log(params.get('myParam'));<br/>    this.myParam = params.get('myParam');<br/>  });<br/>}</code></pre>",
+                "<p>If we are working with Angular versions prior to v4, we can grab route parameters with <code>params</code> instead of <code>paramMap</code>.</p>",
+                "<pre><code>ngOnInit() {<br/>  // subscribe to the parameters observable<br/>  this.route.params.subscribe(params => {<br/>    console.log(params.get('myParam'));<br/>    this.myParam = params.get('myParam');<br/>  });<br/>}</code></pre>",
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How and when do you define a Child route?",
+            "answer": [
+                "<p>When some routes may only be accessible and viewed within other routes it may be appropriate to create them as child routes. For example, if we have a product route with individual id and we want to navigate to other routes to see its overview or specification.</p>",
+                "<p>The <code>children</code> property in the routes accepts an array of child routes. And we can use the same <code>&lt;router-outlet&gt;</code> directive to hold the child component.</p>",
+                "<pre><code>export const routes: Routes = [<br/>  ..<br/>{  path: 'product-details/:id', component: ProductDetails,<br/>    children: [<br/>      { path: '', redirectTo: 'overview', pathMatch: 'full' },<br/>      { path: 'overview', component: Overview },<br/>      { path: 'specification', component: Specification }<br/>    ]<br/>  }<br/>];</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between <code>queryParams</code> and <code>routeParams</code>?",
+            "answer": [
+                "<p>The key difference between query parameters and route parameters is that route parameters are essential to determining route, whereas query parameters are optional. The optional parameters are equal to <code>/product-list?page=2</code> where as route params are <code>/product-list/2</code>.</p>",
+                "<pre><code>//Pass query params in router link<br/>&lt;a [routerLink]=\"['product-list']\" [queryParams]=\"{ page: 2 }\"&gt;Go to Page 2&lt;/a&gt;<br/><br/>//query parameters programmatically<br/>this.router.navigate(['/product-list'], { queryParams: { page: pageNum } });</code></pre>",
+                "<p>To read the query paramters, we need to subscribe to <code>queryParams</code> in the <code>ActivatedRoute</code>.",
+                "<pre><code>ngOnInit() {<br/>  this.sub = this.route.queryParams.subscribe(params => {<br/>      this.page = +params['page'] || 0;<br/>  });<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to restrict or control access from or to a Route? What is Route Guards?",
+            "answer": [
+                "<p>To control whether the user can navigate to or away from a given route, we should use <b>Route Guards</b>. Route guards can also control whether a user can leave a certain route. For example, say the user has typed information into a form on the page, but has not submitted the form. If they were to leave the page, they would lose the information. We may want to prompt the user if the user attempts to leave the route without submitting or saving the information.</p>",
+                "<p>In order to use route guards, we must register them with the specific routes we want them to run for. In our route config we can add our guards to that route as follows:</p>",
+                "<pre><code>const routes: Routes = [<br/>  {<br/>    path: 'restricted',<br/>    component: AccountPage,<br/>    canActivate: [ AuthRouteGuard ],<br/>    canDeactivate: [ SaveFormsGuard ]<br/>  }</code></pre>",
+                "<p>Now <code>AuthRouteGuard</code> will be checked by the router when activating the accounts route, and <code>SaveFormsGuard</code> will be checked when leaving that route. The following code implements the <code>canActivate</code> interface.</p>",
+                "<pre><code>import { CanActivate } from '@angular/router';<br/>import { Injectable } from '@angular/core';<br/><br/>@Injectable()<br/>export class AuthRouteGuard implements CanActivate {<br/><br/>  constructor() {}<br/><br/>canActivate() {<br/>    //check the user and return true of false here.<br/>  }<br/>}</code></pre>",
+                "<p>If <code>canActivate</code> returns true, the user can activate the route. Otherwise the user cannot access the route. Import and implement <code>CanDeactivate</code> interface to safely navigate from the route.</p>",
+                "<p>The <code>canActivate</code> and <code>canDeactivate</code> functions can either return values of type <code>boolean</code>, or <code>Observable&lt;boolean&gt;</code> (an Observable that resolves to boolean). If we need to do an asynchronous request (like a server request) to determine whether the user can navigate to or away from the route, we can simply return an <code>Observable&lt;boolean&gt;. The router will wait until it is resolved and use that value to determine access.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Auxilary Routes?",
+            "answer": [
+                "<p>These are just plain routes like the primary route that was mapped to the router-outlet component. But instead, auxiliary routes are mapped to a different outlet which must be named (unlike the primary outlet).</p>",
+                "<p>Angular supports the concept of auxiliary routes, which allow you to set up and navigate multiple independent routes in a single app. Each component has one primary route and zero or more auxiliary outlets. Auxiliary outlets must have unique name within a component. Following code is how we configure auxiliary route.</p>",
+                "<pre><code>//In HTML<br/>&lt;router-outlet&gt;&lt;/router-outlet&gt;&lt;router-outlet name=\"aside\"&gt;&lt;/router-outlet&gt;<br/><br/><br/>export const routeConfig:Routes = [<br/>  {<br/>    path: 'main',<br/>    ....<br/>  },<br/>  {<br/>    path: 'sidebar',<br/>    outlet: 'aside',<br/>    component: Sidebar<br/>  }<br/>];</code></pre>",
+                "<p>To trigger a auxiliary route in HTML router link:</p>",
+                "<pre><code>&lt;a [routerLink]=\"[{ outlets: { 'aside': ['aside'] } }]\"&gt;Auxiliary Route&gt;/a&gt;</code></pre>",
+                "<p>Auxiliary route introduces special syntax to define auxiliary route URLs in the same Primary URL. The URL would look like this: <code>/main(aside:sidebar)<code>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Redux and <code>@ngRx</code>?",
+            "answer": [
+                "<p>Redux is an application state manager for JavaScript applications, and keeps with the core principles of the Flux-architecture by having a unidirectional data flow in our application. Redux applications have only one global, read-only application state. This state is calculated by \"reducing\" over a collection or stream of actions that update it in controlled ways.</p>",
+                "<p><code>@ngrx</code> is a set of modules that implement the same way of managing state as well as some of the middleware and tools in the Redux ecosystem. In other way, <code>ngrx</code> is a collection of reactive libraries for angular, containing a redux implementation and many other useful libraries.</p>",
+                "<p>Using this technique, we keep our application state in Store and everything saved in the store is read only. The only way to change the state is to emit an action, an object describing what happened.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },        
+        {
+            "question": "What is Action in Redux?",
+            "answer": [
+                "<p>Redux uses a concept called Actions, which describe state changes to our application. Redux actions are simple JSON objects that implement the Action interface provided by <code>@ngrx</code>.</p>",
+                "<pre><code>export interface Action {<br/>  type: string;<br/>  payload?: any;<br/>}</code></pre>",
+                "<p>The <code>type</code> property is a string used to uniquely identify your action to your application. The <code>payload</code> property provides a way to pass additional data to other parts of Redux, and it's entirely optional. The following is an example creation of an Action:</p>",
+                "<pre><code>const exampleAction: Action = {<br/>  type: 'EXAMPLE_ACTION',<br/>  payload: {<br/>    name: 'Angular',<br/>  }<br/>};</code></pre>",
+                "<p>If we want to change the state of our application anyway, we have to make a request in the form of an action.</p>",
+                "<p>Overall, we can think of actions in Redux as events. They report that something has happened. Thats why actions do not describe how the state has changed. Instead they precisely describe what happened.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do we change the state of our application? What is Reducers?",
+            "answer": [
+                "<p>Reducers are like listeners that are listening for some actions. These reducers are the only structure that is allowed to alter the state of our application. All state changes are implemented inside of reducers.</p>",
+                "<p>After all, a reducer is just a function. It takes the current state and the action as parameters. All we need to do, is to create a function with that interface, and register it at our store. Here is the sample reducer function.</p>",
+                "<pre><code>export function reducer(state: number = 1, action: amount.AmountChangeAction) {<br/>  switch (action.type) {<br/>    case amount.AMOUNTCHANGE:<br/>      //return modified state<br/>    default:<br/>      return state;<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Side-effects? How to handle them?",
+            "answer": [
+                "<p>Reducer should be pure function which means they should not depend on anything other than its own scope. Hence it is side-effect free. But often times, it is not possible and we need to handle these side-effects.</p>",
+                "<p>The most common example of side-effect is HTTP requests. We are sending a request and not sure when it comes back. It is an asynchronous operation. To deal with this kind of side-effects, the <code>ngrx</code> team has created a module called <code>ngrx/effects</code>.</p>",
+                "<p>All we need to do, is to use the @Effect() decorator to decorate a method of an @Injectable. <code>@ngrx/effects</code> provides an Angular <code>Action</code> service (which is also an <code>Observable</code>) to emit every action that has been dispatched by your application in a single stream. Its <code>ofType()</code> method can be used to filter the one or more actions we're interesting in before adding a side-effect. Regardless if this requests succeeds or fails, we need to create and return an <code>Observable</code> that is bound to the new action we'd like Redux to perform</p>",
+                "<pre><code>constructor( private _actions: Actions, private apiService: ApiService ) {}<br/><br/>@Effect()<br/>login = this._actions<br/>    .ofType(actions.USER_LOGIN)<br/>    .switchMap<Action>(action => this.apiService.login(action.payload)<br/>    .map(result => createAction(actions.RETRIEVE_SUCCESS, result.json()))<br/>    .catch(error => Observable.of(createAction(actions.RETRIEVE_ERROR, error.json())))<br/>);</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to prevent security threads in Angular App? What are all the ways we could secure our App?",
+            "answer": [
+                "<p>Some of them are:</p>",
+                "<ul class=\"none\"><li>Avoid using/injecting dynamic HTML content to your component.</li>",
+                "<li>If using external HTML which is coming from database or somewhere outside the application, sanitize it before using.</li>",
+                "<li>Try not to put external urls in the application unless it is trusted. Avoid url re-direction unless it is trusted.</li>",
+                "<li>Consider using AOT compilation or offline compilation.</li>",
+                "<li>Try to prevent XSRF attack by restricting the api and use of the app for known or secure environment/browsers.</li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to optimize Angular app?",
+            "answer": [
+                "<ul class=\"none\"><li>Consider lazy loading instead of fully bundled app if the app size is more.</li>",
+                "<li>Make sure that any 3rd party library, which is not used, is removed from the application.</li>",
+                "<li>Have all dependencies and dev-dependencies are clearly separated.</li>",
+                "<li>Make sure the application doesn’t have un-necessary import statements.</li>",
+                "<li>Make sure the application is bundled, uglified, and tree shaking is done.</li>",
+                "<li>Consider AOT compilation.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Change Detection in Angular? How it is improved from Angular 1.x?",
+            "answer": [
+                "<p>Change detection is the process that allows Angular to keep our views in sync with our models. In Angular 1, we have two-way data bindings and have a long list of watchers that needed to be checked every-time a digest cycle was started. This was called <i>dirty checking</i> and it was the only change detection mechanism available.</p>",
+                "<p>In Angular, the flow of information is <b>unidirectional</b>, even when using ngModel to implement two way data binding. In this new version, our code is responsible for updating the models. Angular is only responsible for reflecting those changes in the components and the DOM by means of the selected change detection strategy.</p>",
+                "<p>By default, Angular defines a certain change detection strategy for every component in our application. To make this definition explicit, we can use the property changeDetection of the <code>@Component</code> decorator. Angular provides two Change Detection Strategies:</p>",
+                "<ul class=\"none\"><li><b>ChangeDetectionStrategy.Default</b> - The default strategy for the change detection is to traverse all the components of the tree even if they do not seem to have been modified.</li>",
+                "<li><b>ChangeDetectionStrategy.OnPush</b> - This instructs Angular to run change detection on these components and their sub-tree only when new references are passed to them versus.</li></ul>",
+                "<p>Below is the example code for default change detection:</p>",
+                "<pre><code>//app.component.ts<br/><br/>import { Component } from '@angular/core';<br/><br/>@Component({<br/>  selector: 'app-root',<br/>  templateUrl: './app.component.html'<br/>})<br/>export class AppComponent {<br/>  fruits = ['Banana', 'Apple', 'Orange'];<br/><br/>  addFruit(fruit) {<br/>    this.fruits.push(fruit);<br/>  }<br/>}</code></pre>",
+                "<p>And the template:</p>",
+                "<pre><code>&lt;input #newFruit type=\"text\" placeholder=\"Enter a fruit\"&gt;<br/>&lt;button (click)=\"addFruit(newFruit.value)\"&gt;Add fruit&lt;/button&gt;<br/><br/>&lt;app-child [items]=\"fruits\"&gt;&lt;/app-child&gt;</code></pre>",
+                "<p>The child component,</p>",
+                "<pre><code>import { Component, Input } from '@angular/core';<br/><br/>@Component({<br/>  selector: 'app-child',<br/>  templateUrl: './child.component.html'<br/>})<br/>export class ChildComponent {<br/>  @Input() items: string[];<br/>}</code></pre>",
+                "<p>Child component's template:</p>",
+                "<pre><code>&lt;ul&gt;<br/>&lt;li *ngFor=\"let item of items\"&gt;{{ item }}&lt;/li&gt;<br/>&lt;/ul&gt;</code></pre>",
+                "<p>Angular creates change detector classes at runtime for each component, and keep track of the previous values to check with the new value whenever a change is detected. If we add a fruit in the parent component it will get reflected in the child immediately. The <code>OnPush</code> strategy is different that it will <b>only</b> run the change detection when the component's state is <b>mutated</b>. The same child component with this strategy is as follow:</p>",
+                "<pre><code>import { Component, Input, <b>ChangeDetectionStrategy</b> } from '@angular/core';<br/><br/>@Component({<br/>  selector: 'app-child',<br/>  templateUrl: './child.component.html',<br/>  changeDetection: <b>ChangeDetectionStrategy.OnPush</b><br/>})<br/>export class ChildComponent {<br/>  @Input() items: string[];<br/>}</code></pre>",
+                "<p>Now if we add a fruit in the parent component, it will not be updated in the child. Because the child component is receiving the same array reference every time. In order to make this work, we need to pass the new reference of <code>fruits</code> array every time we change it.</p>",
+                "<pre><code>//app.component.ts<br/>addFruit(fruit) {<br/>  this.foods = [...this.fruits, fruit];<br/>}</code></pre>",
+                "<p>Now everything is working fine because Angular able to identify new reference and can run the change detection. <code>OnPush</code> change detection is very useful when our application has lot of components as it will boost the application performance.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>ChangeDetectorRef</code>?",
+            "answer": [
+                "<p>This class provides five methods that we can use to get more control over the Change Detection run in Angular.</p>",
+                "<p><b><code>detectChanges()</code></b> - This can to implement local change detection checks and its children. For example, considering the previous example, instead of passing new references, we can keep adding fruits in the parent component and have a refresh button in the child to detect changes.</p>",
+                "<pre><code>constructor(private cd: ChangeDetectorRef) {}<br/><br/>refresh() {<br/>  this.cd.detectChanges();<br/>}</code></pre>",
+                "<p><b><code>markForCheck()</code></b> - Consider our previous example, but if we have to use <i>Observables</i> for getting fruits data. We are subscribing to it in the <code>OnInit</code> life hook in our child component.</p>",
+                "<pre><code>@Input() items: Observable<any>;<br/>fruits: string[] = [];<br/><br/>ngOnInit() {<br/>  this.items.subscribe(fruit => {<br/>    this.fruits = [...this.fruits, ...fruit];<br/><b>this.cd.markForCheck();</b><br/>  });<br/>}</code></pre>",
+                "<p>Here the new data mutates our items observable, so Angular doesn’t run change detection. <code>markForCheck</code> instructs Angular that this particular input should trigger change detection when mutated.</p>",
+                "<p><b><code>detach()</code> and <code>reattach()</code></b> - <code>detach()</code> is used to detache the change detector from the change detector tree. The detached change detector will not be checked until it is reattached. <code>reattach()</code>, as the name suggests, reattach the change detector to the change detector tree. This also marks <code>OnPush</code> ancestors as to be checked. </p>",
+                "<p><b><code>checkNoChanges()</code></b> - It checks the change detector and its children, and throws if any changes are detected. This is used in development mode to verify that running change detection doesn't introduce other changes.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>NgZone</code> service? How Angular is notified about the changes?",
+            "answer": [
+                "<p><code>Zone.js</code> is one of the Angular dependencies which provides a mechanism, called zones, for encapsulating and intercepting asynchronous activities in the browser (e.g. setTimeout, setInterval, promises). These zones are <i>execution contexts</i> that allow Angular to track the start and completion of asynchronous activities and perform tasks as required (e.g. change detection). Zone.js provides a global zone that can be forked and extended to further encapsulate/isolate asynchronous behaviour, which Angular does so in its <code>NgZone</code> service, by creating a fork and extending it with its own behaviours.</p>",
+                "<p>The <code>NgZone</code> service provides us with a number of Observables and methods for determining the state of Angular's zone and to execute code in different ways inside and outside Angular's zone.</p>",
+                "<p><code>NgZone</code> exposes a set of Observables that allow us to determine the current status, or stability, of Angular's zone.</p>"
+                "<ul class=\"none\"><li><code>onUnstable</code> – Notifies when code has entered and is executing within the Angular zone.</li>",
+                "<li><code>onMicrotaskEmpty</code> - Notifies when no more microtasks are queued for execution. Angular subscribes to this internally to signal that it should run change detection.</li>",
+                "<li><code>onStable</code> – Notifies when the last <code>onMicroTaskEmpty</code> has run, implying that all tasks have completed and change detection has occurred.</li>",
+                "<li><code>onError</code> – Notifies when an error has occurred. Angular subscribes to this internally to send uncaught errors to its own error handler, i.e. the errors you see in your console prefixed with 'EXCEPTION:'.</li></ul>",
+                "<p>We can inject the <code>NgZone</code> service in our component/services/etc. and can subscribe to these observables.</p>"
+                "<pre><code>import { Injectable, NgZone } from '@angular/core';<br/><br/>@Injectable()<br/>export class OurZoneWatchingService() {<br/>  constructor(private ngZone: NgZone) {<br/>    this.ngZone.onStable.subscribe(this.onZoneStable);<br/>  }<br/><br/>  onZoneStable() {<br/>    console.log('We are stable');<br/>}<br/><br/>}</code></pre>",
+                "<p>Subscribing to these can help you determine if your code is unexpectedly triggering change detection as a result of operations that do not affect application state.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are <code>@HostListener</code> and <code>@HostBinding</code>? How can detect events in or set properties on the parent element of a direcive?",
+            "answer": [
+                "<p><code>@HostListener</code> is a function decorator that accepts an event name as the first argument and the parameters array as the second argument. When that event gets fired on the host element it calls the associated function.</p>",
+                "<pre><code>@Directive({<br/>  selector: `[appConfirm]`<br/>})<br/>export class ConfirmDirective {<br/>  <b>@HostListener('click', ['$event'])</b><br/>  confirmFirst(event: Event) {<br/>    return window.confirm('Are you sure you want to do this?');<br/>  }<br/><br/>}</code></pre>",
+                "<p><code>@HostBinding</code> let us set properties on the host element or the component that hosts the directive.</p>",
+                "<pre><code>@Directive({<br/>  selector: `[appConfirm]`<br/>})<br/>export class ConfirmDirective {<br/>  @HostBinding('style.color') color: string;<br/>  <b>@HostListener('click', ['$event'])</b><br/>  confirmFirst(event: Event) {<br/>    this.color = 'hotpink';<br/>  }<br/><br/>}</code></pre>",
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are <code>TemplateRef</code> and <code>ViewContainerRef</code>?",
+            "answer": [
+                "<ul class=\"none\"><li><code>TemplateRef</code> — As the name suggest the <code>TemplateRef</code> is just a reference to the template.</li>",
+                "<li><code>ViewContainerRef</code> — Templates contain DOM elements, so if we need to insert an element, we need a place to “put” it. In Angular, this place is called a <b>container</b>. <code>ViewContainerRef</code> is a reference to the container.</li></ul>",
+                "<p>The <code>ViewContainerRef</code> also exposes the <code>createEmbeddedView()</code> method that takes a template and renders its content as a <b>sibling</b> to the container. The following code shows a custom directive for adding or removing the template based on the condition just like <code>*ngIf</code>.</p>",
+                "<pre><code>@Directive({ selector: '[myNgIf]'})<br/>export class MyNgIfDirective {<br/><br/>  constructor(<br/>    private templateRef: TemplateRef<any>,<br/>    private viewContainer: ViewContainerRef) { }<br/><br/>  @Input() set myNgIf(condition: boolean) {<br/>    if (condition) {<br/>      this.viewContainer.createEmbeddedView(this.templateRef);<br/>    } else {<br/>      this.viewContainer.clear();<br/>    }<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain AOT in Angular?",
+            "answer": [
+                "<p>Every Angular application requires a compilation process before they can run. The initial compiler is called JiT (Just-in-Time) compiler. As for AoT, it stands for the Ahead-of-Time compiler. Compared to the JiT compilation performed by Angular at run-time, AoT provides a smaller bundle with faster rendering in the browser.</p>",
+                "<p>The gist of AoT is moving the compilation from run-time to the building process. That means, first we can remove the JiT compiler from the bundle to have a smaller build, and second, the browser can execute the code without waiting for JiT in the run-time which leads to a faster rendering speed. Besides, AoT compiler also inlines HTML templates and CSS files and help reduce the amount of asynchronous requests sent by the application.</p>",
+                "<p>However, AoT is not perfect. The main limitation is that AoT, due to the way it compiles the raw code, cannot be used with common code patterns, for example, default exports from modules, template literals for templates, and functions in providers, routes, or declarations. Another problem with AoT is that when the application reaches certain complexity, the AoT bundle compared to JiT bundle can actually takes up more space.</p>",
+                "<p>We can generate a build in AoT by using the Angular Cli comment <code>ng build --aot</code> or <code>ng build --prod</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Traceur compiler?",
+            "answer": [
+                "<p>Traceur compiler is a Google project. It compiles ECMAScript Edition 6 (ES6) (including classes, generators and so on) code on the fly to regular Javascript (ECMAScript Edition 5 [ES5]) to make it compatible for the browser.</p>",
+                "<p>Traceur itself is written in ES6, compiled to ES5.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between <code>constructor</code> and <code>ngOnInit</code>?",
+            "answer": [
+                "<p>The <code>Constructor</code> is a default method of the class that is executed when the class is instantiated (by calling with <code>new</code>) and ensures proper initialization of fields in the class and its subclasses. It is a Typescript feature and it is used only for a class instantiations and nothing to do with Angular 2. Angular analyse the paramters of constructor to inject any dependencies.</p>",
+                "<p><code>ngOnInit</code> is a life cycle hook called by Angular2 to indicate that Angular is done creating the component. It is called after the <code>constructor</code>.</p>",
+                "<p>Mostly we use <code>ngOnInit</code> for all the initialization/declaration. The constructor should only be used to initialize class members and inject dependencies.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>:host-context</code> pseudo-class selector?",
+            "answer": [
+                "<p>Sometimes, we will want to have a component apply a style to some element outside of it. This does not happen often, but one possible common use case is for theme enabling classes.</p>",
+                "<p>For example, let's say that we would like to ship a component with multiple alternative themes. Each theme can be enabled via adding a CSS class to a parent element of the component.</p>",
+                "<p>Here is how we could implement this use case using the <code>:host-context</code> selector:</p>",                
+                "<pre><code>@Component({<br/>  selector: 'themeable-button',<br/>  template: `<br/>        <button class=\"btn btn-theme\">Themeable Button</button><br/>  `,<br/>  styles: [`<br/>      :host-context(.red-theme) .btn-theme {<br/>        background: red;<br/>      }<br/>      :host-context(.blue-theme) .btn-theme {<br/>          background: blue;<br/>      }<br/>  `]<br/>})<br/>export class ThemeableButtonComponent {<br/><br/>}</code></pre>",
+                "<p>These themed styles are deactivated by default. In order to activate one theme, we need to add to any parent element of this component one of the theme-activating classes. For example,</p>",
+                "<pre><code>&lt;div class=\"blue-theme\"&gt;<br/>    &lt;themeable-button&gt;&lt;/themeable-button&gt;<br/>&lt;/div&gt;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How Two-way data binding works in Angular2? Is it same like Anglar 1.x? Explain the Two-way data binding in Angular?",
+            "answer": [
+                "<p>Angular 2.x or higher versions doesn’t come with such a (built-in) two-way data binding anymore. However, there’s one directive in Angular that implements two-way data binding: <code>ngModel</code>. But it does not work like Angular 1.x. In fact, it turns out that two-way data binding really just boils down to event binding and property binding.</p>",
+                "<p>Consider the below snippet:</p>",                
+                "<pre><code>&lt;input [(ngModel)]=\"username\"&gt;<br/><br/>&lt;p&gt;Hello {{username}}!&lt;/p&gt;</code></pre>",
+                "<p>As said earlier, this uses property and event binding to bind the data between model and view. Without the shorthand syntax, this same code will look like:</p>",
+                "<pre><code>&lt;input [ngModel]=\"username\" (ngModelChange)=\"username = $event\"&gt;<br/><br/>&lt;p&gt;Hello {{username}}!&lt;/p&gt;</code></pre>",
+                "<p>The property binding <code>[ngModel]</code> takes care of updating the underlying input DOM element. The event binding <code>(ngModelChange)</code> notifies the outside world when there was a change in the DOM. <code>$event</code> is the payload of the emitted event. In other words, <code>ngModelChange</code> takes care of extracting <code>target.value</code> from the inner <code>$event</code> payload, and simply emits that.</p>",
+                "<p>Using this knowledge, we can build our own custom two-way data bindings with the use of property bindings and event emitters.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between Template driven forms and Model driven forms (or Reactive forms)?",
+            "answer": [
+                "<p><b>Template driven form</b> is something when we write our logic, validation, binding, controls and everything in our templates which is html. The pros and cons: Easier to use, Suitable for simple scenarios, Uses Two way data binding (using <code>[(NgModel)]</code> syntax), Minimal component code, Automatic track of the form and its data (handled by Angular), Unit testing is hard</p>",
+                "<p><b>Model driven form or Reactive form</b> holds all the logic and validation in the controller or component. It is a good default choice if we need larger forms and lots of validations and logic. The pros and cons: Easier Unit testing, More flexible, so Handles any complex scenarios., Reactive transformations can be made possible such as Adding elements dynamically, No data binding is done, More component code and less HTML markup.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain the Template Driven Forms.",
+            "answer": [
+                "<p>Consider the below HTML tempalte for a simple form which was built according to the template driven way. Note, inorder to use <code>ngForm</code>, we must add <code>FormsModule</code> in the <code>imports</code> array of <code>ngModule</code>.</p>",
+                "<pre><code>&lt;section class=\"sample-app-content\"&gt;<br/>  &lt;h1&gt;Template-driven Form Example:&lt;/h1&gt;<br/>  &lt;form #form=\"ngForm\" (ngSubmit)=\"onSubmit()\"&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Username:&lt;/label&gt;<br/>      &lt;input type=\"text\" [(ngModel)]=\"user.username\" required&gt;<br/>    &lt;/p&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Password:&lt;/label&gt;<br/>        &lt;input type=\"password\" [(ngModel)]=\"user.password\" required&gt;<br/>    &lt;/p&gt;    &lt;p&gt;<br/>      &lt;button type=\"submit\" [disabled]=\"!form.valid\"&gt;Submit&lt;/button&gt;<br/>    &lt;/p&gt;<br/>  &lt;/form&gt;<br/>&lt;/section&gt;</code></pre>"
+                "<p>Once we import <code>FormsModule</code>, <code>NgForm</code> directive becomes active by default on all <code>&lt;form&gt;</code> tags. We can export <code>NgForm</code> into a local template variable in this case <code>form</code>. To import it we need to use <code>NgForm</code> as <code>ngForm</code>. We have two controls in this form: username and password both are required fields (marked with the <code>required</code> attribute).</p>",
+                "<p>The submit button is only enabled if both required fields are filled in. Also, the form will trigger the controller method <code>onSubmit</code> on submission. Angular is actually tracking the validity state of the whole form as well, using it to enable/disable the submit button. This functionality is actually common to both template-driven and model-driven forms. And css state classes are added to the elements based on the state. Since this is a template-driven form, there won't be much logic in the controller. Following is the component code for this template.</p>",
+                "<pre><code>@Component({<br/>  selector: \"template-driven-form\",  templateUrl: 'template-driven-form.html'<br/>})<br/>export class TemplateDrivenForm {<br/><br/>  user: Object = {};<br/><br/>  onSubmitTemplateBased() {<br/>    console.log(\"Form is submitted.\");<br/>  }<br/><br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Model Driven Forms or Reactive Forms.",
+            "answer": [
+                "<p>A model driven form looks on the surface pretty much like a template driven form. But in order to be able to create this type of forms, we need first to import a different module into our application:</p>",
+                "<pre><code>import {ReactiveFormsModule} from \"@angular/forms\";<br/><br/>@NgModule({<br/>  declarations: [App],<br/>  imports: [BrowserModule, ReactiveFormsModule],<br/>  bootstrap: [App]<br/>})<br/>export class AppModule {}</code></pre>",
+                "<p>Instead of <code>FormsModule</code>, we imported <code>ReactiveFormsModule </code>. This will load the reactive forms directives instead of the template driven directives. The template would be look like this:</p>",
+                "<pre><code>&lt;section class=\"sample-app-content\"&gt;<br/>  &lt;h1&gt;Model-driven Form Example:&lt;/h1&gt;<br/>  &lt;form [formGroup]=\"form\" (ngSubmit)=\"onSubmit()\"&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Username:&lt;/label&gt;<br/>        &lt;input type=\"text\" formControlName=\"username\"&gt;<br/><br/>    &lt;/p&gt;<br/>    &lt;p&gt;<br/>      &lt;label&gt;Password:&lt;/label&gt;<br/>        &lt;input type=\"password\" [(ngModel)]=\"user.password\" required&gt;<br/>    &lt;/p&gt;<br/>    &lt;p&gt;<br/>      &lt;button type=\"submit\" [disabled]=\"!form.valid\"&gt;Submit&lt;/button&gt;<br/>    &lt;/p&gt;<br/>  &lt;/form&gt;<br/>&lt;/section&gt;</code></pre>",
+                "<p>There is a <code>formGroup</code> directive applied to the whole form, binding it to a controller variable named <code>form</code>. The <code>required</code> validator is removed and the logic is moved to the controller. Now the controller:</p>",             
+                "<pre><code>import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';<br/><br/>@Component({<br/>  selector: \"model-driven-form\",<br/>  templateUrl: 'model-driven-form.html'<br/>})<br/>export class ModelDrivenForm {<br/>  form: FormGroup;<br/><br/>  firstName = new FormControl(\"Test User\", Validators.required);<br/><br/>  constructor(fb: FormBuilder) {<br/>    this.form = fb.group({<br/>      \"firstName\": this.firstName,<br/>      \"password\": [\"\", Validators.required]<br/>    });<br/>  }<br/>  onSubmitModelBased() {<br/>    console.log(\"model-based form submitted\");<br/>    console.log(this.form);<br/>  }<br/>}</code></pre>",
+                "<p>We can see that the form is really just a FormControl, which keeps track of the global validity state. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder. In the array notation, the first element of the array is the initial value of the control, and the remaining elements are the control's validators. In this case both controls are made mandatory via the Validators.required built-in validator.</p>",                
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What's the difference between <code>NgForm</code>, <code>FormGroup</code>, and <code>FormControl</code>?",
+            "answer": [
+                "<p>The <code>ngForm</code> is used in Template-driven form where Angular activat for all the forms by default when we use <code>FormsModule</code>. This type of form is very well-suited to be used with ng-model, and ideal for migrating Angular 1 forms to Angular 2.</p>",
+                "<p>The Reactive forms or Model-driven forms uses <code>formGroup</code> directive applied to the whole form.</p>",
+                "<p>In Reactive forms or Model-driven forms, each form elements are controlled by a <code>FormControl</code>, which keep the elements states. The controls themselves can either be instantiated individually or defined using a simplified array notation using the form builder.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+    ]
+}
+/*
+        ,
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+*/
+
+//https://angular-2-training-book.rangle.io/handout/state-management/ngrx/modifying_your_application_state_by_dispatching_actions.html
+//https://malcoded.com/posts/angular-ngrx-guide
+//https://malcoded.com/posts/rxjs-for-angular-devs
+
+//When Angular creates a component, it first asks an injector for the services that the component requires.
+
+//An injector maintains a container of service instances that it has previously created. If a requested service instance is not in the container, the injector makes one and adds it to the container before returning the service to Angular. When all requested services have been resolved and returned, Angular can call the component's constructor with those services as arguments. This is dependency injection.
+
+//What’s the difference between for..in and for..of?
+//for in loops over enumerable property names of an object.
+//for of (new in ES6) does use an object-specific iterator and loop over the values generated by that.
