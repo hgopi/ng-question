@@ -1,0 +1,338 @@
+{
+    "questions": [        
+        {
+            "question": "What is TypeScript? Why should we use it?",
+            "answer": [
+                "<p>TypeScript is a typed superset of JavaScript that compiles to plain JavaScript which runs on any browser or JavaScript engine. </p>",
+                "<p>TypeScript offers support for the latest JavaScript features and also has some additional features like static typing, object oriented programming and automatic assignment of constructor.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are Types in TypeScript?",
+            "answer": [
+                "<p>The type represents the type of the value we are using in our programs. TypeScript supports simplest units of data such as numbers, strings, boolean as well as additional types like enum, any, never.</p>",
+                "<p>In TypeScript, we are declaring a variable with its type explicitly by appending the <code>:</code> with the variable name followed by the type.</p>",                
+                "<pre><code>let decimal: number = 6;<br/>let color: string = \"blue\";let notSure: any = 4;<br/>let unusable: void = undefined;</code></pre>",
+                "<p>The reason adding types are:</p>",
+                "<ul class=\"none\"><li>Types have proven ability to enhance code quality and understandability.</li>",
+                "<li>It's better for the compiler to catch errors than to have things fail at runtime.</li>",
+                "<li>Types are one of the best forms of documentation we can have.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Type assertions in TypeScript?",
+            "answer": [
+                "<p>A type assertion is like a type cast in other languages, but performs no special checking or restructuring of data. It has no runtime impact, and is used purely by the compiler. TypeScript assumes that we have performed any special checks that we need.</p>",
+                "<pre><code>let strLength: number = (<string>someString).length;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>as</code> syntax in TypeScript?",
+            "answer": [
+                "<p>The <code>as</code> is additional syntax for Type assertion in TypeScript. The reason for introducing the <code>as</code>-syntax is that the original syntax (<code>&lt;type&gt;</code>) conflicted with JSX.</p>",
+                "<pre><code>let strLength: number = (someString as string).length;</code></pre>",
+                "<p>When using TypeScript with <code>JSX</code>, only <code>as</code>-style assertions are allowed.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Compilation Context?",
+            "answer": [
+                "<p>The compilation context is basically grouping of the files that TypeScript will parse and analyze to determine what is valid and what isn't. Along with the information about which files, the compilation context contains information about <i>which compiler options</i>. A great way to define this logical grouping is using a <code>tsconfig.json</code> file.</p>",
+                "<p>A <code>tsconfig.json</code> might look like the following snippet:</p>",
+                "<pre><code>{<br/>  \"compilerOptions\": {<br/>    \"target\": \"es5\",<br/>    \"module\": \"commonjs\",<br/>    \"sourceMap\": true,<br/>    \"outFile\": \"./\",<br/>    \"rootDir\": \"./\",<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is an Interface in TypeScript?",
+            "answer": [
+                "<p>An <code>interface</code> is a virtual structure that only exists within the context of TypeScript. The TypeScript compiler uses interfaces solely for type-checking purposes. Once your code is transpiled to its target language, it will be stripped from its interfaces - JavaScript isn't typed, there's no use for them there.</p>",
+                "<p>Also, an <code>interface</code> is simply a structural contract that defines what the properties of an object should have as a name and as a type. How you implement or initialise the properties declared within the interface is not relevant to it.</p>",                
+                "<pre><code>interface Car {<br/>  modelName: string;<br/>  year: number;<br/>}<br/><br/>class CarMaker {<br/>  static create(event: Car) { <br/>    return { modelName: event.name, year: event.year };<br/>  }<br/>}</code></pre>",
+                "<p>The <code>CarMaker.create()</code> returns an object that surely looks like a <code>Car</code> would! It has the <code>modelName</code> as string and <code>year</code> as number."
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is optional properties?",
+            "answer": [
+                "<p>Sometimes, not all properties of an interface may be required. Some exist under certain conditions or may not be there at all. These optional properties are popular when creating patterns like &#x201C;option bags&#x201D; where you pass an object to a function that only has a couple of properties filled in.</p>",
+                "<p>In TypeScript, interfaces with optional properties are written similar to other interfaces, with each optional property denoted by a <code>?</code> at the end of the property name in the declaration.</p>",
+                "<pre><code>interface Car {<br/>  modelName: string;<br/>  year: number;<br/>  isAC?: boolean;<br/>}<br/><br/>function CarMaker(config: Car): Car {<br/>    let newCar = { name: config.modelName, year: config.year };<br/>    if(config.isAC) {<br/>      newCar.isAC = true;<br/>    }<br/>  return newCar;<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>readonly</code>? How it differ from <code>const</code>?",
+            "answer": [
+                "<p>When we want some properties of an object should only be modifiable when the object is created, we can <code>readonly</code> modifier.</p>",
+                "<pre><code>interface Point {<br/>  readonly x: number;<br/>  readonly y: number;<br/>}<br/><br/>let p1: Point = { x: 10, y: 20 };</code></pre>",
+                "<p>Now we will get error if we try to modify <code>x</code> or <code>y</code> in <code>p1</code>.</p>",
+                "<p>The difference between <code>readonly</code> and <code>const</code> is: <code>const</code> is used on a variable whereas <code>readonly</code> is used on properties of an object."
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Can an <code>interface</code> extends a <code>class</code> just like a <code>class</code> implements <code>interface</code>?",
+            "answer": [
+                "<p>Yes, an <code>interface</code> extends a <code>clas</code>, when it does it inherits the members of the class but not their implementations. Interfaces inherit even the private and protected members of a base class. This means that when you create an interface that extends a class with private or protected members, that interface type can only be implemented by that class or a subclass of it.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to use <code>class</code> and <code>inheritance</code>?",
+            "answer": [
+                "<p>A <code>class</code> can be seen as a blueprint of an object. Traditional JavaScript uses functions and prototype-based inheritance to build objects. In TypeScript, we can use object-oriented class-based approach.</p>",
+                "<pre><code>class Point {<br/>  x: number;<br/>  y: number;<br/>  constructor(x: number, y: number) {<br/>      this.x = x;<br/>      this.y = y;<br/>  }<br/>  add(point: Point) {<br/>      return new Point(this.x + point.x, this.y + point.y);<br/>  }<br/>}<br/><br/>var p1 = new Point(0, 10);</code></pre>",
+                "<p>TypeScript supports single inheritance using the <code>extends</code> keyword.</p>",
+                "<pre><code>class Point3D extends Point {<br/>  z: number;<br/>  constructor(x: number, y: number, z: number) {<br/>      super(x, y);<br/>      this.z = z;<br/>  }<br/>  add(point: Point3D) {<br/>      var point2D = super.add(point);<br/>      return new Point3D(point2D.x, point2D.y, this.z + point.z);<br/>    }<br/>}</code></pre>",
+                "<p>If we have a constructor in your class then we must call the parent constructor from your constructor (TypeScript will point this out). This ensures that the stuff that it needs to set on this gets set. Followed by the call to <code>super</code> we can add any additional stuff we want to do in your constructor (here we add another member <code>z</code>).</p>",
+                "<p>Note that we override parent member functions easily (here we override add) and still use the functionality of the super class in your members (using <code>super.</code> syntax).</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>static</code> properties?",
+            "answer": [
+                "<p>TypeScript classes support <code>static</code> properties that are shared by all instances of the class. A natural place to put (and access) them is on the class itself.</p>",
+                "<pre><code>class Something {<br/>  static instances = 0;<br/>  constructor() {<br/>      Something.instances++;<br/>  }<br/>}<br/><br/>var s1 = new Something();<br/>console.log(Something.instances); // 2</code></pre>",
+                "<p>We can have static members as well as static functions.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the other access modifiers that TypeScript supports?",
+            "answer": [
+                "<p>TypeScript supports access modifiers <code>public</code>, <code>private</code> and <code>protected</code> which determine the accessibility of a <code>class</code> member as given below:</p>",
+                "<ul class=\"none\"><li><code>public</code> - All the members of the class, its child classes, and the instance of the class can access.</li>",
+                "<li><code>protected</code> - All the members of the class and its child classes can access them. But the instance of the class can not access.</li>",
+                "<li><code>private</code> - Only the members of the class can access them.</li></ul>",
+                "<p>If an access modifier is not specified it is implicitly <code>public</code> as that matches the convenient nature of JavaScript.</p>",
+                "<p>Also note that at runtime (in the generated JS) these have no significance but will give you compile time errors if you use them incorrectly.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>abstract</code> class?",
+            "answer": [
+                "<p><code>Abstract</code> can be thought of as an access modifier. <code>Abstract</code> classes are base classes from which other classes may be derived. They may not be instantiated directly. Unlike an interface, an abstract class may contain implementation details for its members. The <code>abstract</code> keyword is used to define abstract classes as well as abstract methods within an abstract class.</p>",
+                "<p>Having an <code>abstract</code> modifier primarily means that such functionality cannot be directly invoked and a child class must provide the functionality.</p>",
+                "<ul class=\"none\"><li><code>abstract</code> <b>classes</b> cannot be directly instantiated. Instead the user must create some class that inherits from the <code>abstract class</code>.</li>",
+                "<li><code>abstract</code> <b>members</b> cannot be directly accessed and a child class must provide the functionality.</li></ul>",
+                "<pre><code>abstract class Animal {<br/>  abstract makeSound(): void;<br/>  move(): void {<br/>      console.log(\"An animal\");<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to write typed functions in TypeScript?",
+            "answer": [
+                "<p>TypeScript functions can be created both as a named function or as an anonymous function. We can add types to each of the parameters and then to the function itself to add a return type. TypeScript can figure the return type out by looking at the return statements.</p>",
+                "<pre><code>// Named function<br/>function add(x: number, y: number): number {<br/>  return x + y;<br/>}<br/><br/>// Anonymous function<br/>let myAdd = function(x: number, y: number): number { return x + y; };</code></pre>",
+                "<p>If we want to write full type of the function:</p>",
+                "<pre><code>let myAdd: (x: number, y: number) => number =<br/>    function(x: number, y: number): number { return x + y; };</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Contextual typing?",
+            "answer": [
+                "<p>TypeScript compiler can figure out the type if you have types on one side of the equation but not the other. For example, we can re-write the previous example function as follow:</p>",
+                "<pre><code>let myAdd: (baseValue: number, increment: number) => number =<br/>    function(x, y) { return x + y; };</code></pre>",
+                "<p>Note that we can omit the typings on the right side of the equal since it can be figured out automatically by TypeScript. This helps cut down on the amount of effort to keep our program typed.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Optional and Default parameters?",
+            "answer": [
+                "<p>In JavaScript, every parameter of a function is optional, and users may leave them off as they see fit. When they do, their value is <code>undefined</code>. We can get this functionality in TypeScript by adding a <code>?</code> to the end of parameters we want to be <i>optional</i>. For example:</p>",
+                "<pre><code>function greeting(firstName: string, lastName?: string) {<br/>  if(lastName) {<br/>     return \"Hello! \" + firstName + \" \" + lastName;<br/>  } else {<br/>      return \"Hello! \" + firstName;<br/>  }<br/>}</code></pre>",
+                "<p>In TypeScript, we can also set a value that a parameter will be assigned if the user does not provide one, or if the user passes <code>undefined</code> in its place. For example, consider the same above example:</p>",
+                "<pre><code>function greeting(firstName: string, lastName = \"Dude\") {<br/>  return \"Hello! \" + firstName + \" \" + lastName;}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Rest parameters?",
+            "answer": [
+                "<p>Sometimes, we want to work with multiple parameters as a group, or we may not know how many parameters a function will ultimately take. In JavaScript, we can work with the <code>arguments</code> directly using the arguments variable that is visible inside every function body. In TypeScript, you can gather these arguments together into a variable:</p>",
+                "<pre><code>function greeting(firstName: string, ...restOfName: string[]) {<br/>  return firstName + " " + restOfName.join(" ");<br/>}<br/><br/>let greetText = greeting(\"John\", \"Doe\", \"Bruce\", \"Wayne\");</code></pre>",
+                "<p>Rest parameters are treated as a boundless number of optional parameters. When passing arguments for a rest parameter, we can use as many as we want; we can even pass none. The compiler will build an array of the arguments passed in with the name given after the ellipsis (<code>...</code>), allowing us to use it in our function.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Generics in TypeScript?",
+            "answer": [
+                "<p>Consider the below function where we are unsure about the parameter:</p>",
+                "<pre><code>function identity(arg: any): any {<br/>  return arg;<br/>}</code></pre>",
+                "<p>While using <code>any</code> is certainly generic in that it will cause the function to accept any and all types for the type of <code>arg</code>, we actually are losing the information about what that type was when the function returns. If we need to capture the type of the argument to determine which type is being returned, we will use a special kind of type variable.</p>",
+                "<pre><code>function identity<T>(arg: T): T {<br/>  return arg;<br/>}</code></pre>",
+                "<p>We've now added a type variable <code>T</code> to the identity function. This <code>T</code> allows us to capture the type the user provides (e.g. <code>number</code>), so that we can use that information later. Here, we use <code>T</code> again as the return type. On inspection, we can now see the same type is used for the argument and the return type. This allows us to traffic that type information in one side of the function and out the other. We say that this version of the <code>identity</code> function is generic, as it works over a range of types.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Generic Class?",
+            "answer": [
+                "<p>A generic class has a similar shape to a generic interface. Generic classes have a generic type parameter list in angle brackets (<code>&lt;&gt;<code>) following the name of the class.</p>",
+                "<pre><code>class GenericNumber<T> {<br/>  zeroValue: T;<br/>  add: (x: T, y: T) => T;<br/>}<br/><br/>let myGenericNumber = new GenericNumber<number>();</code></pre>",
+                "<p></p>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>Enum</code>?",
+            "answer": [
+                "<p><code>Enum</code> are a TypeScipt data type that allow the organization of number-based collections of unique identifiers.</p>",
+                "<pre><code>enum Gender {<br/>  Male,<br/>  Female<br/>  Other<br/>}<br/><br/>console.log(Gender.Female); // 1</code></pre>",
+                "<p>We can also access an enum value by it's number value.</p>",
+                "<pre><code>console.log(Gender[1]); // Female</code></pre>",
+                "<p>Enums are zero-based, but we can change that by setting a number value of our choice on the first item. Here for example our enum will have an index that starts with 1:</p>",
+                "<pre><code>enum Gender {<br/>  Male = 1,<br/>  Female<br/>  Other<br/>}<br/><br/>console.log(Gender.Female); // 2</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Union types?",
+            "answer": [
+                "<p>In TypeScript we can use union types to describe values that can be of more than one type. It therefore allows to avoid using <code>any</code>. Define union types with the <code>|</code> character to separate the different possible types. For example, consider a function uses parameters that can be string or number.</p>",
+                "<pre><code>function add(v1: any, v2: any) {<br/>  let value1 = typeof v1 === \"string\" ? +v1 : v1;<br/>  let value2 = typeof v2 === \"string\" ? +v2 : v2;<br/><br/>  console.log(value1 + value2);<br/>}</code></pre>",
+                "<p>Instead of that, we can re-write using union type.</p>",
+                "<pre><code>function add(v1: number | string, v2: number | string) {<br/>  let value1 = typeof v1 === \"string\" ? +v1 : v1;<br/>  let value2 = typeof v2 === \"string\" ? +v2 : v2;<br/><br/>  console.log(value1 + value2);<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is string literal types?",
+            "answer": [
+                "<p>In TypeScript, string literal types let us define types that only accept a defined string literal. They are useful to limit the possible string values of variables. Here are examples of how to define and use string literal types:</p>",
+                "<pre><code>let version: '1.0.0';<br/><br/>version = '1.0.0'; //OK<br/>version = '2.0.0'; //Compiler error</code></pre>",
+                "<p>We can also use string literal with union operator:</p>",
+                "<pre><code>let gender: 'Male' | 'Female' | 'Other';<br/><br/>gender = 'NA'; // Compiler error</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Type Compatibility?",
+            "answer": [
+                "<p>Type compatibility in TypeScript is based on structural subtyping. Structural typing is a way of relating types based solely on their members. This is in contrast with nominal typing. Consider the following code:</p>",
+                "<pre><code>interface Named {<br/>  name: string;<br/>}<br/><br/>class Person {<br/>  name: string;<br/>}<br/><br/>let p: Named;<br/>// OK, because of structural typing<br/>p = new Person();</code></pre>",
+                "<p>In nominally-typed languages like C# or Java, the equivalent code would be an error because the <code>Person</code> class does not explicitly describe itself as being an implementor of the <code>Named</code> interface.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Modules in TypeScript?",
+            "answer": [
+                "<p>Modules provide the possibility to group related logic, encapsulate it, structure our code and prevent pollution of the global namespace. Modules can provide functionality that is only visible inside the module, and they can provide functionality that is visible from the outside using the <code>export</code> keyword.</p>",
+                "<p>TypeScript’s module system comes in two flavors: internal and external modules. The internal modules are called <b>namespaces</b> (from TypeScript version 1.5). &#x201C;External modules&#x201D; are simply &#x201C;modules&#x201D;. Any declaration (such as a variable, function, class, type alias, or interface) can be exported by adding the export keyword.</p>",
+                "<pre><code>//Validation.ts<br/><br/>export const numberRegexp = /^[0-9]+$/;<br/><br/>export interface StringValidator {<br/>  isAcceptable(s: string): boolean;<br/>}</code></pre>",
+                "<p>Importing a module is as easy as exporting a module. It is done through using one of the <code>import</code> forms below:</p>",
+                "<pre><code>import { StringValidator } from \"./Validation\";<br/><br/>//it can be renamed<br/>import { StringValidator as SV } from \"./Validation\";</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to work with other JavaScript libraries? What is Type declaration? What is Ambient declarations?",
+            "answer": [
+                "<p>To describe the shape of libraries not written in TypeScript, we need to declare the API that the library exposes. Typically, these are defined in <code>.d.ts</code> files.</p>",
+                "<p>We can tell TypeScript that we are trying to describe code that exists elsewhere (e.g. written in JavaScript/CoffeeScript/The runtime environment like the browser or Node.js) using the <code>declare</code> keyword. As a quick example:</p>",
+                "<pre><code>declare var foo: any;<br/>foo = 123;</code></pre>",
+                "<p>If a file has the extension <code>.d.ts</code> then each root level definition must have the <code>declare</code> keyword prefixed to it. This helps make it clear that there will be no code emitted by TypeScript.</p>",
+                "<ul class=\"none\"><li>Ambient declarations is a promise that we are making with the compiler. If these do not exist at runtime and we try to use them, things will break without warning.</li>",
+                "<li>Ambient declarations are like docs. If the source changes, the docs need to be kept updated. So we might have new behaviours that work at runtime but no one's updated the ambient declaration and hence we get compiler errors.</li></ul>",
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+    ]
+}
+/*
+//https://basarat.gitbooks.io/typescript/docs/types/ambient/d.ts.html
+        ,
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+*/
