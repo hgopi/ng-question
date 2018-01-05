@@ -301,6 +301,186 @@
             "bookmark": false
         },
         {
+            "question": "What is <code>namespace</code> in TypeScript?",
+            "answer": [
+                "<p>Namespaces provide a convenient syntax around a common pattern used in JavaScript. This is commonly used in JavaScript for making sure that stuff doesn't leak into the global namespace. With file based modules we don't need to worry about this, but the pattern is still useful for logical grouping of a bunch of functions. Therefore TypeScript provides the <code>namespace</code> keyword to group these.</p>",
+                "<pre><code>namespace Utility {<br/>  export function log(msg) {<br/>      console.log(msg);<br/>  }<br/>  export function error(msg) {<br/>      console.error(msg);<br/>  }<br/>}<br/><br/>Utility.log('Test message');<br/>Utility.error('Test error');</code></pre>",
+                "<p>The <code>namespace</code> keyword generates the JavaScript that would look like this:</p>",
+                "<pre><code>(function (Utility) {<br/><br/>  // Add functions and properties<br/><br/>})(Utility || (Utility = {}));</code></pre>",
+                "<p>One thing to note is that namespaces can be nested so you can do stuff like namespace <code>Utility.Messaging</code> to nest a <code>Messaging</code> namespace under <code>Utility</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Relative vs. Non-relative module imports.",
+            "answer": [
+                "<p>Module imports are resolved differently based on whether the module reference is relative or non-relative.</p>",
+                "<p>A <i>relative import</i> is one that starts with <code>/</code>, <code>./</code> or <code>../</code>. Some examples include:</p>",
+                "<ul class=\"none\"><li><code>import Entry from \"./components/Entry\";</code></li>",
+                "<li><code>import { DefaultHeaders } from \"../constants/http\";</code></li></ul>",
+                "<p>Any other import is considered non-relative. Some examples include:</p>",
+                "<ul class=\"none\"><li><code>import * as $ from \"jquery\";</code></li>",
+                "<li><code>import { Component } from \"@angular/core\";</code></li></ul>",
+                "<p>A relative import is resolved relative to the importing file and cannot resolve to an ambient module declaration. We should use relative imports for our own modules that are guaranteed to maintain their relative location at runtime.</p>",
+                "<p>A non-relative import can be resolved relative to baseUrl, or through path mapping.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Triple-Slash Directive? What are some of the triple-slash directives?",
+            "answer": [
+                "<p>Triple-slash directives are single-line comments containing a single XML tag. The contents of the comment are used as compiler directives.</p>",
+                "<p>Triple-slash directives are <b>only</b> valid at the top of their containing file. A triple-slash directive can only be preceded by single or multi-line comments, including other triple-slash directives. If they are encountered following a statement or a declaration they are treated as regular single-line comments, and hold no special meaning. Below are some of the triple-slash directives in TypeScript:</p>",
+                "<ul class=\"none\"><li>The <code>/// &lt;reference path=\"...\" /&gt;</code> directive is the most common of this group. It serves as a declaration of dependency between files. Triple-slash references instruct the compiler to include additional files in the compilation process. If the compiler flag <code>--noResolve</code> is specified, triple-slash references are ignored; they neither result in adding new files, nor change the order of the files provided.</li>",
+                "<li>Similar to a <code>/// &lt;reference path=\"...\" /&gt;</code> directive, this directive serves as a declaration of dependency; a <code>/// &lt;reference types=\"...\" /&gt;</code> directive, however, declares a dependency on a package. For example, including <code>/// &lt;reference types=\"node\" /&gt;</code> in a declaration file declares that this file uses names declared in <code>@types/node/index.d.ts</code>; and thus, this package needs to be included in the compilation along with the declaration file.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Decorators?",
+            "answer": [
+                "<p>Decorators are simply functions that modify a class, property, method, or method parameter. The syntax is an &#x201C;<code>@</code>&#x201D; symbol followed by a function.</p>",
+                "<p>In other words, Decorators are functions that take their target as the argument. With decorators we can run arbitrary code around the target execution or even entirely replace the target with a new definition. There are 4 things we can decorate in Typescript: constructors, methods, properties and parameters. </p>",
+                "<p>Below is the example of class decorators. A class decorator is a function that accepts a constructor function and returns a contstructor function. Returning undefined is equivalent to returning the constructor function passed in as argument.</p>",
+                "<pre><code>const log = <T>(originalConstructor: new(...args: any[]) => T) => {<br/>  function newConstructor(... args) {<br/>      console.log(\"Logging arguments: \", args.join(", "));<br/>      new originalConstructor(args);<br/>  }<br/>  newConstructor.prototype = originalConstructor.prototype;<br/>  return newConstructor;<br/>}<br/> <br/>@log<br/>class Friend {<br/>  constructor(name: string, age: number) {}<br/>}<br/> <br/>new Friend(\"John Doe\", 25);<br/>//Logging arguments: John Doe, 25</code></pre>",
+                "<p>The <code>log</code> decorator replaces the original constructor with a function that logs the arguments and than invokes the original constructor.</p>"
+            ],
+            "additional": "http://www.sparkbit.pl/typescript-decorators/, https://gist.github.com/remojansen/16c661a7afd68e22ac6e",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Method decorators.",
+            "answer": [
+                "<p>A method decorator is a function that accepts 3 arguments: the object on which the method is defined, the key for the property (a string name or symbol) and a property descriptor. The function returns a property descriptor; returning undefined is equivalent to returning the descriptor passed in as argument.</p>"
+                "<pre><code>const log = (target: Object, key: string | symbol, descriptor: TypedPropertyDescriptor<Function>) => {<br/>  return {<br/>    value: function( ... args: any[]) {<br/>      console.log(\"Arguments: \", args.join(\", \"));<br/>      const result = descriptor.value.apply(target, args);<br/>      console.log(\"Result: \", result);<br/>      return result;<br/>    }<br/>  }<br/>}<br/> <br/>class Calculator {<br/>  @log<br/>  add(x: number, y: number) {<br/>    return x + y;<br/>  }<br/>}<br/> <br/>new Calculator().add(1, 3);<br/>//Arguments: 1, 3<br/>//Result: 4</code></pre>",
+                "<p>The <code>log</code> decorator replaces the original function with a new function that logs received arguments, executes the original method and stores the result in a local variable, logs and returns the result.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Property decorators.",
+            "answer": [
+                "<p>Property decorators are similar to method decorators. The only difference is they do not accept property descriptor as argument and do not return anything.</p>",
+                "<pre><code>const log = (target: Object, key: string | symbol) => {<br/>  let value = target[key];<br/> <br/>  const getter = () =>  {<br/>    console.log(\"Getting value: \", value);<br/>    return value;<br/>  };<br/>  const setter = (val) => {<br/>    console.log(\"Setting value: \", val);<br/>    value = val;<br/>  }<br/>  Reflect.deleteProperty[key];<br/>  Reflect.defineProperty(target, key, {<br/>    get: getter,<br/>    set: setter<br/>  });<br/>}<br/> <br/>class Box<T> {<br/>  @log<br/>  item: T;<br/>}<br/> <br/>const numberInABox = new Box<number>();<br/>numberInABox.item = 12;<br/>numberInABox.item;<br/> <br/>//Setting value: 12<br/>//Getting value: 12</code></pre>",
+                "<p>The <code>log</code> decorator above redefines the decorated property on the object.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Parameter decorator.",
+            "answer": [
+                "<p>A parameter decorator is not supposed to modify the behavior of a constructor, method or property. A parameter decorator should only be used to generate some sort of metadata. Once the metadata has been created we can use another decorator to read it.</p>",
+                "<pre><code>class Person {<br/>  public name: string;<br/>  public surname: string;<br/><br/>  constructor(name : string, surname : string) { <br/>    this.name = name;<br/>    this.surname = surname;<br/>  }<br/><br/>  public saySomething(@logParameter something : string) : string { <br/>    return this.name + \" \" + this.surname + \" says: \" + something; <br/>  }<br/>}</code></pre>",
+                "<p>A parameter decorator accepts 3 parameters: The <b>prototype</b> of the class being decorated, the <b>name</b> of the method that contains the parameter being decorated and the <b>index</b> of that parameter being decorated.</p>",
+                "<pre><code>function logParameter(target: any, key : string, index : number) {<br/>  var metadataKey = `log_${key}_parameters`;<br/>  if (Array.isArray(target[metadataKey])) {<br/>    target[metadataKey].push(index);<br/>  }<br/>  else { <br/>    target[metadataKey] = [index];<br/>  }<br/>}</code></pre>",
+                "<p>The parameter decorator above adds a new property (<code>metadataKey</code>) to the class prototype. The new property is an array and contains the indices of the parameters being decorated. We can consider this new property as metadata.</p>"
+            ],
+            "additional": "http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-3",
+            "footer": "",
+            "bookmark": false
+        }
+        {
+            "question": "What is Decorator factory.",
+            "answer": [
+                "<p>A decorator factory is a function that can accept any number of arguments, and must return one of the types of decorator.</p>",
+                "<p>We can implement and consume all the available types of decorator (class, method, property and parameter). By using Decorator factory, we could just consume a decorator everywhere without having to worry about its type as follows</p>"
+                "<pre><code>@log<br/>class Person { <br/><br/>  @log<br/>  public name: string;<br/><br/>  public surname: string;<br/><br/>  constructor(name : string, surname : string) { <br/>    this.name = name;<br/>    this.surname = surname;<br/>  }<br/><br/>  @log<br/>  public saySomething(@log something : string) : string { <br/>    return this.name + \" \" + this.surname + \" says: \" + something; <br/>  }<br/>}</code></pre>",
+                "<p>We can achieve this by wrapping all the decorators with a decorator factory. The decorator factory is able to identify what type of decorator is required by checking the arguments passed to the decorator:</p>",
+                "<pre><code>function log(...args : any[]) {<br/>  switch(args.length) {<br/>    case 1:<br/>      return logClass.apply(this, args);<br/>    case 2:<br/>      return logProperty.apply(this, args);<br/>    case 3:<br/>      if(typeof args[2] === \"number\") {<br/>        return logParameter.apply(this, args);<br/>      }<br/>      return logMethod.apply(this, args);<br/>    default:<br/>      throw new Error(\"Decorators are not valid here!\");<br/>  }<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Declration Merging.",
+            "answer": [
+                "<p><b>Declaration merging</b> means that the compiler merges two separate declarations declared with the same name into a single definition. This merged definition has the features of both of the original declarations. Any number of declarations can be merged; it’s not limited to just two declarations.</p>",
+                "<p>The simplest, and perhaps most common, type of declaration merging is interface merging.</p>",
+                "<pre><code>interface Box {<br/>  height: number;<br/>  width: number;<br/>}<br/><br/>interface Box {<br/>  scale: number;<br/>}<br/><br/>let box: Box = {height: 5, width: 6, scale: 10};</code></pre>",
+                "<p>Not all merges are allowed in TypeScript. Currently, classes can not merge with other classes or with variables.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is JSX? Can we use JSX in TypeScript?",
+            "answer": [
+                "<p>JSX is an embeddable XML-like syntax. It is meant to be transformed into valid JavaScript. JSX came to popularity with the React framework. TypeScript supports embedding, type checking, and compiling JSX directly into JavaScript.</p>",
+                "<p>In order to use JSX in our file: we must name our file with a <code>.tsx</code> extension and should enable <code>jsx</code> option.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the JSX modes TypeScript supports?",
+            "answer": [
+                "<p>TypeScript ships with three JSX modes: <code>preserve</code>, <code>react</code>, and <code>react-native</code>.</p>",
+                "<p>The <code>preserve</code> mode will keep the JSX as part of the output to be further consumed by another transform step (e.g. <i>Babel</i>). Additionally the output will have a <code>.jsx</code> file extension. The <code>react</code> mode will emit <code>React.createElement</code>, does not need to go through a JSX transformation before use, and the output will have a <code>.js</code> file extension. The <code>react-native</code> mode is the equivalent of preserve in that it keeps all JSX, but the output will instead have a <code>.js</code> file extension.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between these two types: <code>string</code> and <code>String</code>? Which one should be used?",
+            "answer": [
+                "<p>The title-cased types (<code>Number</code>, <code>String</code>, <code>Boolean</code> and <code>Object</code>) refer to non-primitive boxed objects that are almost never used appropriately in JavaScript code.</p>",
+                "<p>It is best to use the primitive types <code>number</code>, <code>string</code>, <code>boolean</code> and <code>object</code>.</p>",
+                "<pre><code>/* WRONG */<br/>function reverse(s: String): String;<br/><br/>/* OK */<br/>function reverse(s: string): string;</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Why TypeScript is referred as Optionally Statically Typed Language?",
+            "answer": [
+                "<p>TypeScript is referred as optionally statically typed, which means we can make the compiler to ignore the type of a variable optionally. Using <code>any</code> data type, we can assign any type of value to the variable. TypeScript will not give any error checking during compilation.</p>"
+                "<pre><code>var unknownType: any = 4;<br/>unknownType = \"Okay, I am a string\";<br/>unknownType = false; // set a boolean. No error thrown at compile-time.</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Does TypeScript supports Function overloading?",
+            "answer": [
+                "<p>TypeScript does support function overloading but it is not same like other OO languages. Since JavaScript does not support, we ended up checking the types of our parameters.</p>",
+                "<pre><code>function add(value1: string, value2: string) : number;<br/>function add(value1: number, value2: number) : number {<br/>  if(typeof value1 === \"string\") {<br/>    value1 = parseInt(value1, 10);<br/>  }<br/>  if(typeof value2 === \"string\") {<br/>    value2 = parseInt(value2, 10);<br/>  }<br/>  return value1 + value2;<br/>}</code></pre>",
+                "<p>We could re-write the same function with union operator instead of overload.</p>",
+                "<pre><code>function add(value1: number | string, value2: number | string) : number {<br/>  if(typeof value1 === \"string\") {<br/> value1 = parseInt(value1, 10);<br/>  }<br/>  if(typeof value2 === \"string\") {<br/>    value2 = parseInt(value2, 10);<br/>  }<br/>  return value1 + value2;<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is TypeScript Definition Manager?",
+            "answer": [
+                "<p>When using TypeScript, you will need TypeScript definition files to work with external libraries. TypeScript Definition Manager (TSD) is a package manager to search and install TypeScript definition files directly from the community driven <b>DefinitelyTyped</b> repository.</p>",
+                "<p>Consider we need typings file for <code>jQuery</code> so that we can use jQuery with TypeScript. This command, <code>tsd query jquery --action install</code> (we need to have <code>tsd</code> installed), finds and install the typings file for <code>jQuery</code>. Now we can include the below directive at the top of the file where we want to use <code>jQuery</code>.</p>",
+                "<pre><code>/// <reference path=\"typings/jquery/jquery.d.ts\" /></code></pre>",
+                "<p>TSD is now offically deprecated, and we should use <code>typings</code> instead."
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
             "question": "",
             "answer": [
                 "<p></p>",
