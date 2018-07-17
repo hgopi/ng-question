@@ -1,0 +1,364 @@
+{
+    "questions": [        
+        {
+            "question": "What is ES or ECMAScript or ES6?",
+            "answer": [
+                "<p>When JavaScript was developed, the name itself was chosen for marketing reasons since Java was getting popular around the time. But to standardize the language and its specification, it was submitted to ECMA international (European Computer Manufacturers Association), a body for standardization of information and communication technology. Eventually the language standardized in ECMA is called ECMAScript of ES. The first edition was released on June 1997.</p>",
+                "<p>The ES6 is the sixth edition of the language and was released on June 2015. It was initally known as ECMAScript 6 (ES6) and later renamed to ECMAScript 2015. This edition includes many new features like class, modules, iterators, for/of loop, arrow functions, typed arrays, promises, reflection.</p>",
+                "<p>In the next year on June 2016, ECMAScript 6 (ES6) was released and later renamed to ECMAScript 2015. This edition intended to continue the themes of language reform, includes two new features: exponentiation operator (**) and Array.prototype.includes.</p>",
+                "<p>And then on June 2017, ECMAScript 2017 (ES2017), the eighth edition released which includes features for concurrency and atomics, syntactic integration with promises (async/await).</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are some of the features of ES6?",
+            "answer": [
+                "<p>Some of the new features of ES6 are:</p>",
+                "<ul class=\"none\"><li>Support for constants (also known as \"immutable variables\")</li>",
+                "<li>Block-Scope support for both variables, constants, functions</li>",
+                "<li>Arrow functions/li>",
+                "<li>Extended Parameter Handling</li>",
+                "<li>Template Literals and Extended Literals</li>",
+                "<li>Enhanced Regular Expression</li>",
+                "<li>Destructuring Assignment</li>",
+                "<li>Modules, Classes, Iterators, Generators</li>",
+                "<li>Enhanced Object Properties</li>",
+                "<li>Support for Map/Set & WeakMap/WeakSet</li>",
+                "<li>Promises, Meta-Programming ,Internationalization and Localization</li></ul>",
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to use ES6?",
+            "answer": [
+                "<p>Since its release, many JavaScript environments like browsers and Node.js are actively working on implementing the language features. As of now, the Chrome and Safari has nearly 100% support for ES6 features. And also ES6 is backward compatible which means our old code is still valid in ES6. But in order to use it across all platforms, we need to transpile (transformation + compiling) the ES6 code to ES5. Babel is an awesome tool that let us do this job.</p>",
+                "<p>We can install babel globally through npm and can integrate it with our task runner or bundler like webpack to automatically transpiles our code into ES5 for production.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>let</code> and <code>const</code>? And how it differs from <code>var</code>?",
+            "answer": [
+                "<p>Previously, when we declare any variable using <code>var</code>, it was function scoped. Meaning the variable can be accessed within the function. This leads to wrap the code in a function whenever we need to create a new scope. </p>",
+                "<p>But <code>let</code> and <code>const</code> uses block scoping. This means the variable declared using these keywords only exist within the innermost block that surronds them.</p>",
+                "<pre><code>let a = 5;<br/>{<br/>  let a = 3;<br/>  console.log('inner a:', a); // inner a: 3<br/>}<br/>console.log('outer a: ', a) // outer a: 5;</code></pre>",
+                "<p>If we declare a <code>let</code> variable inside a block like if condition, for loop, it can be accessed within the block.</p>",
+                "<pre><code>if(true) {<br/>  let i = 0;<br/>  console.log(i); // prints 0;<br/>}<br/>console.log(i); // throws ReferenceError: i is not defined</code></pre>",
+                "<p>Also we can not re-declare the same variable with the same scope.<p>",
+                "<pre><code>{<br>  let a = 0;<br/>  console.log(a); // 0<br/>  let a = 1; //TypeError: Identifier 'a' has already been declared<br/>}</code></pre>",
+                "<p>Unlike <code>const</code>, <code>const</code> is immutable. It means the value must be given at the time of the declaration and it can not be re-assigned or changes. Although we can not change the value of the <code>const</code> but we can mutate them.</p>",
+                "<pre><code>{<br>  const a = 0;<br/>  a = 1; // TypeError: Assignment to constant variable<br/>  const b = [ 1, 2 ];<br/>  b.push(3); // [1, 2, 3]<br/>  b[3] = 4; // [1, 2, 3, 4]<br/>}</code></pre>",
+                "<p>It is always a good practice to use <code>let</code> and <code>const</code> over <code>var</code> and if we are not changing the value of the variable we should use <code>const</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Arrow function? What are all its uses? How it differs from normal function?",
+            "answer": [
+                "<p>Arrow functions are a short-hand notation for writing functions in ES6. The arrow function definition consists of a parameter list <code>( ... )</code>, followed by the <code>=></code> marker and a function body. For single-argument functions, the parentheses may be omitted.</p>",
+                "<pre><code>// Classical Function Expression<br/><br/>function add(a, b) {<br/>    return a + b;<br/>};<br/><br/>// Implementation with arrow function<br/><br/>const add = (a, b) => a + b;<br/><br/>// With single argument, no parentheses required<br/><br/>const add5 = a => 5 + a;</code></pre>"
+                "<p>If the arrow function is implemented with \"concise body\" (without <code>{}</code>), it does not need an explicit <code>return</code> statement. Note the omitted <code>{ }</code> after the <code>=></code>.</p>",
+                "<p>Arrow functions behavior with <code>this</code> keyword varies from that of normal functions. Each function in JavaScript defines its own this context but arrow functions capture the <code>this</code> value of the nearest enclosing context.</p>",
+                "<pre><code>function Timer() {<br/>    this.seconds = 0;<br/>    setInterval(() => {<br/>        setTimeout(() => {<br/>            this.seconds++; // `this` properly refers to the Timer object<br/>        }, 1000);<br/>    }, 1000);<br/>}</code></pre>",
+                "<p>There are four fundamental differences between arrow functions and <code>function</code> functions</p>",
+                "<ul class=\"none\"><li>They close over <code>this</code>, and do not have their own versions.</li>",
+                "<li>They can have a concise body (without <code>{ }</code>) rather than a verbose one (but they can have a verbose body as well).</li>",
+                "<li>They cannot be used as constructors. E.g., you can't use <code>new</code> with an arrow function. Hence arrow functions do not have a <code>protoype</code> property on them.</li>",
+                "<li>There is no generator syntax for arrow functions. E.g., there is no arrow equivalent to <code>function *foo() { ... }</code>.</li></ul>"                
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Default Function Parameters? How can you handle the parameters of a function which is not passed to it?",
+            "answer": [
+                "<p>ES6 allows you to set default parameters in function definitions. <b>Default function parameters</b> allow formal parameters to be initialized with default values if no value or <code>undefined</code> is passed. Here is a simple illustration.</p>",
+                "<pre><code>const increment = (number, add = 1) => number + 1;<br/>increment(5); // 6</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are Spread and Rest Operators in ES6?",
+            "answer": [
+                "<p>In ES6, <code>...</code> operator is referred to as spread or rest operator, depending on how and where it is used.</p>",
+                "<p>When it used with any iterable such as array expression, objects or string, it acts as to \"spread\" it into individual elements:</p>",
+                "<pre><code>function sum(x, y, z) {<br/>  return x + y + z;<br/>}<br/><br/>const numbers = [1, 2, 3];<br/><br/>console.log(sum(...numbers));<br/>// 6<br/><br/>console.log(sum.apply(null, numbers));<br/>// 6 -> without ES6</code></pre>",
+                "<p>Spread syntax is also great when we need to create a new array or object from the existing one as part of it.</p>"
+                "<pre><code>let parts = [ 3, 4 ];<br/><br/>let series = [ 1, 2, ...parts, 5 ];<br/>// [1, 2, 3, 4, 5]<br/><br/>let defaults = { active: false };<br/>let userData = { userName: 'foo', ...defaults };<br/>//userData = { userName: \"foo\", active: false }</code></pre>",
+                "<p>The <b>rest parameter</b> syntax allows us to represent an indefinite number of arguments as an array. This is also referred as <code>...</code>.</p>",
+                "<pre><code>function sortRestArgs(...theArgs) {<br/>  var sortedArgs = theArgs.sort();<br/>  return sortedArgs;<br/>}<br/><br/>console.log(sortRestArgs(5, 3, 7, 1)); // 1, 3, 5, 7</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the new changes in Object literal notations in ES6?",
+            "answer": [
+                "<p>ES6 allows declaring object literals by providing shorthand syntax for initializing properties from variables and defining function methods. It also enables the ability to have computed property keys in an object literal definition.</p>",                
+                "<pre><code>var a = 'foo', b = 42, c = {};<br/><br/>// shorthand for var o = { a: a, b: b, c: c }<br/>var o = {a, b, c};<br/><br/>// shorthand method<br/>var o = {<br/>	add(a, b) { return a + b }<br/>};<br/><br/>// computed property names<br/>var prop = 'foo';<br/>var o = {<br/>	[prop]: 'bar'<br/>};<br/>// equals var o = { 'foo': 'bar' }</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you use octal and binary numbers in ES6?",
+            "answer": [
+                "<p>ES6 has new support for octal and binary literals. Prependending a number with 0o or 0O would convert it into octal value. Have a look at the following code:</p>",
+                "<pre><code>let oValue = 0o12;<br/>// 10<br/><br/>let bValue = 0b10;<br/>// 2</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you destructure an array or object in ES6? What is the use of array or object destructure ",
+            "answer": [
+                "<p>Using the spread <code>...</code> syntax in ES6, we can destructure an array or object and store their respective values in separate variables. Destructuring helps in avoiding the need for temp variables when dealing with object and arrays.</p>",                
+                "<pre><code>function foo() {<br/>    return [1, 2, 3];<br/>}<br/>let arr = foo(); // [1,2,3]<br/><br/>let [a, b, c] = foo();<br/>console.log(a, b, c); // 1 2 3<br/><br/>function bar() {<br/>    return {<br/>        x: 4,<br/>        y: 5,<br/>        z: 6<br/>    };<br/>}<br/>let { x: a, y: b, z: c } = bar();<br/>console.log(a, b, c); // 4 5 6</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>super</code> keyword in ES6?",
+            "answer": [
+                "<p>The <code>super</code> keyword is used to access and call functions on an object's parent.</p>",
+                "<p>The <code>super.prop</code> and <code>super[expr]</code> expressions are valid in any method definition in both classes and object literals.</p>",                
+                "<pre><code>super([arguments]); // calls the parent constructor.<br/>super.functionOnParent([arguments]);</code></pre>",
+                "<p>Following is a simple example:</p>",
+                "<pre><code>const parent = {<br/>    foo() {<br/>        console.log(\"Hello from the Parent\");<br/>    }<br/>}<br/><br/>const child = {<br/>    foo() {<br/>        super.foo();<br/>        console.log(\"Hello from the Child\");<br/>    }<br/>}<br/><br/>Object.setPrototypeOf(child, parent);<br/>child.foo();<br/>// Hello from the Parent<br/>// Hello from the Child</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is tempalte literals in ES6?",
+            "answer": [
+                "<p>Template literals are string literals allowing embedded expressions. We can use multi-line strings and string interpolation features with them.</p>",
+                "<p>ES6 introduces this easier way to add interpolations which are evaluated automatically.</p>",
+                "<ul class=\"none\"><li><code>`${ ... }`</code> is used for rendering the variables.</li>",
+                "<li><code>`</code> Backtick is used as delimiter.</li></ul>",
+                "<pre><code>let user = 'John Doe';<br/>console.log(`Hi ${user}!`); // Hi John Doe!</code></pre>",
+                "<p>Any newline characters inserted in the source are part of the template literal. Using normal strings, you would have to use the following syntax in order to get multi-line strings.</p>",
+                "<pre><code>console.log('string text line 1\n' +<br/>'string text line 2');<br/>// \"string text line 1<br/>// string text line 2\"</code></pre>",
+                "<p>To get the same effect using template literals, you can now write:</p>",
+                "<pre><code>console.log(`string text line 1<br/>string text line 2`);<br/>// \"string text line 1<br/>// string text line 2\"</code></pre>",
+                "<p>A more advanced form of template literals are tagged templates. Tags allow you to parse template literals with a function. The first argument of a tag function contains an array of string values. The remaining arguments are related to the expressions.</p>",
+                "<pre><code>var person = 'Mike';<br/>var age = 28;<br/><br/>function myTag(strings, personExp, ageExp) {<br/>  var str0 = strings[0]; // \"That \"<br/>  var str1 = strings[1]; // \" is a \"<br/><br/>  // There is technically a string after<br/>  // the final expression (in our example),<br/>  // but it is empty (""), so disregard.<br/>  // var str2 = strings[2];<br/><br/>  var ageStr;<br/>  if (ageExp > 99){<br/>    ageStr = 'centenarian';<br/>  } else {<br/>    ageStr = 'youngster';<br/>  }<br/><br/>  // We can even return a string built using a template literal<br/>  return `${str0}${personExp}${str1}${ageStr}`;<br/>}<br/><br/>var output = myTag`That ${ person } is a ${ age }`;<br/><br/>console.log(output);<br/>// That Mike is a youngster</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain <code>for...in</code> and <code>for...of</code> loops and it differences?",
+            "answer": [
+                "<p>The <code>for...of</code> loop iterating over iterable objects (like string, array, NodeList) for values.</p>",
+                "<pre><code>let iterable = [10, 20, 30];<br/><br/>for (const value of iterable) {<br/>  console.log(value);<br/>}<br/>// 10<br/>// 20<br/>// 30</code></pre>",
+                "<p>The <code>for...in</code> statement iterates over all non-Symbol, enumerable properties of an object.</p>",
+                "<pre><code>var object1 = {a: 1, b: 2, c: 3};<br/><br/>for (let key in object1) {<br/>  console.log(object1[key]);<br/>}<br/>// 1<br/>// 2<br/>// 3</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Map in ES6?",
+            "answer": [
+                "<p>The <code>Map</code> object holds key-value pairs. Any value (both objects and primitive values) may be used as either a key or a value. A <code>Map</code> object iterates its elements in insertion order. <code>Objects</code> are similar to <code>Maps</code> in that both let you set keys to values, retrieve those values, delete keys, and detect whether something is stored at a key. However, there are important differences between them.</p>",
+                "<ul class=\"none\"><li>The keys of an <code>Object</code> are <code>Strings</code> and <code>Symbols</code>, whereas they can be any value for a <code>Map</code>, including functions, objects, and any primitive.</li>",
+                "<li>The keys in <code>Map</code> are ordered while keys added to object are not. Thus, when iterating over it, a Map object returns keys in order of insertion.</li>",
+                "<li>You can get the size of a <code>Map</code> easily with the size property, while the number of properties in an Object must be determined manually.</li>",
+                "<li>A <code>Map</code> is an iterable and can thus be directly iterated, whereas iterating over an Object requires obtaining its keys in some fashion and iterating over them.</li></ul>",
+                "<pre><code>var myMap = new Map();<br/><br/>var keyString = 'a string',<br/>    keyObj = {},<br/>    keyFunc = function() {};<br/><br/>// setting the values<br/>myMap.set(keyString, \"value associated with 'a string'\");<br/>myMap.set(keyObj, 'value associated with keyObj');<br/>myMap.set(keyFunc, 'value associated with keyFunc');<br/><br/>myMap.size; // 3<br/><br/>// getting the values<br/>myMap.get(keyString);    // \"value associated with 'a string'\"<br/>myMap.get(keyObj);       // \"value associated with keyObj\"<br/>myMap.get(keyFunc);      // \"value associated with keyFunc\"<br/><br/>myMap.get('a string');   // \"value associated with 'a string'\"<br/>                         // because keyString === 'a string'<br/>myMap.get({});           // undefined, because keyObj !== {}<br/>myMap.get(function() {}) // undefined, because keyFunc !== function () {}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>WeakMap</code> in ES6?",
+            "answer": [
+                "<p>The <code>WeakMap</code> is same as <code>Map</code> where it is a collection of key/value pairs. But in <code>WeakMap</code>, the <b>keys must be objects</b> and the values can be arbitrary values. The object references in the keys are held weakly, meaning that they are a target of garbage collection (GC) if there is no other reference to the object anymore. The <code>WeakMap</code> API is the same as the <code>Map</code> API.</p>",
+                "<p>However, One difference to Map objects is that WeakMap keys are not enumerable. And there are no methods giving us a list of keys. If they were, the list would depend on the state of garbage collection, introducing non-determinism. If we want to have a list of keys, we should use a <code>Map</code>.</p>",
+                "<pre><code>var wm1 = new WeakMap();<br/>var o1 = {};<br/><br/>wm1.set(o1, 37);<br/><br/>wm1.get(o1); // 37<br/><br/>wm1.has(o1); // true<br/><br/>wm3.set(o1, 40);<br/>wm3.get(o1); // 40<br/><br/>wm1.has(o1); // true<br/>wm1.delete(o1);<br/>wm1.has(o1); // false</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>Set</code>?",
+            "answer": [
+                "<p><code>Set</code> objects are collections of unique values. Duplicate values are ignored, as the collection must have all unique values. The values can be primitive types or object references.</p>",                
+                "<pre><code>var mySet = new Set();<br/><br/>mySet.add(1); // Set [ 1 ]<br/>mySet.add(5); // Set [ 1, 5 ]<br/>mySet.add(5); // Set [ 1, 5 ] -- ignored<br/>mySet.add('some text'); // Set [ 1, 5, 'some text' ]<br/>var o = {a: 1, b: 2};<br/>mySet.add(o);<br/><br/>mySet.size; // 4<br/><br/>console.log(mySet); // Set [ 1, 5, 'some text', Object {a: 1, b: 2} ]</code></pre>",
+                "<p>Also, <code>NaN</code> and <code>undefined</code> can also be stored in a <code>Set</code>. <code>NaN</code> is considered the same as <code>NaN</code> (even though <code>NaN !== NaN</code>).</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>WeakSet</code>?",
+            "answer": [
+                "<p>The <code>WeakSet</code> object lets you store weakly held objects in a collection.</p>",
+                "<p><code>WeakSet</code> objects are collections of objects. An object in the <code>WeakSet</code> may occur only once; it is unique in the <code>WeakSet</code>'s collection. The main differences to the <code>Set</code> object are:</p>",
+                "<ul class=\"none\"><li>Unlike <code>Set</code>, <code>WeakSet</code>s are collections of <b>objects only</b> and not of arbitrary values of any type.</li>",
+                "<li>The <code>WeakSet</code> is weak: References to objects in the collection are held weakly. If there is no other reference to an object stored in the <code>WeakSet</code>, they can be garbage collected. That also means that there is no list of current objects stored in the collection. WeakSets are not enumerable.</li></ul>",
+                "<pre><code>var ws = new WeakSet();<br/>var window = {};<br/>var foo = {};<br/><br/>ws.add(window);<br/>ws.add(obj);<br/><br/>ws.has(window); // true<br/>ws.has(foo);    // false, foo has not been added to the set<br/><br/>ws.delete(window); // removes window from the set<br/>ws.has(window);    // false, window has been removed</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Classes in ES6?",
+            "answer": [
+                "<p>ES6 introduces new <code>Class</code> syntax. However, ES6 class is not a new object-oriented inheritance model. They just serve as a syntactical sugar over JavaScript's existing prototype-based inheritance.</p>",
+                "<p>One way to look at a class in ES6 is just a new syntax to work with prototypes and contructor functions that we'd use in ES5. Functions defined using the <code>static</code> keyword implement static/class functions on the class. The following is an example of class declaration:</p>",
+                "<pre><code>class Polygon {<br/>  constructor(height, width) {<br/>    this.area = height * width;<br/>  }<br/>}<br/><br/>console.log(new Polygon(4,3).area);<br/>// expected output: 12</code></pre>",
+                "<p>The <code>Class</code> body of a class declaration is executed in strict mode. The constructor property is optional. We can also use <code>extend</code> to allow child class to inherit from parent class in ES6. It is important to note that the derived constructor must call <code>super()</code>.</p>",
+                "<pre><code>class Car {<br/>    constructor() {<br/>        console.log(\"Creating a new car\");<br/>    }<br/>}<br/><br/>class Porsche extends Car {<br/>    constructor() {<br/>        super();<br/>        console.log(\"Creating Porsche\");<br/>    }<br/>}<br/><br/>let c = new Porsche();<br/>// Creating a new car<br/>// Creating Porsche</code></pre>",
+                "<p>We can not re-declare the class again and trying to do so will throw SyntaxError. <code>Class</code> declarations are not hoisted. You first need to declare your class and then access it, otherwise ReferenceError will be thrown. Also There is no need to use function keyword when defining functions inside a class definition.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>Class</code> expression?",
+            "answer": [
+                "<p>The <code>Class</code> expression is one way to define a class in ES6. Similar to function expressions, class expressions can be named or unnamed. If named, the name of the class is local to the class body only. JavaScript classes use prototype-based inheritance.</p>",
+                "<pre><code>var Rectangle = class {<br/>  constructor(height, width) {<br/>    this.height = height;<br/>    this.width = width;<br/>  }<br/>  area() {<br/>    return this.height * this.width;<br/>  }<br/>}<br/><br/>console.log(new Rectangle(5,8).area());<br/>// expected output: 40<br/></code></pre>",
+                "<p>A class expression has a similar syntax to a class statement (declaration). However, with class expressions, you are able to omit the class name (\"binding identifier\"), which you can't with class statements. Additionally, class expressions allow you to redefine/re-declare classes and don't throw any type errors like class declaration. The constructor property is optional. And, typeof the classes generated using this keyword will always be \"function\".</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>Symbol</code> in ES6?",
+            "answer": [
+                "<p>A <code>Symbol</code> is a unique and immutable data type introduced in ES6. The purpose of a symbol is to generate a unique identifier but you can never get any access to that identifier. Symbol is a primitive value and can have an optional description, but for debugging purposes only.</p>",
+                "<p>Here’s how you create a symbol:</p>",
+                "<pre><code>const sym = Symbol(\"some optional description\");<br/>console.log(typeof sym); // symbol</code></pre>",
+                "<p>Note that you cannot use <code>new</code> with <code>Symbol()</code>. If a symbol is used as a property/key of an object, it’s stored in a special way that the property will not show up in a normal enumeration of the object’s properties.</p>",
+                "<pre><code>const o = {<br/>    val: 10,<br/>    [Symbol(\"random\")]: \"I'm a symbol\",<br/>};<br/><br/>console.log(Object.getOwnPropertyNames(o)); // val</code></pre>",
+                "<p>To retrieve an object’s symbol properties, use <code>Object.getOwnPropertySymbols(o)</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is iterators in ES6?",
+            "answer": [
+                "<p>An iterator accesses the items from a collection one at a time, while keeping track of its current position within that sequence. It provides a <code>next()</code> method which returns the next item in the sequence. This method returns an object with two properties: <code>done</code> and <code>value</code>.</p>",
+                "<p>ES6 has <code>Symbol.iterator</code> which specifies the default iterator for an object. Whenever an object needs to be iterated (such as at the beginning of a <code>for..of</code> loop), its <code>@@iterator</code> method is called with no arguments, and the returned iterator is used to obtain the values to be iterated.</p>",
+                "<pre><code>const arr = [11,12,13];<br/>const itr = arr[Symbol.iterator]();<br/><br/>itr.next(); // { value: 11, done: false }<br/>itr.next(); // { value: 12, done: false }<br/>itr.next(); // { value: 13, done: false }<br/><br/>itr.next(); // { value: undefined, done: true }</code></pre>",
+                "<p>Some built-in types have a default iteration behavior, while other types (such as Object) do not. The built-in types with a <code>@@iterator</code> method are:</p>",
+                "<ul class=\"none\"><li><code>Array.prototype[@@iterator]()</code></li>",
+                "<li><code>TypedArray.prototype[@@iterator]()</code></li>",
+                "<li><code>String.prototype[@@iterator]()</code></li>",
+                "<li><code>Map.prototype[@@iterator]()</code></li>",
+                "<li><code>Set.prototype[@@iterator]()</code></li></ul>",
+                "<p>We can make our own iterables for objects like below:</p>",
+                "<pre><code>var myIterable = {}<br/>myIterable[Symbol.iterator] = function* () {<br/>    yield 1;<br/>    yield 2;<br/>    yield 3;<br/>};<br/>[...myIterable] // [1, 2, 3]</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Generator function?",
+            "answer": [
+                "<p>Generator functions are a new feature in ES6 that allow a function to generate many values over time by returning an object which can be iterated over to pull values from the function one value at a time.</p>",
+                "<p>A generator function returns an <b>iterable object</b> when it's called. It is written using the new <code>*</code> syntax as well as the new yield keyword introduced in ES6.</p>",
+                "<pre><code>function *infiniteNumbers() {<br/>    let n = 1;<br/>    while (true) {<br/>        yield n++;<br/>    }<br/>}<br/><br/>const numbers = infiniteNumbers(); // returns an iterable object<br/><br/>numbers.next(); // { value: 1, done: false }<br/>numbers.next(); // { value: 2, done: false }<br/>numbers.next(); // { value: 3, done: false }</code></pre>",
+                "<p>Each time yield is called, the yielded value becomes the next value in the sequence. Also, note that generators compute their yielded values on demand, which allows them to efficiently represent sequences that are expensive to compute, or even infinite sequences.</p>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain Promises in ES6?",
+            "answer": [
+                "<p>ES6 has native support for promises. A promise is an object that is waiting for an asynchronous operation to complete, and when that operation completes, the promise is either fulfilled(resolved) or rejected.</p>",
+                "<pre><code>var promise1 = new Promise(function(resolve, reject) {<br/>  setTimeout(resolve, 100, 'foo');<br/>});<br/><br/>console.log(promise1);<br/>// expected output: [object Promise]<br/></code></pre>"
+                "<p>A Promise is a proxy for a value not necessarily known when the promise is created. It allows us to associate handlers with an asynchronous action's eventual success value or failure reason. This lets asynchronous methods return values like synchronous methods: instead of immediately returning the final value, the asynchronous method returns a promise to supply the value at some point in the future. A Promise is in one of these states:</p>",
+                "<ul class=\"none\"><li>pending: initial state, neither fulfilled nor rejected.</li>",
+                "<li>fulfilled: meaning that the operation completed successfully.</li>",
+                "<li>rejected: meaning that the operation failed.</li></ul>",
+                "<p>A pending promise can either be fulfilled with a value, or rejected with a reason (error). When either of these options happens, the associated handlers queued up by a promise's then method are called.</p>",
+                "<pre><code>const p = new Promise((resolve, reject) => {  <br/>    if (someCondition) {<br/>        resolve(promiseResolveValue);  // fulfilled successfully<br/>    } else {<br/>        reject(promiseRejectvalue);  // error, rejected<br/>    }<br/>});<br/><br/>p.then((val) => console.log(\"Promise Resolved\", val),<br/>       (err) => console.log(\"Promise Rejected\", err));</code></pre>",
+                "<p>When returning a promise, the resolved value of the promise will get passed to the next callback to effectively chain them together. This is a simple technique to avoid \"callback hell\".</p>",
+                "<pre><code>const hello = new Promise((resolve, reject) => { resolve(\"Hello\") });<br/><br/>hello.then((str) => `${str} World`)<br/>     .then((str) => `${str}!`)<br/>     .then((str) => console.log(str)) // Hello World!</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>Proxy</code> and <code>Reflect</code> in ES6?",
+            "answer": [
+                "<p>ES6 introduced <code>Proxy</code> objects allow you to intercept certain operations and to implement custom behaviors. For example getting a property on an object:</p>",
+                "<pre><code>var handler = {<br/>  get: function(target, name) {<br/>    return name in target ? target[name] : 42;<br/>  }<br/>};<br/><br/>var p = new Proxy({}, handler);<br/>p.a = 1;<br/>console.log(p.a, p.b); // 1, 42</code></pre>",
+                "<p>The <code>Proxy</code> object defines a target (an empty object here) and a handler object in which a <code>get</code> trap is implemented. Here, an object that is proxied will not return <code>undefined</code> when getting undefined properties, but will instead return the number <code>42</code>.</p>",
+                "<p><code>Reflect</code> is a built-in object that provides methods for interceptable JavaScript operations. The methods are the same as those of the proxy handlers. <code>Reflect</code> is not a function object.</p>",
+                "<p><code>Reflect</code> helps with forwarding default operations from the handler to the target. With <code>Reflect.has()</code> for example, you get the in operator as a function:</p>",
+                "<pre><code>Reflect.has(Object, 'assign'); // true</code></pre>",
+                "<p><code>Reflect</code> can also be used instead of <code>Function.prototype.apply()</code> method to call a function with a given <code>this</code> value and <code>arguments</code> provided as an array. With <code>Reflect</code> this becomes less verbose and easier to understand:</p>",
+                "<pre><code>// instead of <br/>Function.prototype.apply.call(Math.floor, undefined, [1.75]);<br/><br/>Reflect.apply(Math.floor, undefined, [1.75]); // 1</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain <code>async</code> and <code>await</code>?",
+            "answer": [
+                "<p><code>async</code> functions were introduced in ES8 (ECMAScript2017) and serve as a new feature for cleaner handling of Promises responses, errors and more.</p>",
+                "<p>The <code>async</code> function declaration defines an asynchronous function, which returns an AsyncFunction object. An asynchronous function is a function which operates asynchronously via the event loop, using an implicit <code>Promise</code> to return its result. But the syntax and structure of your code using async functions is much more like using standard synchronous functions.</p>",
+                "<pre><code>function resolveAfter2Seconds() {<br/>  return new Promise(resolve => {<br/>    setTimeout(() => {<br/>      resolve('resolved');<br/>    }, 2000);<br/>  });<br/>}<br/><br/>async function asyncCall() {<br/>  console.log('calling');<br/>  var result = await resolveAfter2Seconds();<br/>  console.log(result);<br/>  // expected output: \"resolved\"<br/>}<br/><br/>asyncCall();<br/></code></pre>",
+                "<p>An async function can contain an <code>await</code> expression that pauses the execution of the <code>async</code> function and waits for the passed Promise's resolution, and then resumes the <code>async</code> function's execution and returns the resolved value.</p>",
+                "<p>Remember, the <code>await</code> keyword is only valid inside <code>async</code> functions. If we use it outside of an <code>async</code> function's body, we will get a <code>SyntaxError</code>.</p>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<pre><code></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+    ]
+}
