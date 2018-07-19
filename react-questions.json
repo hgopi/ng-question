@@ -391,15 +391,152 @@
             "bookmark": false
         },
         {
-            "question": "",
+            "question": "How do you do type check in ReactJS? What is <code>React.PropTypes</code>?",
             "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
+                "<p>As our app grows, we can catch a lot of bugs with typechecking. We can use <code>Flow</code> or <code>TypeScript</code> for some applications. But React has some built-in typechecking abilities. To run typechecking on the props for a component, we can assign the special <code>propTypes</code> property:</p>",
+                "<pre><code>import PropTypes from 'prop-types';<br/><br/>class Greeting extends React.Component {<br/>  render() {<br/>    return (<br/>      <h1>Hello, {this.props.name}</h1><br/>    );<br/>  }<br/>}<br/><br/>Greeting.propTypes = {<br/>  name: PropTypes.string<br/>};</code></pre>",
+                "<p><code>PropTypes</code> exports a range of validators that can be used to make sure the data we receive is valid. In this example, we're using <code>PropTypes.string</code>. When an invalid value is provided for a <code>prop</code>, a warning will be shown in the JavaScript console. For performance reasons, <code>propTypes</code> is only checked in development mode.</p>",
+                "<p>ReactJS ships with different validators. Some of them are:</p>",
+                "<pre><code>MyComponent.propTypes = {<br/>  // You can declare that a prop is a specific JS type. By default, these<br/>  // are all optional.<br/>  optionalArray: PropTypes.array,<br/>  optionalBool: PropTypes.bool,<br/>  optionalFunc: PropTypes.func,<br/>  optionalNumber: PropTypes.number,<br/>  optionalObject: PropTypes.object,<br/>  optionalString: PropTypes.string,<br/>  optionalSymbol: PropTypes.symbol,<br/><br/>  // A React element.<br/>  optionalElement: PropTypes.element,<br/><br/>  // You can ensure that your prop is limited to specific values by treating<br/>  // it as an enum.<br/>  optionalEnum: PropTypes.oneOf(['News', 'Photos']),<br/><br/>  // An object taking on a particular shape<br/>  optionalObjectWithShape: PropTypes.shape({<br/>    color: PropTypes.string,<br/>    fontSize: PropTypes.number<br/>  }),<br/><br/>  // You can chain any of the above with `isRequired` to make sure a warning<br/>  // is shown if the prop isn't provided.<br/>  requiredFunc: PropTypes.func.isRequired,<br/><br/>  // A value of any data type<br/>  requiredAny: PropTypes.any.isRequired<br/><br/>};</code></pre>",                
+                "<p>We can define default values for your props by assigning to the special <code>defaultProps</code> property:</p>",
+                "<pre><code>class Greeting extends React.Component {<br/>  render() {<br/>    return (<br/>      <h1>Hello, {this.props.name}</h1><br/>    );<br/>  }<br/>}<br/><br/>// Specifies the default values for props:<br/>Greeting.defaultProps = {<br/>  name: 'Stranger'<br/>};<br/><br/>// Renders \"Hello, Stranger\":<br/>ReactDOM.render(<br/>  <Greeting />,<br/>  document.getElementById('example')<br/>);</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Is <code>setState()</code> is async? Why is <code>setState()</code> in React Async instead of Sync?",
+            "answer": [
+                "<p><code>setState()</code> actions are asynchronous and are batched for performance gains. This is explained in documentation as below.</p>",
+                "<p><code>setState()</code> does not immediately mutate this.state but creates a pending state transition. Accessing this.state after calling this method can potentially return the existing value. There is no guarantee of synchronous operation of calls to setState and calls may be batched for performance gains.</p>",
+                "<p>This is because setState alters the state and causes rerendering. This can be an expensive operation and making it synchronous might leave the browser unresponsive. Thus the setState calls are asynchronous as well as batched for better UI experience and performance.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>render()</code> in React? And explain its purpose?",
+            "answer": [
+                "<p>Each React component must have a <code>render()</code> mandatorily. It returns a single React element which is the representation of the native DOM component. If more than one HTML element needs to be rendered, then they must be grouped together inside one enclosing tag such as <code>&lt;form&gt;</code>, <code>&lt;group&gt;</code>, <code>&lt;div&gt;</code> etc. This function must be kept pure i.e., it must return the same result each time it is invoked.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is SyntheticEvent?",
+            "answer": [
+                "<p>In React, events such as MouseEvents and KeyboardEvents are passed as instances of <code>SyntheticEvent</code>. It is a ross-browser wrapper around the browser's native event. It has the same interface as the browser’s native event, including <code>stopPropagation()</code> and <code>preventDefault()</code>, except the events work identically across all browsers.</p>",
+                "<p>If we need the underlying browser event for some reason, simply use the <code>nativeEvent</code> attribute to get it.</p>",
+                "<p>The <code>SyntheticEvent</code> is pooled. This means that the <code>SyntheticEvent</code> object will be reused and all properties will be nullified after the event callback has been invoked. This is for performance reasons. As such, you cannot access the event in an asynchronous way.</p>",                
+                "<pre><code>function onClick(event) {<br/>  console.log(event); // => nullified object.<br/>  console.log(event.type); // => \"click\"<br/>  const eventType = event.type; // => \"click\"<br/><br/>  setTimeout(function() {<br/>    console.log(event.type); // => null<br/>    console.log(eventType); // => \"click\"<br/>  }, 0);<br/><br/>  // Won't work. this.state.clickEvent will only contain null values.<br/>  this.setState({clickEvent: event});<br/><br/>  // You can still export event properties.<br/>  this.setState({eventType: event.type});<br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are controlled and uncontrolled components in React?",
+            "answer": [
+                "<p>This relates to stateful DOM components (form elements) and the difference:</p>",
+                "<ul class=\"none\"><li>A <b>Controlled Component</b> is one that takes its current value through props and notifies changes through callbacks like onChange. A parent component \"controls\" it by handling the callback and managing its own state and passing the new values as props to the controlled component. You could also call this a \"dumb component\".</li>",
+                "<li>A Uncontrolled Component is one that stores its own state internally, and you query the DOM using a ref to find its current value when you need it. This is a bit more like traditional HTML.</li></ul>",
+                "<p>In most (or all) cases we should use controlled components.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain the components of Redux.",
+            "answer": [
+                "<p>Redux is composed of the following components:</p>",
+                "<ul class=\"none\"><li><b>Action</b> - Actions are payloads of information that send data from our application to our store. They are the only source of information for the store. We send them to the store using <code>store.dispatch()</code>. Primarly, they are just an object describes what happened in our app.</li>",
+                "<li><b>Reducer</b> - Reducers specify how the application's state changes in response to actions sent to the store. Remember that actions only describe what happened, but don't describe how the application's state changes. So this place determines how state will change to an action.</li>",
+                "<li><b>Store</b> - The Store is the object that brings Action and Reducer together. The store has the following responsibilities: Holds application state; Allows access to state via <code>getState()</code>; Allows state to be updated via <code>dispatch(action)</code>; Registers listeners via <code>subscribe(listener)</code>; Handles unregistering of listeners via the function returned by <code>subscribe(listener)</code>.</li></ul>",
+                "<p>It's important to note that we'll only have a single store in a Redux application. When we want to split your data handling logic, we'll use reducer composition instead of many stores.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is an Action? How do you describe an Action?",
+            "answer": [
+                "<p>An action is a plain object describing what happened. For example:</p>",
+                "<pre><code>{ type: 'LIKE_ARTICLE', articleId: 42 }<br/>{ type: 'FETCH_USER_SUCCESS', response: { id: 3, name: 'John Doe' } }<br/>{ type: 'USER_SIGN_IN', user: { id: 3 } }</code></pre>",
+                "<p>We can call <code>store.dispatch(action)</code> from anywhere in our app, including components and XHR callbacks, or even at scheduled intervals.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is unidirectional data flow? How does data flow happening in Redux?",
+            "answer": [
+                "<p>Redux architecture revolves around a <b>strict unidirectional data flow</b>. This means that all data in an application follows the same lifecycle pattern, making the logic of our app more predictable and easier to understand. It also encourages data normalization, so that we don't end up with multiple, independent copies of the same data that are unaware of one another.</p>",
+                "<p>The data lifecycle in any Redux app follows these 4 steps:</p>",
+                "<ul class=\"none\"><li><b>We call <code>store.dispatch(action)</code></b> - We can call <code>store.dispatch(action)</code> from anywhere in our app, including components and XHR callbacks, or even at scheduled intervals. The action carries a payload describing what just happened in our app.</li>",
+                "<li><b>The Redux store calls the reducer function we gave it</b> - The store will pass two arguments to the reducer: the current state tree and the action. The reducer is a pure function. It only computes the next state. It should be completely predictable: calling it with the same inputs many times should produce the same outputs. It shouldn't perform any side effects like API calls or router transitions. These should happen before an action is dispatched.</li>",
+                "<li><b>The root reducer may combine the output of multiple reducers into a single state tree.</b> - Redux ships with a <code>combineReducers()</code> helper function, useful for \"splitting\" the root reducer into separate functions that each manage one branch of the state tree. When you emit an action, <code>combineReducers</code> will call all reducers and then combine the sets of results into a single state tree. We can also use our own root reducer instead of <code>combineReducers</code>.</li>",
+                "<li><b>The Redux store saves the complete state tree returned by the root reducer.</b> - The new state tree returned by the reducer is now the next state of our app. Every listener registered with <code>store.subscribe(listener)</code> will now be invoked; listeners may call <code>store.getState()</code> to get the current state. Now, the UI can be updated to reflect the new state.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Context in React?",
+            "answer": [
+                "<p>Context provides a way to pass data through the component tree without having to pass props down manually at every level.</p>",
+                "<p>In a typical React application, data is passed top-down (parent to child) via props, but this can be cumbersome for certain types of props (e.g. locale preference, UI theme) that are required by many components within an application. Context provides a way to share values like these between components without having to explicitly pass a prop through every level of the tree. For example:</p>",
+                "<pre><code>// Context lets us pass a value deep into the component tree<br/>// without explicitly threading it through every component.<br/>// Create a context for the current theme (with \"light\" as the default).<br/>const ThemeContext = React.createContext('light');<br/><br/>class App extends React.Component {<br/>  render() {<br/>    // Use a Provider to pass the current theme to the tree below.<br/>    // Any component can read it, no matter how deep it is.<br/>    // In this example, we're passing \"dark\" as the current value.<br/>    return (<br/>      <ThemeContext.Provider value=\"dark\"><br/>        <Toolbar /><br/>      </ThemeContext.Provider><br/>    );<br/>  }<br/>}<br/><br/>// A component in the middle doesn't have to<br/>// pass the theme down explicitly anymore.<br/>function Toolbar(props) {<br/>  return (<br/>    <div><br/>      <ThemedButton /><br/>    </div><br/>  );<br/>}<br/><br/>function ThemedButton(props) {<br/>  // Use a Consumer to read the current theme context.<br/>  // React will find the closest theme Provider above and use its value.<br/>  // In this example, the current theme is \"dark\".<br/>  return (<br/>    <ThemeContext.Consumer><br/>      {theme => <Button {...props} theme={theme} />}<br/>    </ThemeContext.Consumer><br/>  );<br/>}</code></pre>",
+                "<p>Context is designed to share data that can be considered “global” for a tree of React components, such as the current authenticated user, theme, or preferred language.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>React.cloneElement</code>? And the difference with <code>this.props.children</code>?",
+            "answer": [
+                "<p><code>React.cloneElement</code> clone and return a new React element using using the passed <code>element</code> as the starting point. The resulting element will have the original element's props with the new props merged in shallowly. New children will replace existing children. <code>key</code> and <code>ref</code> from the original element will be preserved.</p>",
+                "<p><code>React.cloneElement</code> only works if our child is a single React element. For almost everything <code>{this.props.children}</code> is the better solution. Cloning is useful in some more advanced scenarios, where a parent send in an element and the child component needs to change some props on that element or add things like ref for accessing the actual DOM element.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between React Component and React Element?",
+            "answer": [
+                "<p><code>createElement</code> takes in three arguments. The first is a tag name string (div, span, etc), the second is any attributes we want the element to have, the third is contents or the children of the element and when it’s rendered to the DOM (using ReactDOM.render), we’ll have a new DOM node.</p>",                
+                "<pre><code>const element = React.createElement(<br/>  'div',<br/>  {id: 'login-btn'},<br/>  'Login'<br/>)<br/><br/>//Converts into below DOM node<br/>&lt;div id='login-btn'&gt;Login&lt;/div&gt;</code></pre>",
+                "<p>A React component is a function or a Class which optionally accepts input and returns a React element.</p>",                
+                "<p>We don't normally use <code>React.createElement</code> to create the DOM. Instead, we're probably using JSX since JSX is always going to get transpiled to <code>React.createElement</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the second argument that can optionally be passed to <code>setState</code> and what is its purpose?",
+            "answer": [
+                "<p>A callback function which will be invoked when <code>setState</code> has finished and the component is re-rendered.</p>",
+                "<p>Since the <code>setState</code> is asynchronous, which is why it takes in a second callback function. With this function, we can do what we want immediately after state has been updated.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the use of <code>React.Children.map(props.children, () => )</code>",
+            "answer": [
+                "<p>Because sometimes the <code>props.children</code> will not be an array. If we have exactly one element (like below) inside the parent component, the <code>props.children</code> will be an object instead of array. </p>",
+                "<pre><code>&lt;Parent&gt;<br/>  &lt;h1&gt;Welcome.&lt;/h1&gt;<br/>&lt;/Parent&gt;</code></pre>",
+                "<p>That is why we should use <code>React.Children.map</code> because its implemention takes into account that <code>props.children</code> may be an array or an object.</p>",
                 "<pre><code></code></pre>"
             ],
             "additional": "",
@@ -407,186 +544,16 @@
             "bookmark": false
         },
         {
-            "question": "",
+            "question": "How to build the React app for production?",
             "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
-        },
-        {
-            "question": "",
-            "answer": [
-                "<p></p>",
-                "<p></p>",
-                "<pre><code></code></pre>",
-                "<ul class=\"none\"><li></li>",
-                "<li></li>",
-                "<li></li>",
-                "<li></li></ul>",
-                "<pre><code></code></pre>"
-            ],
-            "additional": "",
-            "footer": "",
-            "bookmark": false
+                "<p>Typically we use Webpack's <code>DefinePlugin</code> method to set <code>NODE_ENV</code> to production. This will strip out things like propType validation and extra warnings. On top of that, it's also a good idea to minify our code because React uses Uglify's dead-code elimination to strip out development only code and comments, which will drastically reduce the size of our bundle.</p>"
+            ]
         },
         {
             "question": "What is the difference between React Native and React?",
             "answer": [
                 "<p>React is a JavaScript library, supporting both front end web and being run on the server, for building user interfaces and web applications.</p>",
-                "<p>On the other hand, React Native is a mobile framework that compiles to native app components, allowing us to build native mobile applications (iOS, Android, and Windows) in JavaScript that allows us to use ReactJS to build your components, and implements ReactJS under the hood.</p>",
+                "<p>On the other hand, React Native is a mobile framework that compiles to native app components, allowing us to build native mobile applications (iOS, Android, and Windows) in JavaScript that allows us to use ReactJS to build our components, and implements ReactJS under the hood.</p>",
                 "<p>With React Native it is possible to mimic the behavior of the native app in JavaScript and at the end, we will get platform specific code as the output. We may even mix the native code with the JavaScript if we need to optimize our application further.</p>"
             ],
             "additional": "",
