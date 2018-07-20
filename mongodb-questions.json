@@ -1,0 +1,431 @@
+{
+    "questions": [        
+        {
+            "question": "What is MongoDB and Why we need MongoDB?",
+            "answer": [
+                "<p>MongoDB is the most famous NoSQL open source database management system. It is written in C++ language and developed by MongoDB Inc.</p>",
+                "<p>MongoDB is a document oriented database which means it stores the data in BSON format which is a binary representation of JSON and it contains more data types than JSON.</p>",
+                "<pre><code>{ <br/>  item: \"Book\",<br/>  qty: 25,<br/>  status: \"A\",<br/>  size: { <br/>    h: 14,<br/>    w: 21,<br/>    unit: \"cm\"<br/>  },<br/>  tags: [ \"fiction\" ]<br/>}</code></pre>",
+                "<p>In MongoDB, tables are called as collection, rows are called as document, columns are called as field, joins are called as linking.</p>",
+                "<p>MongoDB is widely supported by most of the languages like, JavaScript, Java, C# and runs on all the available OS.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is difference between MongoDB and SQL or NoSQL between SQL?",
+            "answer": [
+                "<p>In SQL, data is stored in Table format whereas in MongoDB, it stores in JSON format.</p>",
+                "<p>In MongoDB, development is simplified as its documents map naturally to modern, object-oriented programming languages. In SQL, we need object-relational mapping (ORM) layer that translates objects in code to relational tables.</p>",                
+                "<p>The MongoDB provides high performance, high availability, easy scalability rather than SQL Server.</p>",
+                "<p>In MongoDB, each document can store data with different attributes from other documents. With JSON documents, we can add new attributes when we need to, without having to alter a centralized database schema. But in a relational database, this causes downtime and significant performance overhead</p>",
+                "<p>Having all the data for an object in one place also makes it easier for developers to understand and optimize query performance.</p>",
+                "<p>When using JSON data, MySQL drivers do not have the capability to properly and precisely convert JSON into a useful native data type used by the application. This includes different types of numeric values (e.g. floating points, 64-bit integers, decimals) timestamps, and dates, or a Map or List in Java or a Dictionary or List in Python. Instead developers have to manually convert text-based JSON in their application, losing the ability to have fields that can take on multiple data types in different documents (polymorphism) and making the computation, sorting and comparison of values difficult and error-prone. But MongoDB and its drivers supports advanced data types not supported by regular text-based JSON.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is BSON in MongoDB?",
+            "answer": [
+                "<p>MongoDB stores data as BSON documents. BSON is a binary representation of JSON documents, though it contains more data types than JSON. Some of the supported data types are: Double, String, Object, Array, Binary Data, RegEx, Boolean, Date, Null, JavaScript, Timestamp. ObjectId.</p>",
+                "<p>Some of the features of BSON:</p>",
+                "<ul class=\"none\"><li>BSON is lightweight and is an important feature  for any data representation format, especially when used over the network.</li>",
+                "<li>BSON is designed to be traversed easily.</li>",
+                "<li>It is efficient. Encoding data to BSON and decoding from BSON can be performed very quickly in most languages </li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the document structure of MongoDB?",
+            "answer": [
+                "<p>MongoDB documents are composed of field-and-value pairs. For example consider below:</p>",
+                "<pre><code>{<br/>  _id: ObjectId(\"5099803df3f4948bd2f98391\"),<br/>  name: \"John Doe\",<br/>  birth: new Date('Jun 23, 1992'),<br/>  age: 26,<br/>  interests: [ \"Programming\" ]<br/>}</code></pre>",
+                "<p>The <code>name</code>, <code>age</code> and <code>interests</code> are called fields and they are strings. The value of the field (<code>John Doe</code>, <code>26</code>) can be any of the BSON types, including other documents, date, arrays, and arrays of documents.</p>",
+                "<p>The field name <code>_id</code> is reserved by MongoDB for use as a primary key; its value must be unique in the collection, is immutable, and may be of any type other than an array. Documents in MongoDB have the following restrictions on field names:</p>",
+                "<ul class=\"none\"><li>The field names cannot start with the dollar sign ($) character.</li>",
+                "<li>The field names cannot contain the dot (.) character.</li>",
+                "<li>The field names cannot contain the null character.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the size limit of a document?",
+            "answer": [
+                "<p>The maximum BSON document size is 16 megabytes (16MB).</p>",
+                "<p>The maximum document size helps ensure that a single document cannot use excessive amount of RAM or, during transmission, excessive amount of bandwidth. To store documents larger than the maximum size, MongoDB provides the GridFS API.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>_id</code> Field in MongoDB?",
+            "answer": [
+                "<p>In MongoDB, each document stored in a collection requires a unique <code>_id</code> field that acts as a primary key. If an inserted document omits the <code>_id</code> field, the MongoDB driver automatically generates an <code>ObjectId</code> for the <code>_id</code> field.</p>",
+                "<p>The _id field has the following behavior and constraints:</p>",
+                "<ul class=\"none\"><li>By default, MongoDB creates a unique index on the <code>_id</code> field during the creation of a collection.</li>",
+                "<li>The <code>_id</code> field is always the first field in the documents. If the server receives a document that does not have the <code>_id</code> field first, then the server will move the field to the beginning.</li>",
+                "<li>The <code>_id</code> field may contain values of any BSON data type, other than an array.</li></ul>",
+                "<p>While storing values for <code>_id</code>, we can follow these options: Use an ObjectId, Use a natural unique identifier, Generate an auto-incrementing number, Generate a UUID in our application code.</p>",
+                "<p>Most MongoDB driver clients will include the <code>_id</code> field and generate an <code>ObjectId</code> before sending the insert operation to MongoDB; however, if the client sends a document without an <code>_id</code> field, the <code>mongod</code> will add the <code>_id</code> field and generate the <code>ObjectId</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain <code>ObjectId</code> in MongoDB?",
+            "answer": [
+                "<p>ObjectIds are small, likely unique, fast to generate, and ordered. ObjectId values consist of 12 bytes, where the first four bytes are a timestamp that reflect the ObjectId’s creation. Specifically:</p>",
+                "<ul class=\"none\">a 4-byte value representing the seconds since the Unix epoch,<li></li>",
+                "<li>a 3-byte machine identifier,</li>",
+                "<li>a 2-byte process id, and</li>",
+                "<li>a 3-byte counter, starting with a random value.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you create or select a database in MongoDB?",
+            "answer": [
+                "<p>In MongoDB, databases hold collections of documents. To select a database to use issue the <code>use &lt;db&gt;</code> statement, as in the following example:</p>",
+                "<pre><code>use myDB</code></pre>",
+                "<p>If a database does not exist, MongoDB creates the database when we first store data for that database. Some points to be noted when creating database in MongoDB are:</p>",
+                "<ul class=\"none\"><li>Database Name Case Sensitivity</li>",
+                "<li>For MongoDB deployments running on Windows, database names cannot contain any of the following characters: <code>/\\. \"$*<>:|?</code></li>",
+                "<li>For MongoDB deployments running on Unix and Linux systems, database names cannot contain any of the following characters: <code>/\\. \"$</code></li>",
+                "<li>Database names cannot be empty and must have fewer than 64 characters.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is collection in MongoDB?",
+            "answer": [
+                "<p>A <i>collection</i> is a group of documents. If a document is the MongoDB analog of a row in a relational database, then collection is the analog to a table.</p>",
+                "<p>Collections have <i>dynamic schemas</i>. This means that the documents within a single collection can have any number of different shapes. For example, both the following documents can be stored in a single collection.</p>",
+                "<pre><code>{ \"greeting\": \"Hello world!\" }<br/>{ \"message\": \"Learn MongoDB\" }</code></pre>",
+                "<p>Note that the previous documents not only have different types for their values (string versus integer) but also have entirely different keys. Because in MongoDB any document can be put into any collection</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "If we can store any shape of document in a collection, then why we need different collections or Schema?",
+            "answer": [
+                "<p>There are some reasons why we should separate collections and use schema.</p>",
+                "<ul class=\"none\"><li>Keeping different kinds of documents in the same collection can be a nightmare. We need to make sure that each query is only returning documents of a certain kind or that the application code performing a query can handle documents of different shapes.</li>",
+                "<li>It is much faster to get a list of collections than to extract a list of the types in a collection.</li>",
+                "<li>Grouping documents of the same kind together in the same collection allows for data locality.</li>",
+                "<li>We begin to impose some structure on our documents when we create indexes. These indexes are defined per collection. By putting only documents of a single type into the same collection, we can index our collections more efficiently.</li></ul>",
+                "<p>Finally, MongoDB just relaxes this requirement and allows us more flexibility.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you insert one or many documents in MongoDB?",
+            "answer": [
+                "<p> To insert a document into a collection, we use the collection's <code>insert</code> method. The syntax is <code>db.collectionNam.insert</code> where the <code>collectionName</code> is the name of our collection.</p>",                
+                "<pre><code>db.user.insert({\"name\" : \"John Doe\"})</code></pre>",
+                "<p>This will add an <code>_id</code> key to the document (Since it does not exist) and save it to MongoDB.</p>",
+                "<p>If we have a situation where we are inserting multiple documents into a collection, we can make the insert faster by using batch inserts. Batch inserts allow us to pass an array of documents to the database.</p>",
+                "<pre><code>db.user.insert([ {\"name\" : \"John Doe\"}, {\"name\" : \"John Smith\"} )</code></pre>",
+                "<p>This operation returns a <b>WriteResult</b> object for single inserts and a <b>BulkWriteResult</b> object for bulk inserts as shown below</p>",
+                "<pre><code>// For single insert<br/>WriteResult({ \"nInserted\" : 1 })<br/><br/>// For batch insert<br/>BulkWriteResult({<br/>  \"writeErrors\" : [ ],<br/>  \"writeConcernErrors\" : [ ],<br/>  \"nInserted\" : 2,<br/>  \"nUpserted\" : 0,<br/>  \"nMatched\" : 0,<br/>  \"nModified\" : 0,<br/>  \"nRemoved\" : 0,<br/>  \"upserted\" : [ ]<br/>})</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>insertOne</code> and <code>insertMany</code>? What is the difference from the <code>insert</code>?",
+            "answer": [
+                "<p><code>db.collection.insertOne()</code> as mentioned in the documentation inserts a document into a collection and returns a document which look like this:</p>",
+                "<pre><code>db.user.insert({ \"name\": \"John Doe\" })<br/><br/><br/>// returns<br/>{<br/>  \"acknowledged\" : true,<br/>  \"insertedId\" : ObjectId(\"571a218011a82a1d94c02333\")<br/>}</code></pre>",
+                "<p><code>db.collection.insertMany()</code> inserts multiple documents into a collection and returns a document that looks like this:</p>",
+                "<pre><code>db.user.insertMany( [ { \"name\": \"John Doe\" }, { \"name\": \"Will Smith\" } ] )<br/><br/><br/>// returns<br/>{<br/>  \"acknowledged\" : true,<br/>  \"insertedIds\" : [<br/>     ObjectId(\"571a218011a82a1d94c02333\"),<br/>    ObjectId(\"571a218011a82a1d94c02334\")<br/>  ]<br/>}</code></pre>",
+                "<p>The <code>insert()</code> method is deprecated in major driver so we should use the <code>.insertOne()</code> method whenever we want to insert a single document into our collection and the <code>.insertMany()</code> when we want to insert multiple documents into our collection.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>writeConcern</code>?",
+            "answer": [
+                "<p>Whenever we query the database to <code>insert()</code>, <code>insertOne()</code> or <code>insertMany()</code>, we can pass an additional parameter which is <code>writeConcern</code>. It is a document describes the level of acknowledgement requested from MongoDB for write operations. Write concern can include the following fields:</p>",                
+                "<pre><code>{ w: <value>, j: <boolean>, wtimeout: <number> }</code></pre>",                
+                "<ul class=\"none\"><li>the <code>w</code> option to request acknowledgement that the write operation has propagated to a specified number of mongod instances or to <code>mongod</code> instances with specified tags.</li>",
+                "<li>the <code>j</code> option to request acknowledgement that the write operation has been written to the journal, and</li>",
+                "<li>the <code>wtimeout</code> option to specify a time limit to prevent write operations from blocking indefinitely.</li></ul>",
+                "<p></p>",
+                "<p></p>",
+                "<p></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you remove documents in MongoDB?",
+            "answer": [
+                "<p>The <code>remove()</code> will remove the documents in a collection. For example,</p>",
+                "<pre><code>db.users.remove()</code></pre>",
+                "<p>This will remove all of the documents in the <code>users</code> collection. But this doesn’t actually remove the collection, and any indexes created on it will still exist.</p>",
+                "<p>The <code>remove</code> function optionally takes a query document as a parameter. When it's given, only documents that match the criteria will be removed.</p>",
+                "<pre><code>db.users.remove({ \"name\": \"John Doe\" })</code></pre>",
+                "<p>In MongoDB, once data has been removed, it is gone forever. There is no way to undo the remove or recover deleted documents.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you update a document?",
+            "answer": [
+                "<p>A document in MongoDB can be changed using the <code>update()</code> function. It takes two parameters: a query document, which locates documents to update, and a modifier document, which describes the changes to make to the documents found.</p>",                
+                "<pre><code>// This will update the first document which has name=John DOe with the given document.<br/>db.user.update( { \"name\": \"John Doe\" }, { \"name\": \"John Wick\", \"newMember\": true }  )</code></pre>",
+                "<p>Updates are atomic which means, if two updates happen at the same time, whichever one reaches the server first will be applied, and then the next one will be applied. Thus, conflicting updates can safely be sent in rapid-fire succession without any documents being corrupted: the last update will \"win.\"</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is <code>upsert</code>?",
+            "answer": [
+                "<p><code>upsert</code> is one of the option that we can pass to the <code>update</code> operation as third parameter.</p>",
+                "<p>If <code>upsert</code> is true and no document matches the query criteria, <code>update()</code> inserts a <i>single</i> document. The update creates the new document with either:</p>",
+                "<ul class=\"none\"><li>The fields and values of the <code>update</code> parameter if the <code>update</code> parameter is a replacement document (i.e., contains only field and value pairs). If neither the <code>query</code> nor the <code>update</code> document specifies an <code>_id</code> field, MongoDB adds the <code>_id</code> field with an <code>ObjectId</code> value.</li>",
+                "<li>The fields and values of both the <code>query</code> and <code>update</code> parameters if the <code>update</code> parameter contains update operator expressions (such as <code>$inc</code>, <code>$set</code>, <code>$min</code>, <code>$max</code>). The update creates a base document from the equality clauses in the <query> parameter, and then applies the update expressions from the <code>update</code> parameter. Comparison operations from the <code>query</code> will not be included in the new document.</li></ul>",
+                "<p>Also if we want to update multiple documents we can pass <code>multi: true</code> as another option.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How to select documents in a Collection?",
+            "answer": [
+                "<p>To select all documents in the collection, we can pass an optional empty document as the query filter parameter to the <code>find</code> method. The query filter parameter determines the select criteria:</p>",                
+                "<pre><code>db.users.find( {} )</code></pre>",
+                "<p> If we just want to see one document from a collection, we can use <code>findOne</code>:</p>",
+                "<pre><code>db.users.findOne( )</code></pre>",
+                "<p><code>find</code> and <code>findOne</code> can also be passed criteria in the form of a query document. This will restrict the documents matched by the query. For example, in the below query, we are finding the users who are above 18 in age.</p>",
+                "<pre><code>db.users.find( { age: { $gt: 18 } } )</code></pre>",
+                "<p>Sometimes we don't want all the keys from the document. If that is the case, we can pass the second argument to specify the keys we want. This is commonly referred as <b>Projections</b>. For example, here we want only the <code>name</code> from <code>users</code> collection:</p>"
+                "<pre><code>db.users.find( { age: { $gt: 18 } }, { name: 1 } )</code></pre>",
+                "<p>Note that, the <code>find()</code> method always returns the <code>_id</code> field unless we specify <code>_id: 0</code> to suppress the field.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are all the types of Query and Projection Operators available in MongoDB?",
+            "answer": [
+                "<p>With the use of operators we can make query beyond the exact matching and can match more complex criteria such as ranges, OR-clauses and negation. MongoDB offeres wide range of operators as seen below:</p>",
+                "<ul class=\"none\"><li>Comparison Query Operators</li>",
+                "<li>Logical Query Operators</li>",
+                "<li>Element Query Operators</li>",
+                "<li>Evaluation Query Operators</li>",
+                "<li>Geospatial Query Operators</li>",
+                "<li>Array Query Operators</li>",
+                "<li>Bitwise Query Operators</li>",
+                "<li>Array Query Operators</li>",
+                "<li>Projection Operators</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Comparison Query Operators in MongoDB.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$eq</b></code>: The <code>$eq</code> operator matches documents where the value of a field equals the specified value. For example: <code>db.users.find( { age: { $eq: 26 } } )</li>",
+                "<li><code><b>$gt</b></code>: Matches documents where the value of the field is greater than the specified value. For example: <code>db.users.find( { age: { $gt: 18 } } )</li>",
+                "<li><code><b>$gte</b></code>: Matches documents where the value of the field is greater than or equal to the specified value. For example: <code>db.users.find( { age: { $gte: 18 } } )</li>",
+                "<li><code><b>$in</b></code>: The <code>$in</code> operator selects the documents where the value of a field equals any value in the specified array. For example: <code>db.users.find( { age: { $in: [ 26, 27 ] } } )</li>",
+                "<li><code><b>$lt</b></code>: Matches documents where the value of the field is less than the specified value. For example: <code>db.users.find( { age: { $lt: 30 } } )</li>",
+                "<li><code><b>$lte</b></code>: Matches documents where the value of the field is less than or equal to the specified value. For example: <code>db.users.find( { age: { $lte: 30 } } )</li>",
+                "<li><code><b>$ne</b></code>: <code>$ne</code> selects the documents where the value of the field is not equal to the specified value. For example: <code>db.users.find( { name: { $ne: \"John Doe\" } } )</li>",
+                "<li><code><b>$nin</b></code>: <code>$nin</code> selects the documents where the field value is not in the specified array or the field does not exist.  For example: <code>db.users.find( { age: { $nin: [ 16, 18 ] } } )</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Logical Query Operators in MongoDB",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$and</b></code>: <code>$and</code> performs a logical AND operation on an array of two or more expressions and selects the documents that satisfy all the expressions in the array. The <code>$and</code> operator uses short-circuit evaluation. If the first expression evaluates to <code>false</code>, MongoDB will not evaluate the remaining expressions. Example: <code>db.users.find( { $and: [ { age: { $gt: 18 } }, { age { $lt: 35 } } ] } )</code></li>",
+                "<li><code><b>$not</b></code>: <code>$not</code> performs a logical NOT operation on the specified expression and selects the documents that do not match the expression. This includes documents that do not contain the field. Example: <code>db.users.find( { name: { $not: \"John Doe\" } } )</code></li>",
+                "<li><code><b>$nor</b></code>: <code>$nor</code> performs a logical NOR operation on an array of one or more query expression and selects the documents that fail all the query expressions in the array. Example: <code>db.users.find( { $nor: [ { $not: \"John Doe\" }, { age: 28 } ] } )</code></li>",
+                "<li><code><b>$or</b></code>: The <code>$or</code> operator performs a logical OR operation on an array of two or more expressions and selects the documents that satisfy at least one of the expressions. Example: <code>db.users.find( { $or: [ { name: \"John Doe\" }, { age: 28 } ] } )</code></li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Element Query Operators in MongoDB.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$exists</b></code>: If the condition is true, <code>$exists</code> matches the documents that contain the field, including documents where the field value is null. If it is false, the query returns only the documents that do not contain the field. Example: <code>db.users.find( { age: { $exists: true } } )</code></li>",
+                "<li><code><b>$type</b></code>: <code>$type</code> selects the documents where the value of the <code>field</code> is an instance of the specified BSON type. Querying by data type is useful when dealing with highly unstructured data where data types are not predictable. Example: <code>db.users.find( { age: { type: \"number\" } } )</code></li></ul>",
+                "<p></p>",
+                "<p></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Evaluation Query Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$expr</b></code>: <code>$expr</code> can build query expressions that compare fields from the same document in a <code>$match</code> stage. Example: <code>db.users.find( { $expr: { $gt: [ \"$age\", \"$requiredAge\" ] } } )</code>. This query will finds documents where the <code>age</code> is greater than the <code>requiredAge</code>.</li>",
+                "<li><code><b>$jsonSchema</b></code>: <code>$jsonSchema</code> can be used in a document validator, which enforces that inserted or updated documents are valid against the schema.</li>",
+                "<li><code><b>$mod</b></code>: Select documents where the value of a field divided by a divisor has the specified remainder. It is performing a modulo operation. Example: <code>db.users.find( { items: { $mod: [ 4, 0 ] } } )</code></li>",
+                "<li><code><b>$regex</b></code>: Provides regular expression capabilities for pattern matching strings in queries. MongoDB uses Perl compatible regular expressions. Example: <code>db.users.find( { name: { $regex: /^John/ } } )</code></li>",
+                "<li><code><b>$text</b></code>: <code>$text</code> performs a text search on the content of the fields indexed with a text index. Example: <code>db.users.find( { $text: { $search: \"john\" } } )</code></li>",
+                "<li><code><b>$where</b></code>: Use the <code>$where</code> operator to pass either a string containing a JavaScript expression or a full JavaScript function to the query system.</li></ul>",
+                "<p></p>",
+                "<p></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Geospatial Query Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$geoIntersects</b></code>: <code>$geoIntersects</code> selects geometries that intersect with a GeoJSON geometry where the intersection of the data and the specified object is non-empty.</li>",
+                "<li><code><b>$geoWithin</b></code>: Selects documents with geospatial data that exists entirely within a specified shape.</li>",
+                "<li><code><b>$near</b></code>: Specifies a point for which a geospatial query returns the documents from nearest to farthest. The <code>$near</code> operator can specify either a GeoJSON point or legacy coordinate point.</li>",
+                "<li><code><b>$center</b></code>: The <code>$center</code> operator specifies a circle for a <code>$geoWithin</code> query. The query returns legacy coordinate pairs that are within the bounds of the circle. The operator does not return GeoJSON objects.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Array Query Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$all</b></code>: The <code>$all</code> operator selects the documents where the value of a field is an array that contains all the specified elements. Example: <code>db.users.find( { name: { $all: [ [ \"John Doe\", \"John Wick\" ] ] } } )</code> </li>",
+                "<li><code><b>$elemMatch</b></code>: The <code>$elemMatch</code> operator matches documents that contain an array field with at least one element that matches all the specified query criteria. Example: <code>db.users.find( { results: { $elemMatch: { $gt: 80, $lt: 85 } } } )</code> returns all the documents where <code>results</code> array contains at least one element that is both greater than or equal to 80 and is less than 85.</li>",
+                "<li><code><b>$size</b></code>: The <code>$size</code> operator matches any array with the number of elements specified by the argument. Example: <code>db.users.find( { items: { $size: 2 } } )</code> returns all the documents where <code>items</code> is an array with two elements.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Bitwise Query Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$bitsAllClear</b></code>: Matches numeric or binary values in which a set of bit positions all have a value of 0.</li>",
+                "<li><code><b>$bitsAllSet</b></code>: Matches numeric or binary values in which a set of bit positions all have a value of 1.</li>",
+                "<li><code><b>$bitsAnyClear</b></code>: Matches numeric or binary values in which any bit from a set of bit positions has a value of 0.</li>",
+                "<li><code><b>$bitsAnySet</b></code>: Matches numeric or binary values in which any bit from a set of bit positions has a value of 1.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Projection Query Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$</b></code>: The positional <code>$</code> operator limits the contents of an <code>&lt;array&gt;</code> from the query results to contain only the first element matching the query document. For example, a student database containing documents like <code>{ \"_id\" : 1, \"semester\" : 1, \"grades\" : [ 70, 87, 90 ] }</code>, the following query, the projection <code>db.students.find( { semester: 1, grades: { $gte: 85 } }, { \"grades.$\": 1 } )</code> returns only the first element greater than or equal to 85 for the grades field like <code>{ \"_id\" : 1, \"grades\" : [ 87 ] }</code></li>",
+                "<li><code><b>$elemMatch</b></code>: The <code>$elemMatch</code> operator limits the contents of an <code>&lt;array&gt;</code> field from the query results to contain only the first element matching the <code>$elemMatch</code> condition.</li>",
+                "<li><code><b>$meta</b></code>: The <code>$meta</code> projection operator returns for each matching document the metadata (e.g. \"textScore\") associated with the query.</li>",
+                "<li><code><b>$slice</b></code>: The <code>$slice</code> operator controls the number of items of an array that a query returns.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Field Update Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$currentDate</b></code>: The <code>$currentDate</code> operator sets the value of a field to the current date, either as a <code>Date</code> or a <code>timestamp</code>. The default type is <code>Date</code>. Example: <code>db.posts.update( { _id: 1 }, { $currentDate: { lastModified: true, } } )</code>. This sets the <code>lastModified</code> field to <code>\"lastModified\": ISODate(\"2018-07-20T20:37:56.314Z\")</code>. To set the <code>Timestamp</code> instead of <code>Date</code>, pass the value as <code>{ $type: \"timestamp\" }</code> instead of <code>true</code>.</li>",
+                "<li><code><b>$inc</b></code>: The <code>$inc</code> operator increments a field by a specified value. It accepts positive and negative values. If the field does not exist, <code>$inc</code> creates the field and sets the field to the specified value.</li>",
+                "<li><code><b>$min</b></code>: The <code>$min</code> updates the value of the field to a specified value if the specified value is less than the current value of the field. The $min operator can compare values of different types, using the BSON comparison order.</li>",
+                "<li><code><b>$max</b></code>: The <code>$max</code> operator updates the value of the field to a specified value if the specified value is greater than the current value of the field. The $max operator can compare values of different types, using the BSON comparison order.</li>",
+                "<li><code><b>$mul</b></code>: Multiply the value of a field by a number.</li>",
+                "<li><code><b>$set</b></code>: The <code>$set</code> operator replaces the value of a field with the specified value.</li>",
+                "<li><code><b>$unset</b></code>: The <code>$unset</code> operator deletes a particular field.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Explain some of the Array Update Operators.",
+            "answer": [
+                "<ul class=\"none\"><li><code><b>$pop</b></code>: The <code>$pop</code> operator removes the first or last element of an array. Pass <code>$pop</code> a value of -1 to remove the first element of an array and 1 to remove the last element in an array. Example: <code>db.users.update( { _id: 1 }, { $pop: { item: -1 } } )</code> where item might be like: <code>item: [ 9, 10 ]</code></li>",
+                "<li><code><b>$pull</b></code>: The <code>$pull</code> operator removes from an existing array all instances of a value or values that match a specified condition. Example: <code>db.users.update( {}, { $pull: { items: { $in: [ 9, 10 ] } } } )</code></li>",
+                "<li><code><b>$push</b></code>: The <code>$push</code> operator appends a specified value to an array. If the field is absent in the document to update, <code>$push</code> adds the array field with the value as its element. If the field is not an array, the operation will fail.  Example: <code>db.users.update( {}, { $push: { items: 11 } } )</code>. It appends 11 to the <code>items</code>.</li>",
+                "<li><code><b>$each</b></code>: The <code>$position</code> modifier specifies the location in the array at which the <code>$push</code> operator inserts elements. Without the <code>$position</code> modifier, the <code>$push</code> operator inserts elements to the end of the array. Example: <code>db.users.update( {}, { $push: { items: { $each: [ 20 ], $position: 0 } } )</code>. This will add the value 20 at the start of the <code>items</code> array.</li>",
+                "<li><code><b>$slice</b></code>: The <code>$slice</code> modifier limits the number of array elements during a <code>$push</code> operation. To project, or return, a specified number of array elements from a read operation, see the $slice projection operator instead.</li>",
+                "<li><code><b>$sort</b></code>: The <code>$sort</code> modifier orders the elements of an array during a <code>$push</code> operation.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Storage Engine? What are all the Storage Engines available in MongoDB?",
+            "answer": [
+                "<p>The storage engine is the component of the database that is responsible for managing how data is stored, both in memory and on disk. MongoDB supports multiple storage engines, as different engines perform better for specific workloads.</p>"
+                "<ul class=\"none\"><li><b>WiredTiger Storage Engine</b>: This is the default engine. It is well-suited for most workloads and is recommended for new deployments. WiredTiger provides a document-level concurrency model, checkpointing, and compression, among other features.</li>",
+                "<li><b>In-Memory Storage Engine</b>: In-Memory Storage Engine is available in MongoDB Enterprise. Rather than storing documents on-disk, it retains them in-memory for more predictable data latencies.</li>",
+                "<li><b>MMAPv1 Storage Engine</b>: This is deprecated as of MongoDB v4.0 and is the default storage engine for MongoDB versions 3.0 and earlier.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is Aggregation and Aggregation Pipeline?",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<pre><code></code></pre>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<p></p>",
+                "<p></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<pre><code></code></pre>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li></ul>",
+                "<p></p>",
+                "<p></p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+    ]
+}
