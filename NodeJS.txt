@@ -1,0 +1,42 @@
+https://www.quora.com/What-are-the-most-popular-Node-js-interview-questions
+
+1. What is the difference between setImmiediate vs nextTick
+2. What is blocking and nonblocking API in Node.js and how does it affect the architecture of your applications ?
+3. Why do you use ‘forever’ with Node.js ? 
+4. What are the main advantages and disadvantages of using Node.js?
+5. What are the types of applications that can be built by using Node.js?
+6. Why Node.js is based on single threaded architecture?
+7. What are the different types of APIs available in Node.js?
+8. Can we run Node.js on Windows environment?
+9. How can we handle blocking I/O operations in Node.js?
+10. What is the difference between Node.js and AngularJS?
+11. How will you import external libraries in Node.js?
+12. What happens if we call require() method to load same module multiple times in Node.js?
+13. What are the popular REPL commands in Node.js?
+14. What is NPM in Node.js?
+15. Why Node.js application is scalable?
+16. How will you debug an application in Node.js?
+17. How will you convert a Buffer to JSON in Node.js?
+18. Why do we use __filename in Node.js?
+19. What is the use of Timers is Node.js?
+20. What are the important APIs in Timers module in Node.js?
+21. What is the use of net.Socket in Node.js?
+22. What are the important events of net.Socket in Node.js?
+23. Can we build a REST service in Node.js?
+24. What is the use of DNS module in Node.js?
+25. What are the important command line options in Node.js?
+26. How does Node.js work?
+27. How do you resolve unhandled exceptions in a Node.js program?
+28. What is a Callback function in Node.js?
+29. What is the use of QueryString in Node.js?
+30. How will you get the amount of free memory on the server in which Node.js application is running?
+31. What are the security mechanisms available in Node.js?
+32. What is the use of Zlib in Node.js?
+33. How will you convert a Buffer content into readable String in Node.js?
+34. What is promise all in node.js ?
+35. Different types of exit polls in node.js ?
+36. How can I secure my cookies in node.js ?
+37. What is the passport in node.js ?
+38. What is the meaning of tilde and caret in package.json ?
+39. How can we control versioning about packages in node.js ?
+40. Difference between dependencies and dev dependencies ? 
