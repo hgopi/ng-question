@@ -34,7 +34,7 @@
                 "<p>Some of the cons:</p>",
                 "<ul class=\"none\"><li><b>High pace of development</b> - The environment constantly changes, and developers must regularly relearn the new ways of doing things. Everything is evolving, and some developers are not comfortable with keeping up with such a pace.</li>",
                 "<li><b>Poor documentation</b> - Developers struggle with integrating new tools like Redux or Reflux tools with ReactJS. Some members of the community think that React technologies are updating and accelerating so fast that there is no time to write proper instruction.</li>",
-                "<li><b>JSX as a barrier</b> - ReactJS uses JSX. It's a syntax extension, which allows mixing HTML with JavaScript. JSX has its own benefits (for instance, protecting code from injections), but some members of the development community consider JSX to be a serious disadvantage.</li></ul>",
+                "<li><b>JSX as a barrier</b> - ReactJS uses JSX. It's a syntax extension, which allows mixing HTML with JavaScript. JSX has its own benefits (for instance, protecting code from injections), but some members of the development community consider JSX to be a serious disadvantage.</li></ul>"
             ],
             "additional": "",
             "footer": "",
@@ -59,7 +59,7 @@
                 "<p><code>React.createClass</code> allows us to generate component \"classes.\" But with ES6, React allows us to implement component classes that use ES6 JavaScript classes. The end result is the same -- we have a component class. But the style is different. And one is using a \"custom\" JavaScript class system (createClass) while the other is using a \"native\" JavaScript class system.</p>",
                 "<p>When using React's <code>createClass()</code> method, we pass in an object as an argument. So we can write a component using <code>createClass</code> that looks like this:</p>",
                 "<pre><code>import React from 'react';<br/><br/>const Contacts = React.createClass({<br/>  render() {<br/>    return (<br/>      &lt;div&gt;&lt;/div&gt;<br/>    );<br/>  }<br/>});<br/><br/>export default Contacts;</code></pre>",
-                "<p>Using an ES6 class to write the same component is a little different. Instead of using a method from the <code>react</code> library, we extend an ES6 class that the library defines, <code>Component</code>.</p>"
+                "<p>Using an ES6 class to write the same component is a little different. Instead of using a method from the <code>react</code> library, we extend an ES6 class that the library defines, <code>Component</code>.</p>",
                 "<pre><code>import React from 'react';<br/><br/>class Contacts extends React.Component({<br/>  constructor(props) {<br/>    super(props);<br/>  }<br/>  render() {<br/>    return (<br/>      &lt;div&gt;&lt;/div&gt;<br/>    );<br/>  }<br/>}<br/><br/>export default Contacts;</code></pre>",
                 "<p><code>constructor()</code> is a special function in a JavaScript class. JavaScript invokes <code>constructor()</code> whenever an object is created via a class.</p>"
             ],
@@ -72,7 +72,7 @@
             "answer": [
                 "<p><code>React.createElement</code> is used to create React nodes using JavaScript. An example is as follows:</p>",
                 "<pre><code>var reactNodeLi = React.createElement('li', {id:'li1'}, 'one');</code></pre>",
-                "<p>The <code>React.createElement()</code> arguments are explained below:</p>"
+                "<p>The <code>React.createElement()</code> arguments are explained below:</p>",
                 "<ul class=\"none\"><li><b>type (string | <code>React.createClass()</code>):</b> - Can be a string which represents an HTML element (or custom HTML element) or React component instance (i.e., an instance of <code>React.createClass()</code>)</li>",
                 "<li><b>props (null | object):</b> - Can be <code>null</code> or an object containing attributes/props and values</li>",
                 "<li><b>children (null | string | <code>React.createClass()</code> | <code>React.createElement()</code>):</b> - Children can be <code>null</code>, a string that gets turned into a text node, an instance of <code>React.createClass()</code> or <code>React.createElement()</code></li></ul>",

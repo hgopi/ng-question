@@ -225,7 +225,7 @@
                 "<pre><code>db.users.findOne( )</code></pre>",
                 "<p><code>find</code> and <code>findOne</code> can also be passed criteria in the form of a query document. This will restrict the documents matched by the query. For example, in the below query, we are finding the users who are above 18 in age.</p>",
                 "<pre><code>db.users.find( { age: { $gt: 18 } } )</code></pre>",
-                "<p>Sometimes we don't want all the keys from the document. If that is the case, we can pass the second argument to specify the keys we want. This is commonly referred as <b>Projections</b>. For example, here we want only the <code>name</code> from <code>users</code> collection:</p>"
+                "<p>Sometimes we don't want all the keys from the document. If that is the case, we can pass the second argument to specify the keys we want. This is commonly referred as <b>Projections</b>. For example, here we want only the <code>name</code> from <code>users</code> collection:</p>",
                 "<pre><code>db.users.find( { age: { $gt: 18 } }, { name: 1 } )</code></pre>",
                 "<p>Note that, the <code>find()</code> method always returns the <code>_id</code> field unless we specify <code>_id: 0</code> to suppress the field.</p>"
             ],
@@ -386,7 +386,7 @@
         {
             "question": "What is Storage Engine? What are all the Storage Engines available in MongoDB?",
             "answer": [
-                "<p>The storage engine is the component of the database that is responsible for managing how data is stored, both in memory and on disk. MongoDB supports multiple storage engines, as different engines perform better for specific workloads.</p>"
+                "<p>The storage engine is the component of the database that is responsible for managing how data is stored, both in memory and on disk. MongoDB supports multiple storage engines, as different engines perform better for specific workloads.</p>",
                 "<ul class=\"none\"><li><b>WiredTiger Storage Engine</b>: This is the default engine. It is well-suited for most workloads and is recommended for new deployments. WiredTiger provides a document-level concurrency model, checkpointing, and compression, among other features.</li>",
                 "<li><b>In-Memory Storage Engine</b>: In-Memory Storage Engine is available in MongoDB Enterprise. Rather than storing documents on-disk, it retains them in-memory for more predictable data latencies.</li>",
                 "<li><b>MMAPv1 Storage Engine</b>: This is deprecated as of MongoDB v4.0 and is the default storage engine for MongoDB versions 3.0 and earlier.</li></ul>"

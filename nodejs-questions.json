@@ -1,0 +1,478 @@
+{
+    "questions": [        
+        {
+            "question": "What is the difference between <code>setImmiediate</code> vs <code>nextTick</code>?",
+            "answer": [
+                "<p>We should use <code>setImmediate</code> if we want to queue the function behind whatever I/O event callbacks that are already in the event queue. And we use <code>process.nextTick</code> to effectively queue the function at the head of the event queue so that it executes immediately after the current function completes.</p>",
+                "<p>As per node.js documentation, \"<code>nextTickQueue</code> will be processed after the current operation completes, regardless of the current phase of the event loop.\" It means, this queue will be executed whenever the boundary between JavaScript and C/C++ is crossed.</p>",
+                "<p>The below code contains <code>setTimeout</code>, <code>setImmiediate</code> and <code>nextTick</code>:</p>",
+                "<pre><code>import fs from 'fs';<br/>import http from 'http';<br/><br/>const options = {<br/>  host: 'www.stackoverflow.com',<br/>  port: 80,<br/>  path: '/index.html'<br/>};<br/><br/>describe('deferredExecution', () => {<br/>  it('deferredExecution', (done) => {<br/>    console.log('Start');<br/>    setTimeout(() => console.log('TO1'), 0);<br/>    setImmediate(() => console.log('IM1'));<br/>    process.nextTick(() => console.log('NT1'));<br/>    setImmediate(() => console.log('IM2'));<br/>    process.nextTick(() => console.log('NT2'));<br/>    http.get(options, () => console.log('IO1'));<br/>    fs.readdir(process.cwd(), () => console.log('IO2'));<br/>    setImmediate(() => console.log('IM3'));<br/>    process.nextTick(() => console.log('NT3'));<br/>    setImmediate(() => console.log('IM4'));<br/>    fs.readdir(process.cwd(), () => console.log('IO3'));<br/>    console.log('Done');<br/>    setTimeout(done, 1500);<br/>  });<br/>});</code></pre>",
+                "<p>will give the following output.</p>",
+                "<pre><code>Start<br/>Done<br/>NT1<br/>NT2<br/>NT3<br/>TO1<br/>IO2<br/>IO3<br/>IM1<br/>IM2<br/>IM3<br/>IM4<br/>IO1</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is blocking and nonblocking API in Node.js and how does it affect the architecture of your applications?",
+            "answer": [
+                "<p>Blocking is when the execution of JavaScript in the Node.js process must wait until a non-JavaScript operation completes. This happens because the event loop is unable to continue running JavaScript while a blocking operation is occurring. Synchronous methods in the Node.js standard library that use libuv are the most commonly used blocking operations. </p>",
+                "<p>To simply put, Blocking methods execute synchronously and non-blocking methods execute asynchronously.</p>",
+                "<p>The following example reads a file from File System synchronously.</p>",
+                "<pre><code>const fs = require('fs');<br/>const data = fs.readFileSync('/myfile.txt'); // blocks here until file is read</code></pre>",
+                "<p>Here is the same operation but reads the file asynchronously.</p>",
+                "<pre><code>const fs = require('fs');<br/>fs.readFile('/myfile.txt', (err, data) => {<br/>  if (err) throw err;<br/>});</code></pre>",
+                "<p>Althought the first example is simpler than the second, it has a disadvantage of blocking the execution of additional JavaScript until the entire file is read. Also if an error is thrown  it will need to be caught or the process will crash. In the asynchronous version, it is up to us to decide whether an error should throw.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Why do you use <code>forever</code> with Node.js ? ",
+            "answer": [
+                "<p><code>forever</code> is a node.js package that is used to keep the server alive even when the server crash/stops. When the node server is stopped because of some error, exception, etc. forever automatically restarts it.</p>",
+                "<p>Forever can be used as</p>",
+                "<pre><code>forever start app.js</code></pre>",
+                "<p>Finally, the purpose of <code>forever</code> is to keep a child process (such as our node.js web server) running continuously and automatically restart it when it exits unexpectedly. <code>forever</code> has some default options and configuration convention as follow:</p>",
+                "<ul class=\"none\"><li><code>forever</code> keeps track of running processes in <code>*.fvr</code> files that are placed in <code>/tmp/forever/pids</code></li>",
+                "<li>Each <code>forever</code> process will generate a unique log file placed in <code>/tmp/forever/*.log</code></li>",
+                "<li>Unless otherwise specified, the output of the child process' <code>stdout</code> and <code>stderr</code> will be written to the above log file.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the main advantages and disadvantages of using Node.js?",
+            "answer": [
+                "<p>Some of the advantages of Node.js are:</p>",
+                "<ul class=\"none\"><li><b>Easy to Learn</b>: As JavaScript is one of the most popular programming languages for front-end development, nearly every front-end developer is familiar with this universal language. Therefore, it is much easier to switch to using Node.js at the back-end. </li>",
+                "<li><b>More Freedom</b>: Unlike some backend like Ruby on Rails which is a framework that imposes rules and guidelines of developing software in a particular way, Node.js gives much more space and freedom in doing it our own way. Node.js is completely unopinionated, meaning we can start building everything from scratch.</li>",
+                "<li><b>Simultaneous Request Handling</b>: Node.js provides the non-blocking IO system that enable us process numerous requests concurrently. The system makes simultaneous request handling much better than in other languages like Ruby or Python. </li>",
+                "<li><b>Rich Community</b>: The Node.js developers community is a very active and vibrant group of developers who contribute to constant improvement of Node.js.</li></ul>",
+                "<p>Some of the disadvantages are:</p>",
+                "<ul class=\"none\"><li><b>Unstable API and Inconsistencies</b>: One of the biggest disadvantages of Node.js is that it lacks consistency. Node.js’ API changes frequently, and the changes are often backward-incompatible.</li>",
+                "<li><b>Not Suitable for Heavy-Computing Apps</b>: Node.js doesn’t support multi-threaded programming yet. It is able to serve way more complicated applications than Ruby, but it’s not suitable for performing long-running calculations. </li>",
+                "<li><b>Event Driven Model</b>: Event driven model will confuse a lot of programmers who are new to JavaScript. The callback chain can get very long which makes it harder to maintain.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the types of applications that can be built by using Node.js?",
+            "answer": [
+                "<ul class=\"none\"><li>If we need an application should be realtime, then Node.js is best suitable. Because it have the best supporting library Socket.IO based on websockets.</li>",
+                "<li>If we need a Single Page Application, Node.js is definite go here. Because MEAN stack is most popular stack for single page applications.</li>",
+                "<li>When we want to stream the data, then go with node.js, because it's good at handling i/o.</li>",
+                "<li>When we want our project to be a single language from back end to front end. Then go with node.js, its completely in JavaScript.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Why Node.js is based on single threaded architecture?",
+            "answer": [
+                "<p>Node.js was created explicitly as an experiment in async processing. The theory was that doing async processing on a single thread could provide more performance and scalability under typical web loads than the typical thread-based implementation.</p>",
+                "<p> A node.js app that isn't doing CPU intensive stuff can run thousands more concurrent connections than Apache or IIS or other thread-based servers.</p>",
+                "<p>Also, V8 is a single threaded execution engine. It's built to run exactly one thread per JavaScript execution context. We can run two V8 engines in the same process, but they won't share any variables like real threads.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the different types of APIs available in Node.js?",
+            "answer": [
+                "<p>Node.js provides lot of API out of the box. Some of them are:</p>",
+                "<ul class=\"none\"><li>File System API or <code>fs</code> for interacting with the file system.</li>",
+                "<li><code>http</code> API for using HTTP server.</li>",
+                "<li><code>child_process</code> API for spawning child processes.</li>",
+                "<li><code>crypto</code> module provides cryptographic functionality</li>",
+                "<li><code>events</code> for event-driven programming.</li>",
+                "<li><code>os</code> module provides a number of operating system-related utility methods. </li>",
+                "<li><code>v8</code> module exposes APIs that are specific to the version of V8 built into the Node.js binary.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How can we handle blocking I/O operations in Node.js?",
+            "answer": [
+                "<p>Yes, Node can be run on Windows, macOS, many \"flavours\" of Linux, Docker, etc. </p>",
+                "<p>For the uninitiated, <code>MAX_PATH</code> is a limitation with many Windows tools and APIs that sets the maximum path character length to 260 characters. There are some workarounds involving UNC paths, but unfortunately not all APIs support it, and that's not the default. This can be problematic when working with Node modules because dependencies are often installed in a nested manner.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the difference between Node.js and AngularJS?",
+            "answer": [
+                "<p>Both frameworks are built with JavaScript.</p>",
+                "<p>AngularJS is a JavaScript framework. It is open source web application framework mainly maintained by Google. It is a front-end framework mainly used to create Single Page Applications. It follows MVC architecture.</p>",
+                "<p>On the other hand, Node.js is a cross-platform runtime environment for developing server-side and networking applications. Node.js applications are written in JavaScript and can be run within the Node.js runtime. It also provides a rich library of various JavaScript modules which simplifies the development of web applications to a great extent.</p>",                
+                "<p>Angular and node are Both the open-source tools as node.js is mainly used to build server-side applications, whereas AngularJS is suited for building single-page client-side web applications both can be combined to create isomorphic web applications, i.e. applications that are built with the same language on the back and front-ends, but they are quite different in their architecture and working.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How will you import external libraries in Node.js?",
+            "answer": [
+                "<p>If it is an <code>npm</code> module, we can install it by running <code>npm install library</code>. We can import using <code>const library = require('library')</code> whereever we needed.</p>",
+                "<p>When we requires a module in nodejs, the content of <code>module.exports</code> is returned.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What happens if we call <code>require()</code> method to load same module multiple times in Node.js?",
+            "answer": [
+                "<p>In Node.js, modules are cached after the first time they are loaded. It means every call to the <code>require('module')</code> will return the same object it cached, if it would resolve to the same file.</p>",
+                "<p>That is, caching is based on the actual file name that gets resolved. This is because, in general, there can be different versions of the same package that are installed at different levels of the file hierarchy and that must be loaded accordingly.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the popular REPL commands in Node.js?",
+            "answer": [
+                "<p>REPL stands for Read-Eval-Print-Loop. It is a quick and easy way to test simple Node.js/JavaScript code.</p>",
+                "<p>REPL can run pretty much any valid Node.js/JavaScript expression. For example, <code>10 + 20</code> in REPL, results in <code>30</code>.</p>",
+                "<p>The following special commands are supported by all REPL instances:</p>",
+                "<ul class=\"none\"><li><code>.break</code> - When in the process of inputting a multi-line expression, entering the .break command (or pressing the &lt;ctrl&gt;-C key combination) will abort further input or processing of that expression.</li>",
+                "<li><code>.clear</code> - Resets the REPL <code>context</code> to an empty object and clears any multi-line expression currently being input.</li>",
+                "<li><code>.exit</code> - Close the I/O stream, causing the REPL to exit.</li>",
+                "<li><code>.help</code> - Show this list of special commands.</li>",
+                "<li><code>.save</code> - Save the current REPL session to a file: <code>&gt; .save ./file/to/save.js</code></li>",
+                "<li><code>.load</code> - Load a file into the current REPL session. <code>&gt; .load ./file/to/load.js</code></li>",
+                "<li><code>.editor</code> - Enter editor mode (&lt;ctrl&gt;-D to finish, &lt;ctrl&gt;-C to cancel).</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is NPM in Node.js?",
+            "answer": [
+                "<p><code>npm</code>, short for Node Package Manager, is two things: first and foremost, it is an online repository for the publishing of open-source Node.js projects; second, it is a command-line utility for interacting with said repository that aids in package installation, version management, and dependency management. </p>",
+                "<p>A package in Node.js contains all the files we need for a module. Modules are JavaScript libraries you can include in your project.</p>",
+                "<p>npm consists of three distinct components:</p>",
+                "<ul class=\"none\"><li><b>The website</b> - Use the website to discover packages, set up profiles, and manage other aspects of our npm experience. For example, we can set up Orgs (organizations) to manage access to public or private packages.</li>",
+                "<li><b>The Command Line Interface (CLI)</b> - The CLI runs from a terminal. This is how most developers interact with npm.</li>",
+                "<li><b>The registry</b> - The registry is a large public database of JavaScript software and the meta-information surrounding it.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Why Node.js application is scalable?",
+            "answer": [
+                "<p>Node.js usually scales a bit better then most other typical platforms because of it's event-based model.</p>",
+                "<p>Node's <code>cluster</code> module not only provides an out-of-the-box solution to utilizing the full CPU power of a machine, but it also helps with increasing the availability of our Node processes and provides an option to restart the whole application with a zero downtime. </p>",
+                "<p>There are mainly three different things we can do to scale an application:</p>",
+                "<ul class=\"none\"><li><b>Cloning</b> - The easiest thing to do to scale a big application is to clone it multiple times and have each cloned instance handle part of the workload. Node.js has the built-in module, <code>cluster</code>, to make it easier for us to implement the cloning strategy on a single server.</li>",
+                "<li><b>Decomposing</b> - We can also scale an application by decomposing it based on functionalities and services. This means having multiple, different applications with different code bases and sometimes with their own dedicated databases and User Interfaces. This strategy is commonly associated with the term Microservice, where micro indicates that those services should be as small as possible, but in reality, the size of the service is not what’s important but rather the enforcement of loose coupling and high cohesion between services.</li>",
+                "<li><b>Splitting</b> - We can also split the application into multiple instances where each instance is responsible for only a part of the application’s data. This strategy is often named <i>horizontal partitioning</i>, or <i>sharding</i>, in <i>databases</i>.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How will you debug an application in Node.js?",
+            "answer": [
+                "<p>There are many ways to debug our application in Node.js. One of the most common form of debugging is the use of console.log statement. But it will not be helpful in most of the time. There are other ways:</p>",
+                "<ul class=\"none\"><li>Node inspector is a powerful JavaScript debugger for NodeJS applciations that uses the blink developer tools. It has many advanced features like, navigate in your source files; set breakpoints; step over, step in, step out, resume; hover your mouse over an expression in your source to display its value in a tooltip and lot more. To start debugging, we should run <code>node-debug app.js</code>.</li>",
+                "<li>Visual Studio code Node.js debugger communicates to the Node.js runtimes through wire protocols, the set of supported runtimes is determined by all runtimes supporting the wire protocols.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How will you convert a Buffer to JSON in Node.js?",
+            "answer": [
+                "<p>Nodejs and browser based JavaScript differ because Node has a way to handle binary data even before the ES6 draft came up with ArrayBuffer. In Node, <code>Buffer</code> class is the primary data structure used with most I/O operations. It is a raw binary data that is allocated outside the V8 heap and once allocated, cannot be resized.</p>",
+                "<p>Buffers can be converted into JSON as follow.</p>",
+                "<pre><code>let bufferOne = Buffer.from('This is a buffer example.');<br/>console.log(bufferOne);<br/><br/>// Output: <Buffer 54 68 69 73 20 69 73 20 61 20 62 75 66 66 65 72 20 65 78 61 6d 70 6c 65 2e><br/><br/>let json = JSON.stringify(bufferOne);<br/>console.log(json);<br/><br/>// Output: {\"type\": \"Buffer\", \"data\": [84,104,105,115,32,105,115,32,97,32,98,117,102,102,101,114,32,101,120,97,109,112,108,101,46]}</code></pre>",
+                "<p>To convert a JSON into Buffer:</p>",
+                "<pre><code>let bufferOriginal = Buffer.from(JSON.parse(json).data);<br/>console.log(bufferOriginal);<br/><br/>// Output: <Buffer 54 68 69 73 20 69 73 20 61 20 62 75 66 66 65 72 20 65 78 61 6d 70 6c 65 2e></code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Why do we use <code>__filename</code> in Node.js?",
+            "answer": [
+                "<p>The <code>__filename</code> is one of the Global objects in Node.js and represents the filename of the code being executed. This is the resolved absolute path of this code file.</p>",
+                "<p>Based on the location of your program, it will return the file name as follows:</p>",
+                "<pre><code>//main.js<br/>console.log( __filename );<br/><br/>/web/com/1427091028_21099/main.js</code></pre>",
+                "<p>Node.js also has another Global object to get the name of the directory that the currently executing script resides in called <code>__dirname</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the use of Timers is Node.js?",
+            "answer": [
+                "<p>The Timers module in Node.js contains functions that execute code after a set period of time. Timers do not need to be imported via <code>require()</code>, since all the methods are available globally to emulate the browser JavaScript API.</p>",
+                "<p>The Node.js API provides several ways of scheduling code to execute at some point after the present moment. The functions below may seem familiar, since they are available in most browsers, but Node.js actually provides its own implementation of these methods.</p>",
+                "<p>Node.js Timer provides <code>setTimeout()</code>, <code>setImmediate()</code> and <code>setInterval</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the important APIs in Timers module in Node.js?",
+            "answer": [
+                "<p>The Timers API are as follows:</p>",
+                "<p><b><code>setTimeout</code></b> - <code>setTimeout()</code> can be used to schedule code execution after a designated amount of milliseconds. This function is similar to <code>window.setTimeout()</code> from the browser JavaScript API, however a string of code cannot be passed to be executed. <code>setTimeout()</code> accepts a function to execute as its first argument and the millisecond delay defined as a number as the second argument. Additional arguments may also be included and these will be passed on to the function.</p>",
+                "<pre><code>function welcome(name) {<br/>  console.log(\"Hello \" + name);<br/>}<br/><br/>setTimeout(welcome, 1500, 'World!');</code></pre>",
+                "<p>The above function <code>myFunc()</code> will execute as close to 1500 milliseconds (or 1.5 seconds) as possible due to the call of <code>setTimeout()</code>.</p>",
+                "<p><b><code>setImmediate</code></b> - <code>setImmediate()</code> will execute code at the end of the current event loop cycle. This code will execute after any I/O operations in the current event loop and before any timers scheduled for the next event loop. This code execution could be thought of as happening \"right after this\", meaning any code following the <code>setImmediate()</code> function call will execute before the <code>setImmediate()</code> function argument.</p>",
+                "<pre><code>console.log('before immediate');<br/><br/>setImmediate((arg) => {<br/>  console.log(\"executing immediate: \" + arg);<br/>}, 'in setImmediate');<br/><br/>console.log('after immediate');<br/><br/>// before immediate<br/>// after immediate<br/>// executing immediate: so immediate</code></pre>",
+                "<p><b><code>setInterval</code></b> - If there is a block of code that should execute multiple times, <code>setInterval()</code> can be used to execute that code. <code>setInterval()</code> takes a function argument that will run an infinite number of times with a given millisecond delay as the second argument.</p>",
+                "<pre><code>function intervalFunc() {<br/>  console.log('Cant stop me now!');<br/>}<br/><br/>setInterval(intervalFunc, 1500);</code></pre>",
+                "<p><code>setTimeout()</code>, <code>setImmediate()</code>, and <code>setInterval()</code> return a timer object that can be used to reference the set <code>Timeout</code> or <code>Immediate</code> object. By passing said object into the respective clear function, execution of that object will be halted completely. The respective functions are <code>clearTimeout()</code>, <code>clearImmediate()</code>, and <code>clearInterval()</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the use of net.Socket in Node.js?",
+            "answer": [
+                "<p></p>",
+                "<p></p>",
+                "<p></p>",
+                "<pre><code></code></pre>",
+                "<ul class=\"none\"><li></li>",
+                "<li></li>",
+                "<li></li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the important events of <code>net.Socket</code> in Node.js?",
+            "answer": [
+                "<p>The <code>net</code> module provides an asynchronous network API for creating stream-based TCP or IPC servers and clients.</p>",
+                "<p><code>net.Socket</code> is an abstraction of a TCP socket or a streaming IPC endpoint. A <code>net.Socket</code> is also a duplex stream, so it can be both readable and writable, and it is also an <code>EventEmitter</code>.</p>",
+                "<p>Some of the events are:</p>",
+                "<ul class=\"none\"><li><b>close</b>: Emitted once the socket is fully closed. The argument <code>hadError</code> is a boolean which says if the socket was closed due to a transmission error.</li>",
+                "<li><b>connect</b> - Emitted when a socket connection is successfully established. </li>",
+                "<li><b>data</b> - Emitted when data is received. The argument data will be a <code>Buffer</code> or <code>String</code>.</li>",
+                "<li><b>drain</b> - Emitted when the write buffer becomes empty. It can be used to throttle uploads.</li>",
+                "<li><b>end</b> - Emitted when the other end of the socket sends a FIN packet, thus ending the readable side of the socket.</li>",
+                "<li><b>error</b> - Emitted when an error occurs. The '<code>close</code>' event will be called directly following this event.</li>",
+                "<li><b>lookup</b> - Emitted after resolving the hostname but before connecting. It is not applicable to UNIX sockets.</li>",
+                "<li><b>ready</b> - Emitted when a socket is ready to be used.</li>",
+                "<li><b>timeout</b> - Emitted if the socket times out from inactivity. This is only to notify that the socket has been idle. </li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Can we build a REST service in Node.js?",
+            "answer": [
+                "<p>Yes, we can. In a server, routing refers to determining how an application responds to a client request for a specific endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on). Below we have defined two basic routes(<code>/tasks</code>, and <code>/tasks/taskId</code>) with different methods.</p>",
+                "<p>‘/tasks’ has to methods(<code>GET</code> and <code>POST</code>), while <code>/tasks/taskId</code> has GET, PUT and DELETE.</p>",
+                "<pre><code>'use strict';<br/>module.exports = function(app) {  <br/><br/>  // todoList Routes<br/>  app.route('/tasks')<br/>    .get(/* get method response */)<br/>    .post(/* delete method response */);<br/><br/><br/>  app.route('/tasks/:taskId')<br/>    .get(/* get method response */)<br/>    .put(/* put method response */)<br/>    .delete(/* delete method response */);<br/>};</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the use of DNS module in Node.js?",
+            "answer": [
+                "<p><code>dns</code> module which provide underlying system's name resolution and DNS look up facilities. DNS module consists of an asynchronous network wrapper.</p>",
+                "<p>The most commonly used functions in DNS module are:</p>",
+                "<ul class=\"none\"><li><b><code>dns.lookup(adress, options, callback)</code></b> - The dns lookup method takes any website address as its first parameter and returns the corresponding first IPV4 or IPV6 record. The options parameter can be an integer or object. If no options are provided both IPV4 and IPV6 are valid inputs. The third parameter is the callback functions.</li>",
+                "<li><b><code>dns.lookupservice(address, port, callback)</code></b> - This function converts any physical address such as “www.knowledgehills.com” to array of record types. The record types are specified by the second parameter “rrbyte”. Finally the third method is the callback function.</li>",
+                "<li><b><code>dns.getServers()</code></b> - This function returns an array of IP address strings, formatted according to rfc5952, that are currently configured for DNS resolution. A string will include a port section if a custom port is used.</li>",
+                "<li><b><code>dns.setServers()</code></b> - This function sets the IP address and port of servers to be used when performing DNS resolution. The <code>dns.setServers()</code> method must not be called while a DNS query is in progress.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What are the important command line options in Node.js?",
+            "answer": [
+                "<p>Some of the most used Node.js CLI options are:</p>",
+                "<ul class=\"none\"><li><b>--version or -v</b> - Using the <code>node --version</code>, or short, <code>node -v</code>, we can print the version of Node.js we are using.</li>",
+                "<li><b>--eval or -e</b> - Using the <code>--eval</code> option, we can run JavaScript code right from your terminal. The modules which are predefined in REPL can also be used without requiring them, like the <code>http</code> or the <code>fs</code> module.</li>",
+                "<li><b>--inspect[=host:port]</b> - Using node <code>--inspect</code> will activate the inspector on the provided host and port. If they are not provided, the default is <code>127.0.0.1:9229</code>. The debugging tools attached to Node.js instances communicate via a tcp port using the Chrome Debugging Protocol.</li>",
+                "<li><b>--zero-fill-buffers</b> - Node.js can be started using the <code>--zero-fill-buffers</code> command line option to force all newly allocated Buffer instances to be automatically zero-filled upon creation. The reason to do so is that newly allocated Buffer instances can contain sensitive data.</li>",
+                "<li><b>--check or -c</b> - The <code>--check</code> option instructs Node.js to check the syntax of the provided file, without actually executing it.</li>",
+                "<li><b>--prof-process</b> - Using the <code>--prof-process</code>, the Node.js process will output the v8 profiler output.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How does Node.js work?",
+            "answer": [
+                "<p>Node is single threaded and all Node JS applications uses \"Single Threaded Event Loop Model\" architecture to handle multiple concurrent clients. But actually it is event-driven and single-threaded with background workers. The main event loop is single-threaded but most of the I/O works run on separate threads, because the I/O APIs in Node.js are asynchronous/non-blocking by design, in order to accommodate the event loop.</p>",
+                "<p>Event loop allows Node.js to perform non-blocking I/O operation, despite the fact that JavaScript is single-threaded and by offloads operations to the system kernel whenever possible. This event loop has following phases:</p>",
+                "<ul class=\"none\"><li><code>timers</code>: this phase executes callbacks scheduled by <code>setTimeout()</code> and <code>setInterval()</code>. A timer specifies the threshold after which a provided callback may be executed rather than the exact time a person wants it to be executed.</li>",
+                "<li>I/O callbacks: executes almost all callbacks with the exception of close callbacks, the ones scheduled by timers, and <code>setImmediate()</code>.</li>",
+                "<li>idle and prepare: only used internally.</li>",
+                "<li>poll: retrieve new I/O events; node will block here when appropriate.</li>",
+                "<li>check: setImmediate() callbacks are invoked here.</li>",
+                "<li>close callbacks: e.g. <code>socket.on('close', ...)</code>.</li></ul>",
+                "<p>Here every phase follows FIFO stack like queue mechanism to handle callbacks. Each phase is unique , generally, when the event loop enters a given phase, it will perform any operations specific to that phase, then execute callbacks in that phase’s queue until the queue has been exhausted or the maximum number of callbacks has executed. When the queue has been exhausted or the callback limit is reached, the event loop will move to the next phase, and so on.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How do you resolve unhandled exceptions in a Node.js program?",
+            "answer": [
+                "<p>In a production system it is really important to capture uncaught exceptions too. E.g. a simple type conversion is missing, or a file is write protected, then our application stop working and we don't know why. Or our Application restart automatically and we don't see any error.</p>",
+                "<p>In Node.js an uncaughtException event is fired. We can capture that event with a simple:</p>",
+                "<pre><code>process.on(\"uncaughtException\", function(err) { ... });</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is a Callback function in Node.js?",
+            "answer": [
+                "<p>Node.js, being an asynchronous platform, doesn't wait around for things like file I/O to finish - Node.js uses callbacks. A callback is a function called at the completion of a given task; this prevents any blocking, and allows other code to be run in the meantime.</p>",
+                "<pre><code>function processData (callback) {<br/>  fetchData(function (err, data) {<br/>    if (err) {<br/>      console.log(\"An error has occured. Abort everything!\");<br/>      callback(err);<br/>    }<br/>    data += 1;<br/>    callback(data);<br/>  });<br/>}</code></pre>",
+                "<p>Callbacks are the foundation of Node.js. Callbacks give us an interface with which to say, \"and when you're done doing that, do all this.\" This allows us to have as many IO operations as our OS can handle happening at the same time. For example, in a web server with hundreds or thousands of pending requests with multiple blocking queries, performing the blocking queries asynchronously gives you the ability to be able to continue working and not just sit still and wait until the blocking operations come back.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the use of QueryString in Node.js?",
+            "answer": [
+                "<p>The Node.js Query String provides methods to deal with query string. It can be used to convert query string into JSON object and vice-versa.</p>",
+                "<p>To use query string module, we need to use <code>require('querystring')</code>.</p>",
+                "<p>The <code>querystring.parse()</code> method parses a URL query string (<code>str</code>) into a collection of key and value pairs. For example, the query string <code>'foo=bar&abc=xyz&abc=123'</code> is parsed into:</p>",
+                "<pre><code>{<br/>  foo: 'bar',<br/>  abc: ['xyz', '123']<br/>}</code></pre>",
+                "<p>The object returned by the <code>querystring.parse()</code> method does not prototypically inherit from the JavaScript Object. This means that typical <code>Object</code> methods such as <code>obj.toString()</code>, <code>obj.hasOwnProperty()</code>, and others are not defined and will not work.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How will you get the amount of free memory on the server in which Node.js application is running?",
+            "answer": [
+                "<p>The built-in <code>process</code> module has a method <code>memoryUsage</code> that offers insight in the memory usage of the current Node.js process.</p>",
+                "<p>The <code>process.memoryUsage()</code> method returns an object describing the memory usage of the Node.js process measured in bytes. For example, the code:</p>",                
+                "<pre><code>console.log(process.memoryUsage());</code></pre>",
+                "<p>Will generate:</p>",
+                "<pre><code>{<br/>  rss: 4935680,<br/>  heapTotal: 1826816,<br/>  heapUsed: 650472,<br/>  external: 49879<br/>}</code></pre>",
+                "<p><code>heapTotal</code> and <code>heapUsed</code> refer to V8's memory usage. <code>external</code> refers to the memory usage of C++ objects bound to JavaScript objects managed by V8. <code>rss</code>, Resident Set Size, is the amount of space occupied in the main memory device (that is a subset of the total allocated memory) for the process, which includes the heap, code segment and stack.</p>",
+                "<p>The heap is where objects, strings, and closures are stored. Variables are stored in the stack and the actual JavaScript code resides in the code segment.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },{
+            "question": "What are the security mechanisms available in Node.js?",
+            "answer": [
+                "<p>We can secure our Node.js application in the following ways:</p>",
+                "<p><b>Authentication</b> - Authentication is one of the primary security stages at which user is identified as permitted to access the application at all. Authentication verifies the user’s identity through one or several checks. In Node.js, authentication can be either session-based or token-based. In session-based authentication, the user’s credentials are compared to the user account stored on the server and, in the event of successful validation, a session is started for the user. Whenever the session expires, the user needs to log in again. In token-based authentication, the user’s credentials are applied to generate a string called a token which is then associated with the user’s requests to the server.</p>",
+                "<p><b>Error Handling</b> - Usually, the error message contains the explanation of what's actually gone wrong for the user to understand the reason. At the same time, when the error is related to the application code syntax, it can be set to display the entire log content on the frontend. For an experienced hacker, the log content can reveal a lot of sensitive internal information about the application code structure and tools used within the software.</p>",
+                "<p><b>Request Validation</b> - Another aspect which has to be considered, while building a secure Node.js application, is a validation of requests or, in other words, a check of the incoming data for possible inconsistencies. It may seem that invalid requests do not directly affect the security of a Node.js application, however, they may influence its performance and robustness. Validating the incoming data types and formats and rejecting requests not conforming to the set rules can be an additional measure of securing your Node.js application.</p>",
+                "<p><b>Node.js Security Tools and Best Practices</b> - We can use tools like <b>helmet</b> (protects our application by setting HTTP headers), <b>csurf</b> (validates tokens in incoming requests and rejects the invalid ones), <b>node rate limiter</b> (controls the rate of repeated requests. This function can protect you from brute force attacks) and <b>cors</b> (enables cross-origin resource sharing).</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is promise-all in node.js?",
+            "answer": [
+                "<p>promise-all is a node module for tracking down promise states of all promise functions executing in parallel. Similar to promise.all function, but it rejects the complete <code>promise.all()</code> even if any one of the promise fails, where as promises-all npm will indiviudally return you the states. Below is an example:</p>",
+                "<pre><code>var PromiseAll = require('promises-all');<br/><br/>PromiseAll.all([promise1, promise2]).then(function(response) {<br/>    console.log(response);<br/>}, function(error) {<br/>    console.log(error);<br/>});</code></pre>",
+                "<p>Will output:</p>",
+                "<pre><code>{<br/>  resolve: [ /* promise resolved */ ],<br/>  reject: [ / * prmoise rejected */ ] <br/>}</code></pre>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How can we secure cookies in Node.js?",
+            "answer": [
+                "<p>We can follow below steps to secure our cookies:</p>",
+                "<ul class=\"none\"><li><b>HttpOnly</b> - HttpOnly is a flag that can be included in a Set-Cookie response header. The presence of this flag will tell browsers to not allow client side script access to the cookie (if the browser supports it). This is important because it helps protect our cookie data from malicious scripts and helps mitigate the most common XSS attacks.</li>",
+                "<li><b>Secure</b> - Equally important as the HttpOnly flag is the Secure flag. This too is included in a Set-Cookie response header. The presence of the secure flag tells web browsers to only send this cookie in requests going to HTTPS endpoints. This is very important, as the cookie information will not be sent on an unencrypted channel. This helps mitigate some exploits where your browser is redirected to the HTTP endpoint for a site rather than the HTTPS endpoint and thus potentially exposing your cookies to someone in the middle of the traffic.</li></ul>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the passport in Node.js?",
+            "answer": [
+                "<p>Passport.js is a simple, unobtrusive Node.js authentication middleware for Node.js. Passport.js can be dropped into any Express.js-based web application.</p>",
+                "<p>Passport recognizes that each application has unique authentication requirements. Authentication mechanisms, known as strategies, are packaged as individual modules. Applications can choose which strategies to employ, without creating unnecessary dependencies.</p>",
+                "<p>By default, if authentication fails, Passport will respond with a <code>401 Unauthorized</code> status, and any additional route handlers will not be invoked. If authentication succeeds, the <code>next</code> handler will be invoked and the req.user property will be set to the authenticated user.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "What is the meaning of tilde and caret in package.json?",
+            "answer": [
+                "<p>In the simplest terms, the tilde matches the most recent minor version (the middle number). ~1.2.3 will match all 1.2.x versions but will miss 1.3.0.</p>",
+                "<p>The caret, on the other hand, is more relaxed. It will update to the most recent major version (the first number). ^1.2.3 will match any 1.x.x release including 1.3.0, but will hold off on 2.0.0.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "How can we control versioning about packages in Node.js?",
+            "answer": [
+                "<p>If we are using a version of npm prior to 5 then we can use <code>npm shrinkwrap</code>. This locks down the versions of the npm modules we are currently using. Once committed to the project if anybody else npm install they get the exact versions specified in shrink wrap.</p>",
+                "<p>With the release of npm 5 it automatically creates an <code>package-lock.json</code> file, similar to shrinkwrap, when we run npm install by default. We should commit the lock or shinkwrap files.</p>",
+                "<p>We can also look into Yarn. Yarn comes out of the box with a <code>yarn.lock</code> file which works in the same way but with additional performance speeds and offline capabilities.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        },
+        {
+            "question": "Difference between dependencies and dev dependencies?",
+            "answer": [
+                "<p><code>dependencies</code> are required and crucial to run our application, <code>devDependencies</code> are required only for development, e.g.: unit tests, ES6 to Javascript transpilation, minification.</p>",
+                "<p>In development this doesn't matter because regular <code>npm install</code> installs both sets of dependencies anyway, but if <code>NODE_ENV</code> is set to production npm will skip <code>devDependencies</code>. We can also explicitly choose what we want to install using the <code>--only</code> option:</p>",
+                "<ul class=\"none\"><li><code>npm install --only=prod[uction]</code> installs only <code>dependencies</code></li>",
+                "<li><code>npm install --only=dev[elopment]</code> installs only <code>devDependencies</code></li></ul>",
+                "<p>Let's say that we're using a continuous deployment service. If we set <code>NODE_ENV</code> to production and <code>webpack</code> is listed under <code>devDependencies</code> (like in many codebases I have seen), the build will fail because webpack won't get installed. We can always test if we divided the dependencies correctly by installing them with the option -<code>-only=prod</code>.</p>"
+            ],
+            "additional": "",
+            "footer": "",
+            "bookmark": false
+        }
+    ]
+}
