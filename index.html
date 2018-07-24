@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+	<style>
+		h1 {
+			font-size: 2rem;
+		}
+		.choose-topic {
+			padding-right: 16px;
+		}
+		.question-wrapper {
+			border-bottom: 1px solid #ccc;
+			margin-bottom: 16px;
+		}
+		h2 {
+			margin-bottom: 16px;
+		}
+		.links {
+			margin-bottom: 16px;
+		}
+		.links a {
+			display: inline-block;
+			background: #00bcd4;
+			color: #fff;
+			text-decoration: none;
+			padding: 6px;
+			margin-right: 8px;
+			margin-bottom: 8px;
+			font-weight: bold;
+		}
+		.question {
+			font-size: 1.2rem;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body ng-app="iq">
+	<div class="container" ng-controller="MainController as main">
+		<h1>Questions Viewer</h1>
+		<form class="form-inline">
+		  <div class="form-group">
+		  	<span class="choose-topic">Choose the topic: </span>
+		    <label for="topic" class="sr-only">Topic</label>
+		    <select class="custom-select mr-sm-2" id="topic" ng-model="main.topic" ng-change="main.onTopicChange()">
+		        <option value="html">HTML5</option>
+		        <option value="css">CSS3</option>
+		        <option value="bootstrap">Bootstrap</option>
+		        <option value="js">JavaScript</option>
+		        <option value="jquery">jQuery</option>
+		        <option value="angularjs">Angularjs</option>
+		        <option value="typescript">TypeScript</option>
+		        <option value="angular">Angular 4</option>
+		        <option value="es6">ES6</option>
+		        <option value="nodejs">NodeJS</option>
+		        <option value="react">ReactJS</option>
+		        <option value="mongodb">MongoDB</option>
+		        <option value="misc">Misc</option>
+		    </select>
+		  </div>
+		</form>
+		<h2>Questions:</h2>
+		<div class="row" ng-if="!main.questions.length">
+			<div class="col-12">
+				Something went wrong.
+			</div>
+		</div>
+		<div class="row" ng-if="main.questions.length">
+			<div class="col-12" ng-if="main.questionsVersion">
+				<p>Version: {{ main.questionsVersion }}</p>
+			</div>
+			
+			<div class="col-12 links">
+				<a ng-href="{{'#Q' + ($index + 1)}}" ng-repeat="question in main.questions">{{ 'Q' + ($index + 1) }}</a>
+			</div>
+
+			<div class="col-12 question-wrapper" ng-repeat="question in main.questions" id="{{'Q' + ($index + 1)}}">
+				<p class="question">
+					{{ question.id || 'Q' + ($index + 1)}}: 
+					<span ng-bind-html="question.question"></span>
+				</p>
+				<div ng-bind-html="question.answer.join('')"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	var app = angular.module('iq', ['ngSanitize']);
+
+	app.controller('MainController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout){
+
+		var main = this;
+		main.topic = 'es6';
+		main.error = null;
+		main.questions = [];
+		main.questionsVersion;
+
+		main.onTopicChange = function() {
+			main.getQuestions();
+		};	
+
+		main.getQuestions = function() {
+			$http.get('web/' + main.topic + '-questions.json')
+				.then(function(response) {
+					if (response && response.data && response.data.questions) {
+						main.questions = response.data.questions;
+						main.questionsVersion = response.data.version;
+						$timeout(function() {
+							angular.forEach(angular.element('pre code'), function(block) {
+							    hljs.highlightBlock(block);
+							 });
+						}, 500);
+					} else {
+						erroGetQuestions(response);
+					}
+				}, erroGetQuestions);
+		}
+
+		function erroGetQuestions(error) {
+			main.questions = [];
+		}
+
+		main.getQuestions();
+
+	}]);
+
+</script>
+</html>
