@@ -1,0 +1,527 @@
+{
+    "questions": [        
+        {
+            "question": "What is Vue.js? What are the advantages of it?",
+            "answer": [
+                "<p>Vue is a <b>progressive framework</b> used to building user interfaces.The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects.</p>",
+                "<p>Following are the advantages of using Vue.js.</p>",
+                "<ul><li>Small in size - The size of this framework is 18 to 21KB and it takes no time for the user to download and use it. </li>",
+                "<li>Easy to Understand - One of the reasons for the popularity of this framework is that it is quite easy to understand. The user can easily add Vue.js to his web project because of its simple structure.</li>",
+                "<li>Simple Integration - Vue.js can be integrated with the existing applications easily.</li>",
+                "<li>Flexibility - This flexibility also makes it easy to understand for the developers of React.js, Angular.js, and any other new JavaScript framework.</li>",
+                "<li>Virtual DOM - It uses virtual DOM similar to other existing frameworks such as ReactJS, Ember etc. Virtual DOM is a light-weight in-memory tree representation of the original HTML DOM and updated without affecting the original DOM.</li>",
+                "<li>Components - Used to create reusable custom elements in VueJS applications.</li>",
+                "<li>Two-Way Communication - Vue.js also facilitates two way communications because of its MVVM architecture which makes it quite easy to handle HTML blocks.</li></ul>"
+            ]
+        },
+        {
+            "question": "What is Vue instance and how to create it?",
+            "answer": [
+                "<p>Every Vue application starts by creating a new Vue instance with the <code>Vue</code> function:</p>",
+                "<pre><code>var vm = new Vue({<br/>// options<br/>})</code></pre>",
+                "<p>As a convention, we often use the variable <code>vm</code> (short for ViewModel) to refer to our Vue instance.</p>",
+                "<p>When we create a Vue instance, we pass in an options object. A Vue application consists of a root Vue instance created with <code>new Vue</code>, optionally organized into a tree of nested, reusable components.</p>"
+            ]
+        },
+        {
+            "question": "What is <code>data</code> in Vue instance?",
+            "answer": [
+                "<p>When a Vue instance is created, it adds all the properties found in its data object to Vue's reactivity system. When the values of those properties change, the view will \"react\", updating to match the new values.</p>",
+                "<p>It is recommended to initialize all the data properties that needs to be reactive upfront in the <code>data</code> option.</p>",
+                "<pre><code>// Our data object<br/>var data = { a: 1 }<br/><br/>// The object is added to a Vue instance<br/>var vm = new Vue({<br/>  data: data<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What are all the life cycle hooks in Vue instance?",
+            "answer": [
+                "<p>Each Vue instance goes through series of steps when they are created, mounted and destroyed. Along the way, it will also runs functions called life cycle hooks, giving us the opportunity to add our own code at specific stage. Below are the events, a Vue instance goes through.</p>",
+                "<ul><li><b>beforeCreate</b> - The first hook in the creation hooks. They allow us to perform actions before our component has even been added to the DOM. We do not have access to the DOM inside of this.</li>",
+                "<li><b>created</b> - This hook can be used to run code after an instance is created. We can access the reactive <code>data</code>. But templates and Virtual DOM have not yet been mounted or rendered.</li>",
+                "<li><b>beforeMount</b> - The beforeMount hook runs right before the initial render happens and after the template or render functions have been compiled. Most likely we'll never need to use this hook.</li>",
+                "<li><b>mounted</b> -  We will have full access to the reactive component, templates, and rendered DOM. This is the most frequently used hook. </li>",
+                "<li><b>beforeUpdate</b> - This hook runs after data changes on our component and the update cycle begins. But runs right before the DOM is patched and re-rendered. </li>",
+                "<li><b>updated</b> - This hook runs after data changes on our component and the DOM re-renders. If we need to access the DOM after a property change, here is probably the safest place to do it.</li>",
+                "<li><b>beforeDestroy</b> - This hook will run right before tearing down the instance. If we need to clean up events or reactive subscriptions, this is the right place to do it.</li>",
+                "<li><b>destroyed</b> - This hook will be used to do any last minute clean up.</li></ul>"
+            ]
+        },
+        {
+            "question": "How do you bind the data in Vue.js?",
+            "answer": [
+                "<p>We can bind the data using \"Mustache\" (i.e. {}) syntax which is the basic form of data binding in Vue.js.</p>",
+                "<pre><code>&lt;h1&gt;{{ title }}&lt;/h1&gt;</code></pre>",
+                "<p>The mustache content will be replaced with the value of the <code>title</code> property on the corresponding data object. It will also be updated whenever the data object's <code>title</code> property changes.</p>"
+            ]
+        },
+        {
+            "question": "How do you do one-time binding?",
+            "answer": [
+                "<p>To bind a data only once, we can use <code>v-once</code> directive. This will also affect all the other bindings in the same node.</p>",
+                "<pre><code>&lt;h1 v-once&gt;{{ title }}&lt;/h1&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "How do you do two-way data binding?",
+            "answer": [
+                "<p>We can use the <code>v-model</code> directive to create two-way data bindings on form input, textarea, and select elements. It automatically picks the correct way to update the element based on the input type.</p>",
+                "<pre><code>&lt;input v-model=\"message\" placeholder=\"edit me\"&gt;<br/>&lt;p&gt;Message is: {{ message }}&lt;/p&gt;</code></pre>",
+                "<p><code>v-model</code> will ignore the initial value, checked or selected attributes found on any form elements. It will always treat the Vue instance data as the source of truth.</p>"
+            ]
+        },
+        {
+            "question": "What is directives in Vue.js?",
+            "answer": [
+                "<p>A directive is some special token in the markup that tells the library to do something to a DOM element. It is same like Angular directives but simpler than that. Directives are prefixed with <code>v-</code> and are expected to be a single JavaScript expression. </p>",
+                "<pre><code>&lt;p v-if=\"seen\"&gt;Now you see me&lt;/p&gt;</code></pre>",
+                "<p>Here, the <code>v-if</code> directive would remove/insert the <code>&lt;p&gt;</code> element based on the truthiness of the value of the expression <code>seen</code>.</p>"
+            ]
+        },
+        {
+            "question": "What are arguments and modifiers in directives?",
+            "answer": [
+                "<p>Some directives can take an \"argument\", denoted by a colon after the directive name. For example, the <code>v-bind</code> directive is used to reactively update an HTML attribute:</p>",
+                "<pre><code>&lt;a v-bind:href=\"url\"&gt; ... &lt;/a&gt;</code></pre>",
+                "<p>Here <code>href</code> is the argument, which tells the <code>v-bind</code> directive to bind the elements <code>href</code> attribute to the value of the expression <code>url</code>.</p>",
+                "<p>Another example is the <code>v-on</code> directive, which listens to DOM events:</p>",
+                "<pre><code>&lt;a v-on:click=\"doSomething\"&gt; ... &lt;/a&gt;</code></pre>",
+                "<p>Here the argument is the event name to listen to.</p>",
+                "<p>Modifiers are special postfixes denoted by a dot, which indicate that a directive should be bound in some special way. For example, the .prevent modifier tells the v-on directive to call event.preventDefault() on the triggered event:</p>",
+                "<pre><code>&lt;form v-on:submit.prevent=\"onSubmit\"&gt; ... &lt;/form&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "How do you create a custom directive in Vue.js?",
+            "answer": [
+                "<p>In addition to the default set of directives like <code>v-model</code> and <code>v-bind</code>, we can also create and register our own directives.</p>",
+                "<p>The syntax for registering a directive is as follow:</p>",
+                "<pre><code>// Register a global custom directive called `v-focus`<br/>Vue.directive('name', {<br/>  // When the bound element is inserted into the DOM...<br/>  inserted: function (el) {<br/>    // Focus the element<br/>    el.focus()<br/>  }<br/>})</code></pre>",
+                "<p>Then in a template, we can use the newly created directive <code>v-name</code> as attribute on any element, like this:</p>",
+                "<pre><code>&lt;div v-name&gt;&lt;/div&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What are all the directive hook functions?",
+            "answer": [
+                "<p>A directive definition object can provide below optional hook functions.</p>",
+                "<p><b>bind</b>: It is called only once, when the directive is first bound to the element. This is where we can do one-time setup work.</p>",
+                "<p><b>inserted</b>: This is called when the bound element has been inserted into its parent node.</p>",
+                "<p><b>update</b>: It is called after the containing component's VNode has updated, but possibly before its children have updated. The directive's value may or may not have changed, but we can skip unnecessary updates by comparing the binding's current and old values.</p>",
+                "<p><b>componentUpdated</b>: It is called after the containing component's VNode and the VNodes of its children have updated.</p>",
+                "<p><b>unbind</b>: This is called only once, when the directive is unbound from the element.</p>",
+                "<p>All these directive hooks are passed with four arguments namely: <code>el</code>, <code>binding</code>, <code>vnode</code>, and <code>oldVnode</code>."
+            ]
+        },
+        {
+            "question": "Explain the directive hook arguments in details.",
+            "answer": [
+                "<p>Directive hooks are passed with these below arguments:</p>",
+                "<p><b>el</b>: The element the directive is bound to. This can be used to directly manipulate the DOM.</p>",
+                "<p><b>binding</b>: An object containing the following properties.</p>",
+                "<ul><li><i>name</i>: The name of the directive, without the <code>v-</code> prefix.<li>",
+                "<li><i>value</i>: The value that is passed to the directive.<li>",
+                "<li><i>oldValue</i>:  The previous value of the directive, but only available in <code>update and componentUpdated</code><li>",
+                "<li><i>expression</i>: The expression of the binding as a string.<li>",
+                "<li><i>arg</i>: The argument passed to the directive, if any. For example in <code>v-my-directive:foo</code>, the arg would be <code>foo</code>.<li>",
+                "<li><i>modifiers</i>: An object containing modifiers, if any. For example in <code>v-my-directive.foo.bar</code>, the modifiers object would be <code>{ foo: true, bar: true }</code>.<li></ul>",
+                "<p><b>vnode</b>: The virtual node produced by Vue's compiler.</p>",
+                "<p><b>oldVnode</b>: The previous virtual node, only available in the <code>update</code> and <code>componentUpdated</code> hooks.</p>",
+                "<p>For simple directives where we want the same behavior in <code>update</code> and <code>bind</code>, we can simply pass a function instead of directive definition object.</p>",
+                "<pre><code>Vue.directive('color-swatch', function (el, binding) {<br/>el.style.backgroundColor = binding.value<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What are the conditional directives?",
+            "answer": [
+                "<p>Vue.js provides set of directives to manipulate the DOM such as add/remove, show/hide. The below are the available directives:</p>",
+                "<p><code>v-if</code>: it adds or removes the element from the DOM based on the given expression. For example:</p>",
+                "<pre><code>&lt;button v-if=\"isLoggedIn\"&gt;Logout&lt;/button&gt;</code></pre>",
+                "<p><code>v-else</code>: it is similar like <code>else</code> in the native <code>if</code> condition, which will render the DOM element only if the adjacent <code>v-if</code> resolves into <code>false</code>. We don't need to pass any value to this.</p>",
+                "<pre><code>&lt;button v-if=\"isLoggedIn\"&gt;Logout&lt;/button&gt;<br/>&lt;button v-else&gt;Login&lt;/button&gt;</code></pre>",
+                "<p><code>v-else-f</code>: This directive is used when we need more than two options to be checked. For example, <code>ifLoginDisabled</code> property is disabled then we need to prevent user to login instead just display the label. This can be achieved through v-else statement.</p>",
+                "<pre><code>&lt;button v-if=\"isLoggedIn\"&gt;Logout&lt;/button&gt;<br/>&lt;button v-else=\"isLoginDisabled\"&gt;Login disabled&lt;/button&gt;<br/>&lt;button v-else&gt;Login&lt;/button&gt;</code></pre>",
+                "<p><code>v-show</code>: This directive is similar to <code>v-if</code> but it renders all elements to the DOM and then uses the CSS display property to show/hide elements instead of completly add/remove the DOM. This directive is recommended if the elements are switched on and off frequently.</p>",
+                "<pre><code>&lt;span if-show=\"user.name\"&gt;Welcome user, {{user.name}}&lt;/span&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What is the difference between v-show and v-if directives?",
+            "answer": [
+                "<p>Below are some of the main differences between between v-show and v-if directives:</p>",
+                "<ul><li><code>v-if</code> only renders the element to the DOM if the expression passes whereas <code>v-show</code> renders all elements to the DOM and then uses the CSS display property to show/hide elements based on expression.</li>",
+                "<li><code>v-if</code> supports <code>v-else</code> and <code>v-else-if</code> directives whereas <code>v-show</code> doesn't support else directives.</li>",
+                "<li><code>v-if</code> has higher toggle costs since it add or remove the DOM everytime while <code>v-show</code> has higher initial render costs. i.e, <code>v-show</code> has a performance advantage if the elements are switched on and off frequently, while the <code>v-if</code> has the advantage when it comes to initial render time.</li>",
+                "<li><code>v-if</code> supports tab but v-show doesn't support.</li></ul>"
+            ]
+        },
+        {
+            "question": "What is the purpose of v-for directive?",
+            "answer": [
+                "<p>This directive allows us to loop through the items of an array or object.</p>",
+                "<p>Example of an array usage:</p>",
+                "<pre><code>&lt;ul id=\"list\"&gt;<br/>  &lt;li v-for=\"(item, index) in items\"&gt;<br/>    {{ index }} - {{ item.message }}<br/>  &lt;/li&gt;<br/>&lt;/ul&gt;<br/><br/>var vm = new Vue({<br/>  el: '#list',<br/>  data: {<br/>    items: [<br/>      { message: 'John' },<br/>      { message: 'Locke' }<br/>    ]<br/>  }<br/>})</code></pre>",
+                "<p>Example of an object usage:</p>",
+                "<pre><code>&lt;div id=\"object\" v-for=\"(value, key, index) in object\"&gt;<br/>  {{ index }}. {{ key }}: {{ value }}<br/>&lt;/div&gt;<br/><br/>var vm = new Vue({<br/>  el: '#object',<br/>  data: {<br/>    user: {<br/>      firstName: 'John',<br/>      lastName: 'Locke',<br/>      age: 30<br/>    }<br/>  }<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What is <code>key</code> in Vue.js?",
+            "answer": [
+                "<p>In order to render DOM elements more efficiently, Vue.js reuses the elements instead of creating them from scratch every time. This default mode is efficient, but in some cases it may causes problems. For example, if you try to render the same input element in both <code>v-if</code> and <code>v-else</code> blocks then it holds the previous value as below:</p>",
+                "<pre><code>&lt;template v-if=\"loginType === 'Admin'\"&gt;<br/>  &lt;label&gt;Admin&lt;/label&gt;<br/>  &lt;input placeholder=\"Enter your ID\" key=\"admin-id\"&gt;<br/>&lt;/template&gt;<br/>&lt;template v-else&gt;<br/>  &lt;label&gt;Guest&lt;/label&gt;<br/>  &lt;input placeholder=\"Enter your name\" key=\"user-name\"&gt;<br/>&lt;/template&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "Why should not use if and for directives together on the same element?",
+            "answer": [
+                "<p>It is recommended not to use <code>v-if</code> on the same element as <code>v-for</code>. Because <code>v-for</code> directive has a higher priority than <code>v-if</code>. There are two common cases where this can be tempting:</p>",
+                "<ul><li>To filter items in a list (e.g. <code>v-for=\"user in users\" v-if=\"user.isActive\"</code>). In these cases, replace <code>users</code> with a new computed property that returns your filtered list (e.g. <code>activeUsers</code>).</li>",
+                "<li>To avoid rendering a list if it should be hidden (e.g. <code>v-for=\"user in users\" v-if=\"shouldShowUsers\"</code>). In these cases, move the <code>v-if</code> to a container element (e.g. <code>ul</code>, <code>ol</code>).</li></ul>"
+            ]
+        },
+        {
+            "question": "Why should not use if and for directives together on the same element?",
+            "answer": [
+                "<p>It is recommended not to use <code>v-if</code> on the same element as <code>v-for</code>. Because <code>v-for</code> directive has a higher priority than <code>v-if</code>. There are two common cases where this can be tempting:</p>",
+                "<ul><li>To filter items in a list (e.g. <code>v-for=\"user in users\" v-if=\"user.isActive\"</code>). In these cases, replace <code>users</code> with a new computed property that returns your filtered list (e.g. <code>activeUsers</code>).</li>",
+                "<li>To avoid rendering a list if it should be hidden (e.g. <code>v-for=\"user in users\" v-if=\"shouldShowUsers\"</code>). In these cases, move the <code>v-if</code> to a container element (e.g. <code>ul</code>, <code>ol</code>).</li></ul>"
+            ]
+        },
+        {
+            "question": "How do you pass an object to a directive?",
+            "answer": [
+                "<p>We can pass in a JavaScript object literal to a directive since directives can take any valid JavaScript expression.</p>",
+                "<pre><code>&lt;div v-demo=\"{ color: 'white', text: 'hello!' }\"&gt;&lt;/div&gt;</code></pre>",
+                "<pre><code>Vue.directive('demo', function (el, binding) {<br/>  console.log(binding.value.color) // => \"white\"<br/>  console.log(binding.value.text)  // => \"hello!\"<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What is computed property?",
+            "answer": [
+                "<p>In Vue.js, a computed property is a getter function of the property. Conside the following example:</p>",
+                "<pre><code>var vm = new Vue({<br/>  el: '#example',<br/>  data: {<br/>    message: 'Hello'<br/>  },<br/>  computed: {<br/>    // a computed getter<br/>    greetMessage: function () {<br/>      // `this` points to the vm instance<br/>      return this.message + ', Welcome.'<br/>    }<br/>  }<br/>})</code></pre>",
+                "<p>In the template:</p>",
+                "<pre><code>&lt;div id=\"example\"&gt;<br/>  &lt;p&gt;Original message: \"{{ message }}\"&lt;/p&gt; &lt;!-- Hello --&gt;<br/>  &lt;p&gt;Greet message: \"{{ greetMessage }}\"&lt;/p&gt; &lt;!-- Hello, Welcome. --&gt;<br/>&lt;/div&gt;</code></pre>",
+                "<p>Computed properties are by default getter-only, but we can also provide a setter when we need it.</p>"
+            ]
+        },
+        {
+            "question": "What is the difference betweem comptuted properties and methods?",
+            "answer": [
+                "<p>Computed properties are getter function in Vue instance rather than actual methods. we can define the same function as a method instead. However, the difference is that computed properties are cached based on their dependencies. A computed property will only re-evaluate when some of its dependencies have changed. In comparison, a method invocation will always run the function whenever a re-render happens.</p>",
+                "<p>When we have to compute something by doing lot of computations like looping through a large array, it is best to use computed properties instead of a method. Without caching, we would spend more time than necessary. When we do not want cache, we can use a method instead.</p>"
+            ]
+        },
+        {
+            "question": "Explain watchers in Vue.js?",
+            "answer": [
+                "<p>Vue provides a more generic way to react to data changes through the <code>watch</code> option. This is most useful when we want to perform asynchronous or expensive operations in response to changing data, like fetching asynchronous data when user inputs something.</p>",
+                "<pre><code>&lt;input v-model=\"question\"&gt;</code></pre>",
+                "<p>In Vue instance, we could watch the model data and react to changes.</p>",
+                "<pre><code>var watchExampleVM = new Vue({<br/>  el: '#watch-example',<br/>  watch: {<br/>    // whenever question changes, this function will run<br/>    question: function (newQuestion, oldQuestion) {<br/>      // do asynchronous task      <br/>    }<br/>  },<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What are components in Vue.js?",
+            "answer": [
+                "<p>Components are reusable Vue instances with a name. Vue.js allows us to create custom HTML elements that can be used within our views. To define and register a custom HTML element, we must create a Vue component using the <code>component</code> method of the <code>Vue</code> class.</p>",
+                "<pre><code>// Define a new component called button-counter<br/>Vue.component('button-counter', {<br/>  data: function () {<br/>    return {<br/>      count: 0<br/>    }<br/>  },<br/>  template: '<button v-on:click=\"count++\">You clicked me {{ count }} times.</button>'<br/>})</code></pre>",
+                "<p>Now we can use the component as below:</p>",
+                "<pre><code>&lt;div id=\"components-demo\"&gt;<br/>  &lt;button-counter&gt;&lt;/button-counter&gt;<br/>&lt;/div&gt;</code></pre>",
+                "<p>Since components are reusable <code>Vue</code> instances, they accept the same options as new Vue, such as <code>data</code>, <code>computed</code>, <code>watch</code>, <code>methods</code>, and lifecycle hooks. The only exceptions are a few root-specific options like <code>el</code>. Also, a component's data option must be a function, so that each instance can maintain an independent copy of the returned data object.</p>"
+            ]
+        },
+        {
+            "question": "How do you pass data to the component?",
+            "answer": [
+                "<p>We can pass any value to a component as props. Props are custom attributes you can register on a component. When a value is passed to a prop attribute, it becomes a property on that component instance.</p>",
+                "<p>For example, to pass a <code>message</code> property to the <code>greeting</code>, we have included it in the list of properties that the component accepts, using the <code>props</code> option.</p>",
+                "<pre><code>Vue.component('greeting', {<br/>  props: ['message'],<br/>  template: '<h3>Hello, {{ message }}</h3>'<br/>})</code></pre>",
+                "<p>Once a prop is registered, you can pass data to it as a custom attribute, like this:</p>",
+                "<pre><code>&lt;greeting message=\"Welcome\"&gt;&lt;/greeting&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "How to communicate with the parent component from child?",
+            "answer": [
+                "<p>Vue instances provide a custom events system to communicate with parent component. To emit an event to the parent, we can call the built-in <code>$emit</code> method, passing the name of the event.</p>",
+                "<p>For example, the <code>button</code> below is in the child component and emit a function when clicked.</p>",
+                "<pre><code>&lt;button v-on:click=\"$emit('enlarge-text', 0.1)\"&gt;<br/>  Enlarge text<br/>&lt;/button&gt;</code></pre>",
+                "<p>Then when we listen to the event in the parent, we can access the emitted event's value with <code>$event</code>:</p>",
+                "<pre><code>&lt;greeting<br/>  v-on:enlarge-text=\"postFontSize += $event\"&gt;<br/>&lt;/blog-post&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What is slots in Vue.js?",
+            "answer": [
+                "<p>Sometimes we will need to allow our parent Vue components to embed arbitrary content inside of child components. (In Angular, it is known as transclusion) Vue provides an easy way to do this via slots.</p>",                
+                "<pre><code>&lt;div&gt;&gt;  &lt;p&gt;I'm the child component!&lt;/p&gt;&gt;  &lt;!-- Content from the parent gets rendered here. --&gt;&gt;  &lt;slot&gt;&lt;/slot&gt;&gt;&lt;/div&gt;</code></pre>",
+                "<p>If there is no <code>&lt;slot&gt;&lt;/slot&gt;</code> element in the child's template, any content from the parent will be silently discarded. If the parent does not inject any content into the child's slot, the child will render any elements inside its <code>&lt;slot&gt;&lt;/slot&gt;</code> tag which is a fallback or default content.</p>"
+            ]
+        },
+        {
+            "question": "How do you handle multiple slots? What is named slot?",
+            "answer": [
+                "<p>When we want to handle multiple slots, Vue allows us to do this by way of named slots. Named slots are simply slots with a name attribute <code>&lt;slot name=\"slotName\"&gt;&lt;/slot&gt;</code> to allow for namespaced content injection.</p>",                
+                "<pre><code>&lt;div class=\"child-component\"&gt;<br/>  &lt;!-- Elements injected with the `slot=\"top-slot\"`<br/>  attribute will end up in here. --&gt;<br/>  &lt;slot name=\"top-slot\"&gt;<br/>  &lt;/slot&gt;<br/>  &lt;!-- A slot tag without a name is a catch-all,<br/>  it will contain any content that doesn't have<br/>  a `slot=\"\"` attribute. --&gt;<br/>  &lt;slot&gt;<br/>  &lt;/slot&gt;<br/>  &lt;!-- Elements injected with the `slot=\"bottom-slot\"`<br/>  attribute will end up in here. --&gt;<br/>  &lt;slot name=\"bottom-slot\"&gt;<br/>  &lt;/slot&gt;<br/>&lt;/div&gt;</code></pre>",
+                "<p>The below markup is for the parent component:</p>",
+                "<pre><code>&lt;child-component&gt;&lt;br/&gt;  &lt;div slot=\"top-slot\"&gt;&lt;br/&gt;    this is the content for the top slot&lt;br/&gt;  &lt;/div&gt;&lt;br/&gt;  &lt;div slot=\"bottom-slot\"&gt;&lt;br/&gt;    this is the content for the bottom slot&lt;br/&gt;  &lt;/burger-bun&gt;&lt;br/&gt;  &lt;!-- Everything else gets injected into the middle slot (as it's not named.) --&gt;&lt;br/&gt;  &lt;div&gt;&lt;br/&gt;    this is the content for middle slot.&lt;br/&gt;  &lt;/div&gt;&lt;br/&gt;&lt;/child-component&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "Can you access the root instance of the Vue instance? If so, how can you do that?",
+            "answer": [
+                "<p>In every subcomponent of a <code>new Vue</code> instance, the root instance can be accessed with the <code>$root</code> property. For example, in this root instance:</p>",                
+                "<pre><code>// The root Vue instance<br/>new Vue({<br/>  data: {<br/>    foo: 1<br/>  },<br/>  computed: {<br/>    bar: function () { /* ... */ }<br/>  },<br/>  methods: {<br/>    baz: function () { /* ... */ }<br/>  }<br/>})</code></pre>",
+                "<p>All subcomponents will now be able to access this instance and use it as a global store:</p>",
+                "<pre><code>// Get root data<br/>this.$root.foo<br/><br/>// Set root data<br/>this.$root.foo = 2<br/><br/>// Access root computed properties<br/>this.$root.bar<br/><br/>// Call root methods<br/>this.$root.baz()</code></pre>"
+            ]
+        },
+        {
+            "question": "What is <code>$parent</code> in Vue?",
+            "answer": [
+                "<p>Similar to <code>$root</code>, the <code>$parent</code> property can be used to access the parent instance from a child.</p>",
+                "<p>Although it provides direct access, it makes the application hard to test and debug. And we can not easily find out the where the mutation come from.</p>",
+                "<p>Vue also provides <code>$child</code> just like <code>$parent</code>, but it can be used to access the child instance.</p>"
+            ]
+        },
+        {
+            "question": "What is the role of <code>ref</code> in Vue.js?",
+            "answer": [
+                "<p>Despite the existence of props and events, sometimes if we still need to directly access a child component, we can assign a reference ID to the child component using the ref attribute. For example:</p>",
+                "<pre><code>&lt;base-input ref=\"usernameInput\"&gt;&lt;/base-input&gt;</code></pre>",
+                "<p>Now in the component where we have defined this <code>ref</code>, we can use:</p>",
+                "<pre><code>this.$refs.usernameInput</code></pre>",
+                "<p><code>$refs</code> are only populated after the component has been rendered, and they are not reactive. Hence we should avoid accessing <code>$refs</code> from within templates or computed properties.</p>"
+            ]
+        },
+        {
+            "question": "What are the caveats of object changes detection?",
+            "answer": [
+                "<p>Vue cannot detect changes for the object in property addition or deletion., Lets take an example of user data changes,</p>",
+                "<pre><code>var vm = new Vue({<br/>  data: {<br/>    user: {<br/>      name: 'John'<br/>    }<br/>  }<br/>})<br/><br/>// `vm.name` is now reactive<br/><br/>vm.email = john@email.com // `vm.email` is NOT reactive</code></pre>",
+                "<p>You can overcome this scenario using the <code>Vue.set(object, key, value)</code> method or <code>Object.assign()</code>,</p>",
+                "<pre><code>Vue.set(vm.user, 'email', john@email.com);<br/>// or<br/>vm.user = Object.assign({}, vm.user, {<br/>  email: john@email.com<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "What are the event modifiers provided by Vue.js?",
+            "answer": [
+                "<p>Normally, javascript provides <code>event.preventDefault()</code> or <code>event.stopPropagation()</code> inside event handlers. Although we can do this easily inside methods, it would be better if the methods can be purely about data logic rather than having to deal with DOM event details. For this, Vue.js provides event modifiers for <code>v-on</code> and these are directive postfixes denoted by a dot.</p>",
+                "<ul><li><code>.stop</code> - the click event's propagation will be stopped.</li>",
+                "<li><code>.prevent</code> - the <code>preventDefault()</code> will be called.</li>",
+                "<li><code>.capture</code> - use capture mode when adding the event listener i.e. an event targeting an inner element is handled here before being handled by that element.</li>",
+                "<li><code>.self</code> - only trigger handler if event.target is the element itself i.e. not from a child element.</li>",
+                "<li><code>.once</code> - the click event will be triggered at most once</li>",
+                "<li><code>.passive</code> - indicates that the function specified by listener will never call <code>preventDefault()</code>. If a passive listener does call <code>preventDefault()</code>, the user agent will do nothing other than generate a console warning. </li></ul>",
+                "<p>These modifiers can be chained but the order of the chain matters because the relevant code is generated in the same order.</p>",
+                "<pre><code>&lt;!-- the click event's propagation will be stopped --&gt;<br/>&lt;a v-on:click.stop=\"doThis\"&gt;&lt;/a&gt;<br/><br/>&lt;!-- the submit event will no longer reload the page --&gt;<br/>&lt;form v-on:submit.prevent=\"onSubmit\"&gt;&lt;/form&gt;<br/><br/>&lt;!-- modifiers can be chained --&gt;<br/>&lt;a v-on:click.stop.prevent=\"doThat\"&gt;&lt;/a&gt;<br/><br/>&lt;!-- just the modifier --&gt;<br/>&lt;form v-on:submit.prevent&gt;&lt;/form&gt;<br/><br/>&lt;!-- use capture mode when adding the event listener --&gt;<br/>&lt;!-- i.e. an event targeting an inner element is handled here before being handled by that element --&gt;<br/>&lt;div v-on:click.capture=\"doThis\"&gt;...&lt;/div&gt;<br/><br/>&lt;!-- only trigger handler if event.target is the element itself --&gt;<br/>&lt;!-- i.e. not from a child element --&gt;<br/>&lt;div v-on:click.self=\"doThat\"&gt;...&lt;/div&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What are key modifiers?",
+            "answer": [
+                "<p>When listening for keyboard events, we often need to check for common key codes. Vue.js also allows adding key modifiers for <code>v-on</code> when listening for key events:</p>",
+                "<pre><code>&lt;!-- only call `vm.submit()` when the `keyCode` is 13 --&gt;<br/>&lt;input v-on:keyup.13=\"submit\"&gt;</code></pre>",
+                "<p>Remembering all the keyCodes is a hassle, so Vue.js provides aliases for the most commonly used keys:</p>",
+                "<pre><code>&lt;!-- same as above --&gt;<br/>&lt;input v-on:keyup.enter=\"submit\"&gt;</code></pre>",
+                "<p>There are some list of important keyCode aliases in Vue.js such as: <code>.tab</code>, <code>.delete</code>, <code>.esc</code>, <code>.space</code>, <code>.up</code>, <code>.down</code>, <code>.left</code> and <code>.right</code>. Apart from these, we can also create our own aliases:</p>",
+                "<pre><code>// enable `v-on:keyup.f1`<br/>Vue.config.keyCodes.f1 = 112</code></pre>"
+            ]
+        },
+        {
+            "question": "What are the supported System Modifier Keys?",
+            "answer": [
+                "<p>We can use the following modifiers to trigger mouse or keyboard event listeners only when the corresponding modifier key is pressed.</p>",
+                "<p><code>.ctrl</code>, <code>.alt</code>, <code>.shift</code> and <code>.meta</code></p>",
+                "<p>For example:</p>",
+                "<pre><code>&lt;!-- Alt + C --&gt;<br/>&lt;input @keyup.alt.67=\"clear\"&gt;<br/><br/>&lt;!-- Ctrl + Click --&gt;<br/>&lt;div @click.ctrl=\"doSomething\"&gt;Do something&lt;/div&gt;</code></pre>",
+                "<p>In addition, we can use the <code>.exact</code> modifier which allows control of the exact combination of system modifiers needed to trigger an event.</p>",
+                "<pre><code>&lt;!-- this will only fire when Ctrl and no other keys are pressed --&gt;<br/>&lt;input @click.ctrl.exact=\"onCtrlClick\"&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What are the supported modifiers on model?",
+            "answer": [
+                "<p>There are three modifiers supported for <code>v-model</code> directive.</p>",
+                "<p><code>lazy</code>: By default, v-model syncs the input with the data after each input event. You can add the lazy modifier to instead sync after change events.</p>",
+                "<pre><code>&lt;!-- synced after \"change\" instead of \"input\" --&gt;<br/>&lt;input v-model.lazy=\"msg\" &gt;</code></pre>",
+                "<p><code>number</code>: If we want user input to be automatically typecast as a number, we can add the number modifier to our <code>v-model</code>. Even with <code>type=\"number\"</code>, the value of HTML input elements always returns a string. So, this typecast modifier is required.</p>",
+                "<pre><code>&lt;input v-model.number=\"age\" type=\"number\"&gt;</code></pre>",
+                "<p><code>trim</code>: If you want whitespace from user input to be trimmed automatically, you can add the trim modifier to your v-model.</p>",
+                "<pre><code>&lt;input v-model.trim=\"msg\"&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "How do you implement model on custom input components?",
+            "answer": [
+                "<p>The custom events can also be used to create custom inputs that work with <code>v-model</code>. The inside the component must follow below rules,</p>",                
+                "<ul><li>Bind the value attribute to a value prop</li>",
+                "<li>On input, emit its own custom input event with the new value. Lets take a custom-input component as an example,</li></ul>",
+                "<pre><code>Vue.component('custom-input', {<br/>  props: ['value'],<br/>  template: `<br/>    <input<br/>      v-bind:value=\"value\"<br/>      v-on:input=\"$emit('input', $event.target.value)\"<br/>    ><br/>  `<br/>})</code></pre>",
+                "<p>Now we can use v-model with this component,</p>",
+                "<pre><code>&lt;custom-input v-model=\"searchInput\"&gt;&lt;/custom-input&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "What is global registration in components?",
+            "answer": [
+                "<p>The components which are globally registered can be used in the template of any root Vue instance (new Vue) created after registration. In the global registration, the components created using Vue.component as below,</p>",
+                "<pre><code>Vue.component('my-component-name', {<br/>  // ... options ...<br/>})</code></pre>",
+                "<p>Let's take multiple components which are globally registered in the vue instance,</p>",
+                "<pre><code>Vue.component('component-a', { /* ... */ })<br/>Vue.component('component-b', { /* ... */ })<br/>Vue.component('component-c', { /* ... */ })<br/><br/>new Vue({ el: '#app' })</code></pre>",
+                "<p>Remember that the components can be used in subcomponents as well. The above components can be used in the vue instance,</p>",
+                "<pre><code>&lt;div id=\"app\"&gt;&lt;br/&gt;  &lt;component-a&gt;&lt;/component-a&gt;&lt;br/&gt;  &lt;component-b&gt;&lt;/component-b&gt;&lt;br/&gt;  &lt;component-c&gt;&lt;/component-c&gt;&lt;br/&gt;&lt;/div&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "Why do we need local registration?",
+            "answer": [
+                "<p>Global registration often isn't ideal. For example, if we are using a build system like Webpack, globally registering all components means that even if we stop using a component, it could still be included in our final build. This unnecessarily increases the amount of JavaScript your users have to download. In these cases, you can define your components as plain JavaScript objects:</p>",
+                "<pre><code>var ComponentA = { /* ... */ }<br/>var ComponentB = { /* ... */ }<br/>var ComponentC = { /* ... */ }</code></pre>",
+                "<p>Then define the components you’d like to use in a <code>components</code> option:</p>",
+                "<pre><code>new Vue({<br/>  el: '#app',<br/>  components: {<br/>    'component-a': ComponentA,<br/>    'component-b': ComponentB<br/>  }<br/>})</code></pre>",
+                "<p>Note that locally registered components are not also available in subcomponents.</p>"
+            ]
+        },
+        {
+            "question": "What is Mixins?",
+            "answer": [
+                "<p>Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be \"mixed\" into the component's own options. Example:</p>",
+                "<pre><code>// define a mixin object<br/>var myMixin = {<br/>  created: function () {<br/>    this.hello()<br/>  },<br/>  methods: {<br/>    hello: function () {<br/>      console.log('hello from mixin!')<br/>    }<br/>  }<br/>}<br/><br/>// define a component that uses this mixin<br/>var Component = Vue.extend({<br/>  mixins: [myMixin]<br/>})<br/><br/>var component = new Component() // => \"hello from mixin!\"</code></pre>"
+            ]
+        },
+        {
+            "question": "What is Option Merging?",
+            "answer": [
+                "<p>When a mixin and the component itself contain overlapping options, they will be \"merged\" using appropriate strategies.</p>",
+                "<p>For example, data objects undergo a recursive merge, with the component's data taking priority in cases of conflicts.</p>",
+                "<pre><code>var mixin = {<br/>  data: function () {<br/>    return {<br/>      message: 'hello',<br/>      foo: 'abc'<br/>    }<br/>  }<br/>}<br/><br/>new Vue({<br/>  mixins: [mixin],<br/>  data: function () {<br/>    return {<br/>      message: 'goodbye',<br/>      bar: 'def'<br/>    }<br/>  },<br/>  created: function () {<br/>    console.log(this.$data)<br/>    // => { message: \"goodbye\", foo: \"abc\", bar: \"def\" }<br/>  }<br/>})</code></pre>"
+            ]
+        },
+        {
+            "question": "Explain the Global Mixin?",
+            "answer": [
+                "<p>We can also apply a mixin globally. Once we apply a mixin globally, it will affect every Vue instance created afterwards. When used properly, this can be used to inject processing logic for custom options:</p>",
+                "<pre><code>// inject a handler for `myOption` custom option<br/>Vue.mixin({<br/>  created: function () {<br/>    var myOption = this.$options.myOption<br/>    if (myOption) {<br/>      console.log(myOption)<br/>    }<br/>  }<br/>})<br/><br/>new Vue({<br/>  myOption: 'hello!'<br/>})<br/>// => \"hello!\"</code></pre>"
+            ]
+        },
+        {
+            "question": "Explain Simple State Management in Vue.js",
+            "answer": [
+                "<p>Like Redux, Vue offers vuex: its own Elm-inspired state management library. It even integrates into vue-devtools, providing zero-setup access to time travel debugging.</p>",
+                "<p>The below example depicts a simple store:</p>",
+                "<pre><code>var store = {<br/>  debug: true,<br/>  state: {<br/>    message: 'Hello!'<br/>  },<br/>  setMessageAction (newValue) {<br/>    if (this.debug) console.log('setMessageAction triggered with', newValue)<br/>    this.state.message = newValue<br/>  },<br/>  clearMessageAction () {<br/>    if (this.debug) console.log('clearMessageAction triggered')<br/>    this.state.message = ''<br/>  }<br/>}</code></pre>",
+                "<p>Now all actions that mutate the store's state are put inside the store itself. This type of centralized state management makes it easier to understand what type of mutations could happen and how they are triggered. Now when something goes wrong, we'll also have a log of what happened leading up to the bug.</p>",
+                "<p>In addition, each instance/component can still own and manage its own private state:</p>",
+                "<pre><code>var vmA = new Vue({<br/>  data: {<br/>    privateState: {},<br/>    sharedState: store.state<br/>  }<br/>})<br/><br/>var vmB = new Vue({<br/>  data: {<br/>    privateState: {},<br/>    sharedState: store.state<br/>  }<br/>})</code></pre>",
+                "<p>As we continue developing the convention where components are never allowed to directly mutate state that belongs to a store, but should instead dispatch events that notify the store to perform actions, we eventually arrive at the Flux architecture.</p>"
+            ]
+        },
+        {
+            "question": "How Vue.js track changes?",
+            "answer": [
+                "<p>When you pass a plain JavaScript object to a Vue instance as its data option, Vue will walk through all of its properties and convert them to getter/setters using <code>Object.defineProperty</code>.</p>",
+                "<p>The getter/setters are invisible to the user, but under the hood they enable Vue to perform dependency-tracking and change-notification when properties are accessed or modified.</p>",
+                "<p>Every component instance has a corresponding watcher instance, which records any properties \"touched\" during the component’s render as dependencies. Later on when a dependency's setter is triggered, it notifies the watcher, which in turn causes the component to re-render.</p>"
+            ]
+        },
+        {
+            "question": "What are the caveats in Vue.js change detection?",
+            "answer": [
+                "<p>Due to the limitations of modern JavaScript, Vue cannot detect property addition or deletion. Since Vue performs the getter/setter conversion process during instance initialization, a property must be present in the data object in order for Vue to convert it and make it reactive. For example:</p>",
+                "<pre><code>var vm = new Vue({<br/>  data: {<br/>    a: 1<br/>  }<br/>})<br/>// `vm.a` is now reactive<br/><br/>vm.b = 2<br/>// `vm.b` is NOT reactive</code></pre>",
+                "<p>Vue does not allow dynamically adding new root-level reactive properties to an already created instance. However, it's possible to add reactive properties to a nested object using the <code>Vue.set(object, key, value)</code> method:</p>",
+                "<pre><code>Vue.set(vm.someObject, 'b', 2)</code></pre>",
+                "<p>We can also use the <code>vm.$set</code> instance method, which is an alias to the global Vue.set:</p>",
+                "<pre><code>this.$set(this.someObject, 'b', 2)</code></pre>",
+                "<p>New properties added to the object will not trigger changes. In such cases, create a fresh object with properties from both the original object and the mixin object like below:</p>",
+                "<pre><code>this.someObject = Object.assign({}, this.someObject, { a: 1, b: 2 })</code></pre>"
+            ]
+        },
+        {
+            "question": "What are the caveats in array change detection?",
+            "answer": [
+                "<p>Due to limitations in JavaScript, Vue cannot detect the following changes to an array:</p>",
+                "<p>1. When we directly set an item with the index, e.g. </p>",
+                "<pre><code>vm.items[indexOfItem] = newValue</code></pre>",
+                "<p>To overcome this caveat we can modify the array as shown below:</p>",
+                "<pre><code>// Vue.set<br/>Vue.set(vm.items, indexOfItem, newValue)<br/>// Array.prototype.splice<br/>vm.items.splice(indexOfItem, 1, newValue)</code></pre>",
+                "<p>2. When we modify the length of the array, e.g. <code>vm.items.length = newLength</code>. For example:</p>",
+                "<pre><code>var vm = new Vue({<br/>  data: {<br/>    items: ['a', 'b', 'c']<br/>  }<br/>})<br/>vm.items[1] = 'x' // is NOT reactive<br/>vm.items.length = 2 // is NOT reactive</code></pre>",
+                "<p>To deal with this, we can use splice:</p>",
+                "<pre><code>vm.items.splice(newLength)</code></pre>"
+            ]
+        },
+        {
+            "question": "What are Async Components?",
+            "answer": [
+                "<p>In large applications, we may need to divide the app into smaller chunks and only load a component from the server when it's needed. To make that easier, Vue allows you to define our component as a factory function that asynchronously resolves your component definition. Vue will only trigger the factory function when the component needs to be rendered and will cache the result for future re-renders. For example:</p>",
+                "<pre><code>Vue.component('async-example', function (resolve, reject) {<br/>  setTimeout(function () {<br/>    // Pass the component definition to the resolve callback<br/>    resolve({<br/>      template: '<div>I am async!</div>'<br/>    })<br/>  }, 1000)<br/>})</code></pre>",
+                "<p>As we can see, the factory function receives a resolve callback, which should be called when we have retrieved your component definition from the server. We can also call <code>reject(reason)</code> to indicate the load has failed.</p>"
+            ]
+        },
+        {
+            "question": "What are filters in Vue.js?",
+            "answer": [
+                "<p>Vue.js allows us to define filters that can be used to apply common text formatting. Filters are usable in two places: mustache interpolations and <code>v-bind</code> expressions. Filters should be appended to the end of the JavaScript expression, denoted by the \"pipe\" symbol:</p>",
+                "<pre><code>&lt;!-- in mustaches --&gt;&lt;br/&gt;{{ message | capitalize }}&lt;br/&gt;&lt;br/&gt;&lt;!-- in v-bind --&gt;&lt;br/&gt;&lt;div v-bind:id=\"rawId | formatId\"&gt;&lt;/div&gt;</code></pre>"
+            ]
+        },
+        {
+            "question": "How do we create our own filters?",
+            "answer": [
+                "<p>We can define our local filters in a component's options like below:</p>",
+                "<pre><code>filters: {<br/>  capitalize: function (value) {<br/>    if (!value) return ''<br/>    value = value.toString()<br/>    return value.charAt(0).toUpperCase() + value.slice(1)<br/>  }<br/>}</code></pre>",
+                "<p>or define a filter globally before creating the Vue instance:</p>",
+                "<pre><code>Vue.filter('capitalize', function (value) {<br/>  if (!value) return ''<br/>  value = value.toString()<br/>  return value.charAt(0).toUpperCase() + value.slice(1)<br/>})<br/></code></pre>",
+                "<p>The filter's function always receives the expression's value (the result of the former chain) as its first argument. In the above example, the <code>capitalize</code> filter function will receive the value of message as its argument.</p>",
+                "<p>Filters can also be chained:</p>",
+                "<pre><code>{{ message | filterA | filterB }}</code></pre>"
+            ]
+        },
+        {
+            "question": "How do you pass arguments to filters?",
+            "answer": [
+                "<p>Filters are JavaScript functions, therefore they can take arguments:</p>",
+                "<pre><code>{{ message | filterA('arg1', arg2) }}</code></pre>",
+                "<p>Here <code>filterA</code> is defined as a function taking three arguments. The value of message will be passed into the first argument. The plain string '<code>arg1</code>' will be passed into the <code>filterA</code> as its second argument, and the value of expression <code>arg2</code> will be evaluated and passed in as the third argument.</p>"                
+            ]
+        },
+        {
+            "question": "What is Vue Router?",
+            "answer": [
+                "<p>Vue Router is the official router for Vue.js. It deeply integrates with Vue.js core to make building Single Page Applications with Vue.js easy to implement. Its features include:</p>",
+                "<ul><li>Nested route/view mapping</li>",
+                "<li>Modular, component-based router configuration</li>",
+                "<li>Route params, query, wildcards</li>",
+                "<li>View transition effects powered by Vue.js' transition system</li>",
+                "<li>Fine-grained navigation control</li>",
+                "<li>Links with automatic active CSS classes</li>",
+                "<li>Customizable Scroll Behavior</li>",
+                "<li>HTML5 history mode or hash mode, with auto-fallback in IE9</li></ul>"
+            ]
+        },
+        {
+            "question": "How do you define routes in Vue Router?",
+            "answer": [
+                "<p>With Vue.js, we are already composing our application with components. When adding Vue Router to the mix, all we need to do is map our components to the routes and let Vue Router know where to render them. Here's a basic example:</p>",
+                "<pre><code>&lt;p&gt;<br/>  &lt;!-- use router-link component for navigation. --&gt;<br/>  &lt;!-- specify the link by passing the `to` prop. --&gt;<br/>  &lt;!-- `&lt;router-link&gt;` will be rendered as an `&lt;a&gt;` tag by default --&gt;<br/>  &lt;router-link to=\"/foo\"&gt;Go to Foo&lt;/router-link&gt;<br/>  &lt;router-link to=\"/bar\"&gt;Go to Bar&lt;/router-link&gt;<br/><br/>  &lt;!-- route outlet --&gt;<br/>  &lt;!-- component matched by the route will render here --&gt;<br/>  &lt;router-view&gt;&lt;/router-view&gt;<br/>&lt;/p&gt;</code></pre>",
+                "<p>In Javascript, define the routes as below:</p>",
+                "<pre><code>const Foo = { template: '<div>foo</div>' }<br/>const Bar = { template: '<div>bar</div>' }<br/><br/>// Each route should map to a component. The \"component\" can<br/>// either be an actual component constructor created via<br/>// `Vue.extend()`, or just a component options object.<br/>// We'll talk about nested routes later.<br/>const routes = [<br/>  { path: '/foo', component: Foo },<br/>  { path: '/bar', component: Bar }<br/>]<br/><br/>// You can pass in additional options here, but let's<br/>// keep it simple for now.<br/>const router = new VueRouter({<br/>  routes // short for `routes: routes`<br/>})</code></pre>",
+                "<p>Finally, create and mount the root instance.</p>",
+                "<pre><code>// Make sure to inject the router with the router option to make the<br/>// whole app router-aware.<br/>const app = new Vue({<br/>  router<br/>}).$mount('#app')</code></pre>"
+            ]
+        },
+        {
+            "question": "What is Vue-cli?",
+            "answer": [
+                "<p>The Vue CLI ( @vue/cli ) is a npm package and provides the vue command in our terminal. It provides the ability to quickly scaffold a new project via vue create, or instantly prototype new ideas via vue serve. We can also manage your projects using a graphical user interface via vue ui.</p>",
+                "<p>Vue CLI aims to be the standard tooling baseline for the Vue ecosystem. It ensures the various build tools work smoothly together with sensible defaults so you can focus on writing your app instead of spending days wrangling with configurations. At the same time, it still offers the flexibility to tweak the config of each tool without the need for ejecting.</p>",
+                "<p>To install the package, use one of those commands:</p>",
+                "<pre><code>npm install -g @vue/cli<br/># OR<br/>yarn global add @vue/cli</code></pre>",
+                "<p>To create a new project, run:</p>",
+                "<pre><code>vue create hello-world</code></pre>"
+            ]
+        }
+    ]
+}
